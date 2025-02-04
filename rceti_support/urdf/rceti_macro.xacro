@@ -1,7 +1,20 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 <xacro:macro name="rceti_robot" params="prefix">
-    
+    <link name="${prefix}rail_1_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find rceti_support)/meshes/visual/LA_rail.stl"/>
+            </geometry>
+            <material name="blue"/>
+        </visual>
+    </link>
+    <joint name="${prefix}rail_1_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${prefix}base_link"/>
+        <child link="${prefix}rail_1_link"/>
+    </joint>
 </xacro:macro>
 </robot>
 
