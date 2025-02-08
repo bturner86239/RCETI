@@ -5,7 +5,7 @@
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <mesh filename="file://$(find rceti_support)/meshes/visual/LA_rail.stl"/>
+                <mesh filename="file://$(find rceti_support)/meshes/visual/LA_rail.stl" scale="0.001 0.001 0.001"/>
             </geometry>
             <material name="blue"/>
         </visual>
