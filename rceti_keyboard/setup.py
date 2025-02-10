@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'rceti_controller'
+package_name = 'rceti_keyboard'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'rceti_controller = rceti_controller.rceti_robot_controller:main',
+            'rceti_keyboard = rceti_keyboard.rceti_keyboard_controller:main',
         ],
     },
 )
