@@ -11,30 +11,24 @@ class RCETIRobotController(Node):
         self.x_position = self.create_subscription(
             Float32,
             'rceti/x_position',
-            self.listener_callback,
+            self.x_position_callback,
             10)
         self.z_position = self.create_subscription(
             Float32,
             'rceti/z_position',
-            self.listener_callback,
+            self.z_position_callback,
             10)
         self.pitch_angle = self.create_subscription(
             Float32,
             'rceti/pitch_angle',
-            self.listener_callback,
+            self.pitch_angle_callback,
             10)
         self.x_position # prevent unused variable warning
         self.z_position
         self.pitch_angle
-
-    # def listener_callback(self, msg):
-    #     self.get_logger().info('I heard: "%s"' % msg.data)
         
     def x_position_callback(self, msg):
-        print("Hi")
-        # THIS IS WHERE THE X POSITION ON THE ROBOT SIDE WILL MOVE THE ROBOT
-        
-        ## TODO ##
+        self.get_logger().info('I am going to x:"%s"' % msg.data)
         
     def z_position_callback(self, msg):
         print("Hi")

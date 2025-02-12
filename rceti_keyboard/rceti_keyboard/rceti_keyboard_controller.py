@@ -1,4 +1,5 @@
 import rclpy
+# import keyboard
 from rclpy.node import Node
 
 from std_msgs.msg import Float32
@@ -11,34 +12,28 @@ class RCETIKeyboardController(Node):
         self.x_position_ = self.create_publisher(Float32, 'rceti/x_position', 10)
         self.z_position_ = self.create_publisher(Float32, 'rceti/z_position', 10)
         self.pitch_angle_ = self.create_publisher(Float32, 'rceti/pitch_angle', 10)
-        timer_period = 0.1  # seconds
+        timer_period = 0.5  # seconds
         self.x_timer = self.create_timer(timer_period, self.x_position_callback)
         self.z_timer = self.create_timer(timer_period, self.z_position_callback)
         self.pitch_timer = self.create_timer(timer_period, self.pitch_angle_callback)
-        self.i = 0
-
-
-    # def timer_callback(self):
-    #     msg = ()
-    #     msg.data = 'Hello World: %d' % self.i
-    #     self.publisher_.publish(msg)
-    #     self.get_logger().info('Publishing: "%s"' % msg.data)
-    #     self.i += 1
+        self.i = 0.0
     
     def x_position_callback(self):
-        print("Hi")
-        # THIS IS WHERE THE X POSITION ON THE KEYBOARD SIDE WILL MOVE THE ROBOT
-        
+        msg = Float32()
+        msg.data = self.i
+        self.x_position_.publish(msg)
+        self.get_logger().info('Publishing: "%s"' % msg.data)
+        self.i += 0.01
         ## TODO ##
         
     def z_position_callback(self):
-        print("Hi")
+        msg = Float32()
         # THIS IS WHERE THE Z POSITION ON THE KEYBOARD SIDE
         
         ## TODO ##
         
     def pitch_angle_callback(self):
-        print("Hi")
+        msg = Float32()
         # THIS IS WHERE THE PITCH ANGLE ON THE KEYBOARD SIDE
         
         ## TODO ##
