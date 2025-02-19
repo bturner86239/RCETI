@@ -1,12 +1,13 @@
+import sys
+import termios
+import tty
+from select import select
+from std_msgs.msg import Float32
 import rclpy
 # import keyboard
 from rclpy.node import Node
 
-from std_msgs.msg import Float32
-
-
-class RCETIKeyboardController(Node):
-
+class RcetiKeyboardController(Node):
     def __init__(self):
         super().__init__('rceti_keyboard')
         self.x_position_ = self.create_publisher(Float32, 'rceti/x_position', 10)
@@ -16,42 +17,43 @@ class RCETIKeyboardController(Node):
         self.x_timer = self.create_timer(timer_period, self.x_position_callback)
         self.z_timer = self.create_timer(timer_period, self.z_position_callback)
         self.pitch_timer = self.create_timer(timer_period, self.pitch_angle_callback)
-        self.i = 0.0
-    
-    def x_position_callback(self):
-        msg = Float32()
-        msg.data = self.i
-        self.x_position_.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.i += 0.01
-        ## TODO ##
+        self.declare_parameter('key_timeout', 0.5)
+        self.i = 0
+
+    def detectKey(self, settings, timeout):
+        tty.setraw(sys.stdin.fileno())
+        rlist, _, _ = select([sys.stdin], [], [], timeout)
         
+        if rlist:
+            key = sys.stdin.read(1)
+        else:
+            key = ''
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+        return key
+
+    def saveTerminalSettings(self):
+        return termios.tcgetattr(sys.stdin)
+
+    def x_position_callback(self):
+        settings = self.saveTerminalSettings()
+        key_timeout = self.get_parameter("key_timeout").get_parameter_value().double_value
+        key = self.detectKey(settings, key_timeout)
+        print(key)
+
     def z_position_callback(self):
         msg = Float32()
         # THIS IS WHERE THE Z POSITION ON THE KEYBOARD SIDE
-        
-        ## TODO ##
-        
+
     def pitch_angle_callback(self):
         msg = Float32()
         # THIS IS WHERE THE PITCH ANGLE ON THE KEYBOARD SIDE
-        
-        ## TODO ##
-
 
 def main(args=None):
     rclpy.init(args=args)
-
-    minimal_publisher = RCETIKeyboardController()
-
+    minimal_publisher = RcetiKeyboardController()
     rclpy.spin(minimal_publisher)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
     minimal_publisher.destroy_node()
     rclpy.shutdown()
-
 
 if __name__ == '__main__':
     main()
