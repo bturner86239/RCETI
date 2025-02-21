@@ -1,0 +1,3 @@
+[console_scripts]
+rceti_controller = rceti_controller.rceti_robot_controller:main
+

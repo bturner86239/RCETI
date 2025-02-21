@@ -1,0 +1,4 @@
+Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_deployment -- -j4 -l4
+Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_deployment -- -j4 -l4
+Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_deployment
+Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_deployment

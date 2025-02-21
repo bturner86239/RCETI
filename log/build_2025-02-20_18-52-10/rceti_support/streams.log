@@ -1,0 +1,35 @@
+[1.502s] Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_support': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_support -- -j4 -l4
+[1.643s] Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_support' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_support -- -j4 -l4
+[1.666s] Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_support': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_support
+[1.706s] -- Install configuration: ""
+[1.707s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/config
+[1.707s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/config/visualize_description.rviz
+[1.707s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/launch
+[1.707s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/launch/load_rceti.launch.xml
+[1.709s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/launch/test_rceti.launch.xml
+[1.709s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes
+[1.710s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual
+[1.710s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/IF_body_frame_m.STL
+[1.710s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/LA_slider_m.stl
+[1.710s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/LA_rail.stl
+[1.711s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/rot_m.STL
+[1.711s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/rot_mot_m.STL
+[1.711s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/IF_camera_frame_m.STL
+[1.711s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/urdf
+[1.713s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/urdf/rceti.xacro
+[1.713s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/urdf/rceti_macro.xacro
+[1.721s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/ament_index/resource_index/package_run_dependencies/rceti_support
+[1.722s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/ament_index/resource_index/parent_prefix_path/rceti_support
+[1.722s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/ament_prefix_path.sh
+[1.722s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/ament_prefix_path.dsv
+[1.722s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/path.sh
+[1.722s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/path.dsv
+[1.722s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.bash
+[1.722s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.sh
+[1.723s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.zsh
+[1.723s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.dsv
+[1.723s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.dsv
+[1.723s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/ament_index/resource_index/packages/rceti_support
+[1.723s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/cmake/rceti_supportConfig.cmake
+[1.723s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/cmake/rceti_supportConfig-version.cmake
+[1.723s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.xml

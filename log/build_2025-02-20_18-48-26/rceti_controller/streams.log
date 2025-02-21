@@ -1,0 +1,30 @@
+[2.203s] Invoking command in '/home/user/Documents/Capstone/RCETI/rceti_controller': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_controller build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_controller/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_controller/install.log --single-version-externally-managed install_data
+[2.862s] running egg_info
+[2.865s] writing ../build/rceti_controller/rceti_controller.egg-info/PKG-INFO
+[2.865s] writing dependency_links to ../build/rceti_controller/rceti_controller.egg-info/dependency_links.txt
+[2.865s] writing entry points to ../build/rceti_controller/rceti_controller.egg-info/entry_points.txt
+[2.866s] writing requirements to ../build/rceti_controller/rceti_controller.egg-info/requires.txt
+[2.866s] writing top-level names to ../build/rceti_controller/rceti_controller.egg-info/top_level.txt
+[2.866s] writing manifest file '../build/rceti_controller/rceti_controller.egg-info/SOURCES.txt'
+[2.873s] reading manifest file '../build/rceti_controller/rceti_controller.egg-info/SOURCES.txt'
+[2.873s] adding license file 'LICENSE'
+[2.873s] writing manifest file '../build/rceti_controller/rceti_controller.egg-info/SOURCES.txt'
+[2.874s] running build
+[2.874s] running build_py
+[2.874s] copying rceti_controller/rceti_robot_controller.py -> /home/user/Documents/Capstone/RCETI/build/rceti_controller/build/lib/rceti_controller
+[2.875s] copying rceti_controller/__init__.py -> /home/user/Documents/Capstone/RCETI/build/rceti_controller/build/lib/rceti_controller
+[2.889s] running install
+[2.889s] running install_lib
+[2.889s] copying /home/user/Documents/Capstone/RCETI/build/rceti_controller/build/lib/rceti_controller/rceti_robot_controller.py -> /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller
+[2.890s] copying /home/user/Documents/Capstone/RCETI/build/rceti_controller/build/lib/rceti_controller/__init__.py -> /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller
+[2.898s] byte-compiling /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller/rceti_robot_controller.py to rceti_robot_controller.cpython-310.pyc
+[2.900s] byte-compiling /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller/__init__.py to __init__.cpython-310.pyc
+[2.900s] running install_data
+[2.900s] copying resource/rceti_controller -> /home/user/Documents/Capstone/RCETI/install/rceti_controller/share/ament_index/resource_index/packages
+[2.900s] copying package.xml -> /home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller
+[2.901s] running install_egg_info
+[2.901s] removing '/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller-0.0.0-py3.10.egg-info' (and everything under it)
+[2.901s] Copying ../build/rceti_controller/rceti_controller.egg-info to /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller-0.0.0-py3.10.egg-info
+[2.901s] running install_scripts
+[2.945s] Installing rceti_controller script to /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/rceti_controller
+[2.946s] writing list of installed files to '/home/user/Documents/Capstone/RCETI/build/rceti_controller/install.log'

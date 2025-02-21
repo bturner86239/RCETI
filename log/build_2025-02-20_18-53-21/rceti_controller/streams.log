@@ -1,0 +1,22 @@
+[2.263s] Invoking command in '/home/user/Documents/Capstone/RCETI/rceti_controller': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_controller build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_controller/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_controller/install.log --single-version-externally-managed install_data
+[2.983s] running egg_info
+[2.990s] writing ../build/rceti_controller/rceti_controller.egg-info/PKG-INFO
+[2.991s] writing dependency_links to ../build/rceti_controller/rceti_controller.egg-info/dependency_links.txt
+[2.993s] writing entry points to ../build/rceti_controller/rceti_controller.egg-info/entry_points.txt
+[2.994s] writing requirements to ../build/rceti_controller/rceti_controller.egg-info/requires.txt
+[2.994s] writing top-level names to ../build/rceti_controller/rceti_controller.egg-info/top_level.txt
+[3.015s] reading manifest file '../build/rceti_controller/rceti_controller.egg-info/SOURCES.txt'
+[3.024s] adding license file 'LICENSE'
+[3.025s] writing manifest file '../build/rceti_controller/rceti_controller.egg-info/SOURCES.txt'
+[3.025s] running build
+[3.025s] running build_py
+[3.028s] running install
+[3.028s] running install_lib
+[3.033s] running install_data
+[3.034s] running install_egg_info
+[3.036s] removing '/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller-0.0.0-py3.10.egg-info' (and everything under it)
+[3.037s] Copying ../build/rceti_controller/rceti_controller.egg-info to /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages/rceti_controller-0.0.0-py3.10.egg-info
+[3.045s] running install_scripts
+[3.107s] Installing rceti_controller script to /home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/rceti_controller
+[3.109s] writing list of installed files to '/home/user/Documents/Capstone/RCETI/build/rceti_controller/install.log'
+[3.202s] Invoked command in '/home/user/Documents/Capstone/RCETI/rceti_controller' returned '0': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_controller build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_controller/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_controller/install.log --single-version-externally-managed install_data

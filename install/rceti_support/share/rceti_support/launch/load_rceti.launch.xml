@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="robot_description" default="$(command 'xacro $(find-pkg-share rceti_support)/urdf/rceti.xacro')" description="[String] Path to URDF." />
+</launch>

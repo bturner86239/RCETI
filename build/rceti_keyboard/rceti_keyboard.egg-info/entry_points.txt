@@ -1,0 +1,3 @@
+[console_scripts]
+rceti_keyboard = rceti_keyboard.rceti_keyboard_controller:main
+
