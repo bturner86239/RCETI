@@ -1,0 +1,23 @@
+running egg_info
+writing ../build/rceti_keyboard/rceti_keyboard.egg-info/PKG-INFO
+writing dependency_links to ../build/rceti_keyboard/rceti_keyboard.egg-info/dependency_links.txt
+writing entry points to ../build/rceti_keyboard/rceti_keyboard.egg-info/entry_points.txt
+writing requirements to ../build/rceti_keyboard/rceti_keyboard.egg-info/requires.txt
+writing top-level names to ../build/rceti_keyboard/rceti_keyboard.egg-info/top_level.txt
+reading manifest file '../build/rceti_keyboard/rceti_keyboard.egg-info/SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file '../build/rceti_keyboard/rceti_keyboard.egg-info/SOURCES.txt'
+running build
+running build_py
+copying rceti_keyboard/rceti_keyboard_controller.py -> /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build/lib/rceti_keyboard
+running install
+running install_lib
+copying /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build/lib/rceti_keyboard/rceti_keyboard_controller.py -> /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard
+byte-compiling /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard/rceti_keyboard_controller.py to rceti_keyboard_controller.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard-0.0.0-py3.10.egg-info' (and everything under it)
+Copying ../build/rceti_keyboard/rceti_keyboard.egg-info to /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard-0.0.0-py3.10.egg-info
+running install_scripts
+Installing rceti_keyboard script to /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/rceti_keyboard
+writing list of installed files to '/home/user/Documents/Capstone/RCETI/build/rceti_keyboard/install.log'

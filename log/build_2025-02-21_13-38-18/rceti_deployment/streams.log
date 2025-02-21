@@ -1,0 +1,28 @@
+[0.405s] Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_deployment -- -j4 -l4
+[0.814s] Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_deployment -- -j4 -l4
+[0.832s] Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_deployment
+[0.861s] -- Install configuration: ""
+[0.862s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/ament_index/resource_index/package_run_dependencies/rceti_deployment
+[0.862s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/ament_index/resource_index/parent_prefix_path/rceti_deployment
+[0.862s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/environment/ament_prefix_path.sh
+[0.862s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/environment/ament_prefix_path.dsv
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/environment/path.sh
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/environment/path.dsv
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/local_setup.bash
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/local_setup.sh
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/local_setup.zsh
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/local_setup.dsv
+[0.863s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.dsv
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/ament_index/resource_index/packages/rceti_deployment
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/cmake/rceti_deploymentConfig.cmake
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/cmake/rceti_deploymentConfig-version.cmake
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.xml
+[0.863s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/config
+[0.864s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/config/visualize_description.rviz
+[0.864s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/launch
+[0.864s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/launch/rceti_deployment.launch.xml
+[0.864s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/launch/load_rceti_deployment.launch.xml
+[0.864s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/meshes
+[0.864s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/urdf
+[0.864s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/urdf/scene.urdf.xacro
+[0.864s] Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_deployment

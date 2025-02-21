@@ -1,0 +1,287 @@
+[0.376s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.376s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7e4c6a71c910>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7e4c6a71c340>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7e4c6a71c340>>, mixin_verb=('build',))
+[0.640s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.640s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.640s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.640s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.640s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.640s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.641s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/user/Documents/Capstone/RCETI'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.655s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.655s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.655s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.655s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.655s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.656s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extension 'ignore'
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extension 'ignore_ament_install'
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extensions ['colcon_pkg']
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extension 'colcon_pkg'
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extensions ['colcon_meta']
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extension 'colcon_meta'
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extensions ['ros']
+[0.657s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_controller) by extension 'ros'
+[0.660s] DEBUG:colcon.colcon_core.package_identification:Package 'rceti_controller' with type 'ros.ament_python' and name 'rceti_controller'
+[0.660s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extensions ['ignore', 'ignore_ament_install']
+[0.660s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extension 'ignore'
+[0.660s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extension 'ignore_ament_install'
+[0.660s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extensions ['colcon_pkg']
+[0.660s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extension 'colcon_pkg'
+[0.660s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extensions ['colcon_meta']
+[0.661s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extension 'colcon_meta'
+[0.661s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extensions ['ros']
+[0.661s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_deployment) by extension 'ros'
+[0.661s] DEBUG:colcon.colcon_core.package_identification:Package 'rceti_deployment' with type 'ros.ament_cmake' and name 'rceti_deployment'
+[0.661s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extensions ['ignore', 'ignore_ament_install']
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extension 'ignore'
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extension 'ignore_ament_install'
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extensions ['colcon_pkg']
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extension 'colcon_pkg'
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extensions ['colcon_meta']
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extension 'colcon_meta'
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extensions ['ros']
+[0.662s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_keyboard) by extension 'ros'
+[0.663s] DEBUG:colcon.colcon_core.package_identification:Package 'rceti_keyboard' with type 'ros.ament_python' and name 'rceti_keyboard'
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extensions ['ignore', 'ignore_ament_install']
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extension 'ignore'
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extension 'ignore_ament_install'
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extensions ['colcon_pkg']
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extension 'colcon_pkg'
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extensions ['colcon_meta']
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extension 'colcon_meta'
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extensions ['ros']
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(rceti_support) by extension 'ros'
+[0.664s] DEBUG:colcon.colcon_core.package_identification:Package 'rceti_support' with type 'ros.ament_cmake' and name 'rceti_support'
+[0.664s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.664s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.664s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.664s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.664s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.711s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.711s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.714s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 4 installed packages in /home/user/Documents/Capstone/RCETI/install
+[0.723s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 271 installed packages in /opt/ros/humble
+[0.725s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'cmake_args' from command line to 'None'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'cmake_target' from command line to 'None'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'cmake_clean_first' from command line to 'False'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'cmake_force_configure' from command line to 'False'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'ament_cmake_args' from command line to 'None'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[0.787s] Level 5:colcon.colcon_core.verb:set package 'rceti_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.787s] DEBUG:colcon.colcon_core.verb:Building package 'rceti_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/Documents/Capstone/RCETI/build/rceti_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/Documents/Capstone/RCETI/install/rceti_controller', 'merge_install': False, 'path': '/home/user/Documents/Capstone/RCETI/rceti_controller', 'symlink_install': False, 'test_result_base': None}
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'cmake_args' from command line to 'None'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'cmake_target' from command line to 'None'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'cmake_clean_cache' from command line to 'False'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'cmake_clean_first' from command line to 'False'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'cmake_force_configure' from command line to 'False'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'ament_cmake_args' from command line to 'None'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'catkin_cmake_args' from command line to 'None'
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_deployment' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.788s] DEBUG:colcon.colcon_core.verb:Building package 'rceti_deployment' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/Documents/Capstone/RCETI/build/rceti_deployment', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/Documents/Capstone/RCETI/install/rceti_deployment', 'merge_install': False, 'path': '/home/user/Documents/Capstone/RCETI/rceti_deployment', 'symlink_install': False, 'test_result_base': None}
+[0.788s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'cmake_args' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'cmake_target' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'cmake_clean_cache' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'cmake_clean_first' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'cmake_force_configure' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'ament_cmake_args' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'catkin_cmake_args' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_keyboard' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.789s] DEBUG:colcon.colcon_core.verb:Building package 'rceti_keyboard' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/Documents/Capstone/RCETI/build/rceti_keyboard', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard', 'merge_install': False, 'path': '/home/user/Documents/Capstone/RCETI/rceti_keyboard', 'symlink_install': False, 'test_result_base': None}
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'cmake_args' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'cmake_target' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'cmake_clean_cache' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'cmake_clean_first' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'cmake_force_configure' from command line to 'False'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'ament_cmake_args' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'catkin_cmake_args' from command line to 'None'
+[0.789s] Level 5:colcon.colcon_core.verb:set package 'rceti_support' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.790s] DEBUG:colcon.colcon_core.verb:Building package 'rceti_support' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/user/Documents/Capstone/RCETI/build/rceti_support', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/user/Documents/Capstone/RCETI/install/rceti_support', 'merge_install': False, 'path': '/home/user/Documents/Capstone/RCETI/rceti_support', 'symlink_install': False, 'test_result_base': None}
+[0.790s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.797s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.801s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/user/Documents/Capstone/RCETI/rceti_controller' with build type 'ament_python'
+[0.804s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_controller', 'ament_prefix_path')
+[0.823s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.823s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/hook/ament_prefix_path.ps1'
+[0.827s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/hook/ament_prefix_path.dsv'
+[0.834s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/hook/ament_prefix_path.sh'
+[0.837s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.838s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.858s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user/Documents/Capstone/RCETI/rceti_deployment' with build type 'ament_cmake'
+[0.858s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user/Documents/Capstone/RCETI/rceti_deployment'
+[0.859s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.859s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.929s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/user/Documents/Capstone/RCETI/rceti_keyboard' with build type 'ament_python'
+[0.934s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_keyboard', 'ament_prefix_path')
+[0.935s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/hook/ament_prefix_path.ps1'
+[0.937s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/hook/ament_prefix_path.dsv'
+[0.938s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/hook/ament_prefix_path.sh'
+[0.941s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.941s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.947s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/user/Documents/Capstone/RCETI/rceti_support' with build type 'ament_cmake'
+[0.948s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/user/Documents/Capstone/RCETI/rceti_support'
+[0.948s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.948s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.402s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/user/Documents/Capstone/RCETI/rceti_controller'
+[1.402s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.402s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.431s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_deployment -- -j4 -l4
+[1.888s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/user/Documents/Capstone/RCETI/rceti_keyboard'
+[1.888s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.889s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.906s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_support': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_support -- -j4 -l4
+[1.909s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_deployment -- -j4 -l4
+[1.935s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_deployment
+[1.976s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rceti_deployment)
+[1.981s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment' for CMake module files
+[1.986s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_deployment' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_deployment
+[1.988s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment' for CMake config files
+[1.988s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_deployment', 'cmake_prefix_path')
+[1.989s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/hook/cmake_prefix_path.ps1'
+[1.990s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/hook/cmake_prefix_path.dsv'
+[1.990s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/hook/cmake_prefix_path.sh'
+[1.992s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/bin'
+[1.992s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/lib/pkgconfig/rceti_deployment.pc'
+[1.992s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/lib/python3.10/site-packages'
+[1.993s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/bin'
+[1.995s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.ps1'
+[1.997s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.dsv'
+[1.999s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.sh'
+[2.004s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.bash'
+[2.008s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.zsh'
+[2.010s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/colcon-core/packages/rceti_deployment)
+[2.012s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rceti_deployment)
+[2.012s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment' for CMake module files
+[2.013s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment' for CMake config files
+[2.021s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_deployment', 'cmake_prefix_path')
+[2.022s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/hook/cmake_prefix_path.ps1'
+[2.022s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/hook/cmake_prefix_path.dsv'
+[2.023s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/hook/cmake_prefix_path.sh'
+[2.026s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/bin'
+[2.026s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/lib/pkgconfig/rceti_deployment.pc'
+[2.026s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/lib/python3.10/site-packages'
+[2.027s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/bin'
+[2.027s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.ps1'
+[2.028s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.dsv'
+[2.029s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.sh'
+[2.030s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.bash'
+[2.031s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/rceti_deployment/package.zsh'
+[2.031s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user/Documents/Capstone/RCETI/install/rceti_deployment/share/colcon-core/packages/rceti_deployment)
+[2.035s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_support' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_support -- -j4 -l4
+[2.039s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_support': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_support
+[2.078s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rceti_support)
+[2.079s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support' for CMake module files
+[2.078s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_support' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_support
+[2.080s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support' for CMake config files
+[2.080s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_support', 'cmake_prefix_path')
+[2.081s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/hook/cmake_prefix_path.ps1'
+[2.081s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/hook/cmake_prefix_path.dsv'
+[2.082s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/hook/cmake_prefix_path.sh'
+[2.083s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/bin'
+[2.083s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/lib/pkgconfig/rceti_support.pc'
+[2.084s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/lib/python3.10/site-packages'
+[2.084s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/bin'
+[2.085s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.ps1'
+[2.085s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.dsv'
+[2.086s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.sh'
+[2.087s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.bash'
+[2.088s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.zsh'
+[2.089s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user/Documents/Capstone/RCETI/install/rceti_support/share/colcon-core/packages/rceti_support)
+[2.090s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rceti_support)
+[2.090s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support' for CMake module files
+[2.091s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support' for CMake config files
+[2.091s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_support', 'cmake_prefix_path')
+[2.092s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/hook/cmake_prefix_path.ps1'
+[2.092s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/hook/cmake_prefix_path.dsv'
+[2.093s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/hook/cmake_prefix_path.sh'
+[2.094s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/bin'
+[2.094s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/lib/pkgconfig/rceti_support.pc'
+[2.095s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/lib/python3.10/site-packages'
+[2.095s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_support/bin'
+[2.096s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.ps1'
+[2.096s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.dsv'
+[2.097s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.sh'
+[2.098s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.bash'
+[2.099s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.zsh'
+[2.100s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user/Documents/Capstone/RCETI/install/rceti_support/share/colcon-core/packages/rceti_support)
+[2.528s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user/Documents/Capstone/RCETI/rceti_controller': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_controller build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_controller/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_controller/install.log --single-version-externally-managed install_data
+[2.553s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/user/Documents/Capstone/RCETI/rceti_keyboard': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_keyboard/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_keyboard build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/install.log --single-version-externally-managed install_data
+[3.434s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard' for CMake module files
+[3.437s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user/Documents/Capstone/RCETI/rceti_keyboard' returned '0': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_keyboard/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_keyboard build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/install.log --single-version-externally-managed install_data
+[3.439s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard' for CMake config files
+[3.440s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib'
+[3.441s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/bin'
+[3.441s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/pkgconfig/rceti_keyboard.pc'
+[3.441s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages'
+[3.442s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_keyboard', 'pythonpath')
+[3.444s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/hook/pythonpath.ps1'
+[3.448s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/hook/pythonpath.dsv'
+[3.450s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/hook/pythonpath.sh'
+[3.453s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/bin'
+[3.453s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rceti_keyboard)
+[3.454s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/package.ps1'
+[3.456s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/package.dsv'
+[3.458s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/package.sh'
+[3.460s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/package.bash'
+[3.468s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/rceti_keyboard/package.zsh'
+[3.471s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/share/colcon-core/packages/rceti_keyboard)
+[3.476s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_controller' for CMake module files
+[3.481s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_controller' for CMake config files
+[3.485s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/user/Documents/Capstone/RCETI/rceti_controller' returned '0': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_controller build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_controller/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_controller/install.log --single-version-externally-managed install_data
+[3.486s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib'
+[3.486s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_controller/bin'
+[3.487s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/pkgconfig/rceti_controller.pc'
+[3.489s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_controller/lib/python3.10/site-packages'
+[3.489s] Level 1:colcon.colcon_core.shell:create_environment_hook('rceti_controller', 'pythonpath')
+[3.490s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/hook/pythonpath.ps1'
+[3.493s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/hook/pythonpath.dsv'
+[3.495s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/hook/pythonpath.sh'
+[3.497s] Level 1:colcon.colcon_core.environment:checking '/home/user/Documents/Capstone/RCETI/install/rceti_controller/bin'
+[3.497s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(rceti_controller)
+[3.499s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/package.ps1'
+[3.501s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/package.dsv'
+[3.502s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/package.sh'
+[3.506s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/package.bash'
+[3.509s] INFO:colcon.colcon_core.shell:Creating package script '/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/rceti_controller/package.zsh'
+[3.519s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/user/Documents/Capstone/RCETI/install/rceti_controller/share/colcon-core/packages/rceti_controller)
+[3.522s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[3.527s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[3.528s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[3.529s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[3.549s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[3.549s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[3.549s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[3.597s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[3.598s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user/Documents/Capstone/RCETI/install/local_setup.ps1'
+[3.618s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/user/Documents/Capstone/RCETI/install/_local_setup_util_ps1.py'
+[3.627s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user/Documents/Capstone/RCETI/install/setup.ps1'
+[3.635s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user/Documents/Capstone/RCETI/install/local_setup.sh'
+[3.640s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/user/Documents/Capstone/RCETI/install/_local_setup_util_sh.py'
+[3.643s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user/Documents/Capstone/RCETI/install/setup.sh'
+[3.654s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user/Documents/Capstone/RCETI/install/local_setup.bash'
+[3.661s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user/Documents/Capstone/RCETI/install/setup.bash'
+[3.676s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/user/Documents/Capstone/RCETI/install/local_setup.zsh'
+[3.680s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/user/Documents/Capstone/RCETI/install/setup.zsh'
