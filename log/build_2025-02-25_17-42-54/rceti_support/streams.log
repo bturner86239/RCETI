@@ -1,0 +1,36 @@
+[2.211s] Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_support': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_support -- -j4 -l4
+[2.454s] Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_support' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --build /home/user/Documents/Capstone/RCETI/build/rceti_support -- -j4 -l4
+[2.456s] Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_support': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_support
+[2.458s] -- Install configuration: ""
+[2.462s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/config
+[2.462s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/config/visualize_description.rviz
+[2.463s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/launch
+[2.463s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/launch/load_rceti.launch.xml
+[2.463s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/launch/test_rceti.launch.xml
+[2.463s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes
+[2.463s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual
+[2.464s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/IF_body_frame_m.STL
+[2.464s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/LA_slider_m.stl
+[2.464s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/LA_rail.stl
+[2.464s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/rot_m.STL
+[2.464s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/rot_mot_m.STL
+[2.466s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/meshes/visual/IF_camera_frame_m.STL
+[2.466s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/urdf
+[2.467s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/urdf/rceti.xacro
+[2.467s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/urdf/rceti_macro.xacro
+[2.467s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/ament_index/resource_index/package_run_dependencies/rceti_support
+[2.467s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/ament_index/resource_index/parent_prefix_path/rceti_support
+[2.468s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/ament_prefix_path.sh
+[2.469s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/ament_prefix_path.dsv
+[2.469s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/path.sh
+[2.471s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/environment/path.dsv
+[2.472s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.bash
+[2.472s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.sh
+[2.472s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.zsh
+[2.473s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/local_setup.dsv
+[2.473s] -- Installing: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.dsv
+[2.474s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/ament_index/resource_index/packages/rceti_support
+[2.483s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/cmake/rceti_supportConfig.cmake
+[2.484s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/cmake/rceti_supportConfig-version.cmake
+[2.485s] -- Up-to-date: /home/user/Documents/Capstone/RCETI/install/rceti_support/share/rceti_support/package.xml
+[2.486s] Invoked command in '/home/user/Documents/Capstone/RCETI/build/rceti_support' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard:/home/user/Documents/Capstone/RCETI/install/rceti_controller:/opt/ros/humble /usr/bin/cmake --install /home/user/Documents/Capstone/RCETI/build/rceti_support

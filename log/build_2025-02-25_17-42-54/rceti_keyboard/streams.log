@@ -1,0 +1,25 @@
+[3.596s] Invoking command in '/home/user/Documents/Capstone/RCETI/rceti_keyboard': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_keyboard/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_keyboard build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/install.log --single-version-externally-managed install_data
+[4.523s] running egg_info
+[4.526s] writing ../build/rceti_keyboard/rceti_keyboard.egg-info/PKG-INFO
+[4.526s] writing dependency_links to ../build/rceti_keyboard/rceti_keyboard.egg-info/dependency_links.txt
+[4.530s] writing entry points to ../build/rceti_keyboard/rceti_keyboard.egg-info/entry_points.txt
+[4.532s] writing requirements to ../build/rceti_keyboard/rceti_keyboard.egg-info/requires.txt
+[4.532s] writing top-level names to ../build/rceti_keyboard/rceti_keyboard.egg-info/top_level.txt
+[4.538s] reading manifest file '../build/rceti_keyboard/rceti_keyboard.egg-info/SOURCES.txt'
+[4.539s] adding license file 'LICENSE'
+[4.542s] writing manifest file '../build/rceti_keyboard/rceti_keyboard.egg-info/SOURCES.txt'
+[4.543s] running build
+[4.543s] running build_py
+[4.544s] copying rceti_keyboard/rceti_keyboard_controller.py -> /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build/lib/rceti_keyboard
+[4.544s] running install
+[4.545s] running install_lib
+[4.549s] copying /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build/lib/rceti_keyboard/rceti_keyboard_controller.py -> /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard
+[4.553s] byte-compiling /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard/rceti_keyboard_controller.py to rceti_keyboard_controller.cpython-310.pyc
+[4.556s] running install_data
+[4.558s] running install_egg_info
+[4.570s] removing '/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard-0.0.0-py3.10.egg-info' (and everything under it)
+[4.571s] Copying ../build/rceti_keyboard/rceti_keyboard.egg-info to /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages/rceti_keyboard-0.0.0-py3.10.egg-info
+[4.571s] running install_scripts
+[4.657s] Installing rceti_keyboard script to /home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/rceti_keyboard
+[4.658s] writing list of installed files to '/home/user/Documents/Capstone/RCETI/build/rceti_keyboard/install.log'
+[4.742s] Invoked command in '/home/user/Documents/Capstone/RCETI/rceti_keyboard' returned '0': PYTHONPATH=/home/user/Documents/Capstone/RCETI/build/rceti_keyboard/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/user/Documents/Capstone/RCETI/install/rceti_keyboard/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/rceti_keyboard build --build-base /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/build install --record /home/user/Documents/Capstone/RCETI/build/rceti_keyboard/install.log --single-version-externally-managed install_data
