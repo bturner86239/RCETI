@@ -17,9 +17,10 @@ Robotic Control of Endotracheal Tube Insertion
 ### Setting Up ROS to use static IP
 Enter the following commands into your terminal in Ubuntu 22.04
 
-`export ROS_DOMAIN_ID=7` \
-`export ROS_IP=$(hostname -I | awk '{print $1}')` \
-`export ROS_HOSTNAME=$(hostname -I | awk '{print $1}')` \
+`echo "export ROS_DOMAIN_ID=7" >> ~/.bashrc ` \
+`echo "export ROS_IP=$(hostname -I | awk '{print $1}')" >> ~/.bashrc` \
+`echo "export ROS_HOSTNAME=$(hostname -I | awk '{print $1}')" >> ~/.bashrc` \
+`source ~/.bashrc` \
 
 This should set up your ROS IP so that it can talk with the Raspberry Pi
 
