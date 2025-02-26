@@ -1,6 +1,0 @@
-[31mCMake Error at cmake_install.cmake:105 (file):
-  file INSTALL cannot find
-  "/home/user/Documents/Capstone/RCETI/rceti_deployment/meshes": No such file
-  or directory.
-
-[0m

@@ -1,4 +1,0 @@
-source;share/rceti_deployment/local_setup.bash
-source;share/rceti_deployment/local_setup.dsv
-source;share/rceti_deployment/local_setup.sh
-source;share/rceti_deployment/local_setup.zsh

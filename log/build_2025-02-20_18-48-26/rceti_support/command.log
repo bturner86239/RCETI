@@ -1,1 +1,0 @@
-Invoking command in '/home/user/Documents/Capstone/RCETI/build/rceti_support': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/user/Documents/Capstone/RCETI/rceti_support -DCMAKE_INSTALL_PREFIX=/home/user/Documents/Capstone/RCETI/install/rceti_support
