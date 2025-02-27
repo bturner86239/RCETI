@@ -12,6 +12,18 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
+  <!--vvv depend(s) vvv-->
+  <depend>rclccp</depend>
+  <depend>visualization_msgs</depend>
+  <depend>tf2</depend>
+  <depend>std_msgs</depend>
+  <depend>interactive_markers</depend>
+  <depend>message_generation</depend>
+  <depend>rosdil_default_generators</depend>
+  <depend>rosidl_default_runtime</depend>
+  
+  
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>

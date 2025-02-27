@@ -6,8 +6,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   visualization_msgs
   tf
-  roslib
-   std_msgs
+  roslib#
+  std_msgs
   message_generation
   interactive_markers
  
