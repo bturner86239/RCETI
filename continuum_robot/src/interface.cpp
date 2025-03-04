@@ -1,10 +1,10 @@
-#include <ros/ros.h>
-#include <visualization_msgs/Marker.h>
-#include <visualization_msgs/MarkerArray.h>
-#include <visualization_msgs/InteractiveMarker.h>
-#include <interactive_markers/interactive_marker_server.h>
-#include <tf/transform_broadcaster.h>
-#include <tf/tf.h>
+#include <rclcpp/rclcpp.hpp>
+#include <visualization_msgs/msg/marker.hpp>
+#include <visualization_msgs/msg/marker_array.hpp>
+#include <visualization_msgs/msg/interactive_marker.hpp>
+#include <interactive_markers/interactive_marker_server.hpp>
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2/LinearMath/Quaternion.h>
 #include <termios.h>
 #include <math.h>
 #define PI 3.1415926
@@ -14,11 +14,13 @@ using namespace std;
 struct termios initial_settings,
                new_settings;
 
+std::shared_ptr<interactive_markers::InteractiveMarkerServer> server;
+tf2::Quaternion directionQauat;
+
 // %Tag(vars)%
-boost::shared_ptr<interactive_markers::InteractiveMarkerServer> server;
-tf::Quaternion directionQauat;
 // %EndTag(vars)%
 // %Tag(Box)%
+
 Marker makeBox( InteractiveMarker &msg )
 {
   Marker marker;
@@ -45,33 +47,33 @@ InteractiveMarkerControl& makeBoxControl( InteractiveMarker &msg )
   return msg.controls.back();
 }
 
-void processFeedback(const visualization_msgs::InteractiveMarkerFeedbackConstPtr &feedback )
+void processFeedback(const visualization_msgs::msg::InteractiveMarkerFeedback::ConstSharedPtr &feedback )
 {
-	  std::ostringstream s;
-	ROS_INFO_STREAM( s.str() << ": pose changed"
-	          << "\nposition = "
-	          << feedback->pose.position.x
-	          << ", " << feedback->pose.position.y
-	          << ", " << feedback->pose.position.z
-	          << "\norientation = "
-	          << feedback->pose.orientation.w
-	          << ", " << feedback->pose.orientation.x
-	          << ", " << feedback->pose.orientation.y
-	          << ", " << feedback->pose.orientation.z
-	          << "\nframe: " << feedback->header.frame_id
-	          << " time: " << feedback->header.stamp.sec << "sec, "
-	          << feedback->header.stamp.nsec << " nsec" );
-	//directionQauat = tf::Quaternion(feedback->pose.orientation.x,feedback->pose.orientation.y,feedback->pose.orientation.z,feedback->pose.orientation.w);
+    std::ostringstream s;
+    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "%s: pose changed\nposition = %f, %f, %f\norientation = %f, %f, %f, %f\nframe: %s time: %d sec, %d nsec",
+                s.str().c_str(),
+                feedback->pose.position.x,
+                feedback->pose.position.y,
+                feedback->pose.position.z,
+                feedback->pose.orientation.w,
+                feedback->pose.orientation.x,
+                feedback->pose.orientation.y,
+                feedback->pose.orientation.z,
+                feedback->header.frame_id.c_str(),
+                feedback->header.stamp.sec,
+                feedback->header.stamp.nanosec);
 
-	server->applyChanges();
+    server->applyChanges();
 }
+
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 // %Tag(6DOF)%
-void make6DofMarker( bool fixed, unsigned int interaction_mode, const tf::Vector3& position, bool show_6dof )
+
+void make6DofMarker( bool fixed, unsigned int interaction_mode, const tf2::Vector3& position, bool show_6dof )
 {
   InteractiveMarker int_marker;
   int_marker.header.frame_id = "moving_frame";
-  tf::pointTFToMsg(position, int_marker.pose.position);
+  tf2::toMsg(position, int_marker.pose.position);
   int_marker.scale = 1;
 
   int_marker.name = "robotHead";
@@ -90,12 +92,12 @@ void make6DofMarker( bool fixed, unsigned int interaction_mode, const tf::Vector
     control.orientation_mode = InteractiveMarkerControl::FIXED;
   }
 
-  if (interaction_mode != visualization_msgs::InteractiveMarkerControl::NONE)
+  if (interaction_mode != visualization_msgs::msg::InteractiveMarkerControl::NONE)
   {
       std::string mode_text;
-      if( interaction_mode == visualization_msgs::InteractiveMarkerControl::MOVE_3D )         mode_text = "MOVE_3D";
-      if( interaction_mode == visualization_msgs::InteractiveMarkerControl::ROTATE_3D )       mode_text = "ROTATE_3D";
-      if( interaction_mode == visualization_msgs::InteractiveMarkerControl::MOVE_ROTATE_3D )  mode_text = "MOVE_ROTATE_3D";
+      if( interaction_mode == visualization_msgs::msg::InteractiveMarkerControl::MOVE_3D )         mode_text = "MOVE_3D";
+      if( interaction_mode == visualization_msgs::msg::InteractiveMarkerControl::ROTATE_3D )       mode_text = "ROTATE_3D";
+      if( interaction_mode == visualization_msgs::msg::InteractiveMarkerControl::MOVE_ROTATE_3D )  mode_text = "MOVE_ROTATE_3D";
       int_marker.name += "_" + mode_text;
       int_marker.description = std::string("3D Control") + (show_6dof ? " + 6-DOF controls" : "") + "\n" + mode_text;
   }
@@ -141,60 +143,60 @@ void make6DofMarker( bool fixed, unsigned int interaction_mode, const tf::Vector
  }
 // %EndTag(6DOF)%
 // %Tag(frameCallback)%
-void frameCallback(const ros::TimerEvent&)
+
+void frameCallback()
 {
-	static double thetaPitch = 0;
-	static double thetaYaw = 0;
-  static uint32_t counter = 0;
+    static double thetaPitch = 0;
+    static double thetaYaw = 0;
+    static uint32_t counter = 0;
 
-  static tf::TransformBroadcaster br;
+    static tf2_ros::TransformBroadcaster br;
 
-  static tf::Transform t;
+    static geometry_msgs::msg::TransformStamped t;
 
-  ros::Time time = ros::Time::now();
-  int n = getchar();
+    rclcpp::Time time = rclcpp::Clock().now();
+    int n = getchar();
 
-  if (n == '\033') { // if the first value is esc
-	  getchar(); // skip the [
-      switch(getchar()) { // the real value
-          case 'A':
-          {
-              cout<<"ARROW UP"<<endl;// code for arrow up
-              thetaPitch-=90;
-              break;
-          }
-          case 'B':
-              cout<<"ARROW DOWN"<<endl;// code for down up
-              thetaPitch+=90;
+    if (n == '\033') { // if the first value is esc
+        getchar(); // skip the [
+        switch(getchar()) { // the real value
+            case 'A':
+                cout << "ARROW UP" << endl; // code for arrow up
+                thetaPitch -= 90;
+                break;
+            case 'B':
+                cout << "ARROW DOWN" << endl; // code for down up
+                thetaPitch += 90;
+                break;
+            case 'C':
+                cout << "ARROW right" << endl; // code for arrow right
+                thetaYaw -= 90;
+                break;
+            case 'D':
+                cout << "ARROW left" << endl; // code for arrow left
+                thetaYaw += 90;
+                break;
+        }
+        directionQauat.setRPY(0.0, (thetaPitch * PI) / 180, (thetaYaw * PI) / 180);
+    }
+    cout << "p = [" << t.transform.translation.x << ", " << t.transform.translation.y << ", " << t.transform.translation.z << "]" << endl;
 
-              break;
-          case 'C':
-        	  cout<<"ARROW right"<<endl;// code for arrow right
-        	  thetaYaw-=90;
-              break;
-          case 'D':
-        	  cout<<"ARROW left"<<endl;// code for arrow left
-        	  thetaYaw+=90;
+    t.transform.rotation = tf2::toMsg(directionQauat);
+    t.header.stamp = time;
+    t.header.frame_id = "base_link";
+    t.child_frame_id = "moving_frame";
+    br.sendTransform(t);
+    t.transform.translation.x += tf2::Matrix3x3(directionQauat) * tf2::Vector3((float(1) / 140.0) * 2.0, 0, 0);
+}
 
-        	  break;
-      }
-      directionQauat = tf::createQuaternionFromRPY(0.0, (thetaPitch*PI)/180, (thetaYaw*PI)/180);
-
-  }
-  cout<<"p = ["<<t.getOrigin().x()<<",  "<<t.getOrigin().y()<<",  "<<t.getOrigin().z()<<"]"<<endl;
-
-  t.setRotation(tf::createQuaternionFromRPY(0.0, (thetaPitch*PI)/180, (thetaYaw*PI)/180));
-  br.sendTransform(tf::StampedTransform(t, time, "base_link", "moving_frame"));
-  t.setOrigin(t.getOrigin()+ tf::Matrix3x3(directionQauat)*tf::Vector3((float(1)/140.0) * 2.0,0,0));
-
- }
 // %EndTag(frameCallback)%
 // %Tag(Moving)%
-void makeMovingMarker( const tf::Vector3& position )
+
+void makeMovingMarker( const tf2::Vector3& position )
 {
   InteractiveMarker int_marker;
   int_marker.header.frame_id = "moving_frame";
-  tf::pointTFToMsg(position, int_marker.pose.position);
+  tf2::toMsg(position, int_marker.pose.position);
   int_marker.scale = 1;
 
   int_marker.name = "moving";
@@ -219,41 +221,39 @@ void makeMovingMarker( const tf::Vector3& position )
 }
 // %EndTag(Moving)%
 
-int main( int argc, char** argv )
+int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "interface");
-  ros::NodeHandle n;
-  ros::Rate r(1);
-  directionQauat = tf::Quaternion(0,0,0,1);
- // Keyboard
-  tcgetattr(0,&initial_settings);
+    rclcpp::init(argc, argv);
+    auto node = rclcpp::Node::make_shared("interface");
+    rclcpp::Rate r(1);
+    directionQauat = tf2::Quaternion(0, 0, 0, 1);
+    // Keyboard
+    tcgetattr(0, &initial_settings);
 
-   new_settings = initial_settings;
-   new_settings.c_lflag &= ~ICANON;
-   new_settings.c_lflag &= ~ECHO;
-   new_settings.c_lflag &= ~ISIG;
-   new_settings.c_cc[VMIN] = 0;
-   new_settings.c_cc[VTIME] = 0;
+    new_settings = initial_settings;
+    new_settings.c_lflag &= ~ICANON;
+    new_settings.c_lflag &= ~ECHO;
+    new_settings.c_lflag &= ~ISIG;
+    new_settings.c_cc[VMIN] = 0;
+    new_settings.c_cc[VTIME] = 0;
 
-   tcsetattr(0, TCSANOW, &new_settings);
+    tcsetattr(0, TCSANOW, &new_settings);
 
-
-  // create a timer to update the published transforms
-    ros::Timer frame_timer = n.createTimer(ros::Duration(0.05), frameCallback);
-  ros::Publisher robotShapePublisher = n.advertise<visualization_msgs::MarkerArray>("robot_shape", 1);
-  server.reset( new interactive_markers::InteractiveMarkerServer("basic_controls","",false) );
-  ros::Duration(0.1).sleep();
-  tf::Vector3 position;
-    position = tf::Vector3(0, 0, 0);
-    make6DofMarker( false, visualization_msgs::InteractiveMarkerControl::NONE, position, false );
+    // create a timer to update the published transforms
+    auto frame_timer = node->create_wall_timer(std::chrono::milliseconds(50), frameCallback);
+    auto robotShapePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("robot_shape", 1);
+    server.reset(new interactive_markers::InteractiveMarkerServer("basic_controls", node, rclcpp::QoS(10).transient_local()));
+    rclcpp::sleep_for(std::chrono::milliseconds(100));
+    tf2::Vector3 position;
+    position = tf2::Vector3(0, 0, 0);
+    make6DofMarker(false, visualization_msgs::msg::InteractiveMarkerControl::NONE, position, false);
     server->applyChanges();
 
-      ros::spin();
+    rclcpp::spin(node);
 
-      server.reset();
-      tcsetattr(0, TCSANOW, &initial_settings);
-      return 0;
-
+    server.reset();
+    tcsetattr(0, TCSANOW, &initial_settings);
+    return 0;
 }
 
 

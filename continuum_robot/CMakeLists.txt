@@ -1,35 +1,62 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(continuum_robot)
 
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(visualization_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(interactive_markers REQUIRED)
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
+add_library(${PROJECT_NAME} SHARED src/Continuum.cpp)
+ament_target_dependencies(${PROJECT_NAME}
+  rclcpp
   visualization_msgs
-  tf
-  roslib#
+  tf2_ros
   std_msgs
-  message_generation
   interactive_markers
- 
 )
-catkin_package(
-  INCLUDE_DIRS include
-  CATKIN_DEPENDS roscpp roslib message_runtime std_msgs
- LIBRARIES continuum_robot
-)
-
- include_directories(include)
-include_directories(${catkin_INCLUDE_DIRS})
-
-## Declare a cpp library 
-add_library(${PROJECT_NAME} src/Continuum.cpp include/continuum_robot/Continuum.h)
 
 add_executable(interface src/interface.cpp)
-target_link_libraries(interface ${catkin_LIBRARIES})
+ament_target_dependencies(interface
+  rclcpp
+  visualization_msgs
+  tf2_ros
+  std_msgs
+  interactive_markers
+)
+target_link_libraries(interface ${PROJECT_NAME})
 
 add_executable(core_node src/core_node.cpp)
-target_link_libraries(core_node continuum_robot ${catkin_LIBRARIES})
+ament_target_dependencies(core_node
+  rclcpp
+  visualization_msgs
+  tf2_ros
+  std_msgs
+  interactive_markers
+)
+target_link_libraries(core_node ${PROJECT_NAME})
 
 add_executable(create_cont_robot src/create_cont_robot.cpp)
-target_link_libraries(create_cont_robot continuum_robot ${catkin_LIBRARIES})
+ament_target_dependencies(create_cont_robot
+  rclcpp
+  visualization_msgs
+  tf2_ros
+  std_msgs
+  interactive_markers
+)
+target_link_libraries(create_cont_robot ${PROJECT_NAME})
+
+install(TARGETS
+  ${PROJECT_NAME}
+  interface
+  core_node
+  create_cont_robot
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_package()
 
