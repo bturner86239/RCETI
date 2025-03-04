@@ -22,8 +22,6 @@
     <!-- Global Origin -->
     <link name="world"/>
 
-    <link name="base_link"/>
-
     <!-- Intubation Robot -->
     <xacro:include filename="$(find rceti_support)/urdf/rceti.xacro"/>
     <joint name="fix_origin_rceti" type="fixed">
