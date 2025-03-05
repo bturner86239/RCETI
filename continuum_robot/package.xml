@@ -3,7 +3,7 @@
   <name>continuum_robot</name>
   <version>0.0.0</version>
   <description>The continuum_robot package</description>
-  <maintainer email="haitham@too.todo">haitham</maintainer>
+  <maintainer email="haitham@todo.todo">haitham</maintainer>
   <license>TODO</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

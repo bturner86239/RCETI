@@ -7,14 +7,23 @@
 //
 #ifndef CONTINUUM_ROBOT_INCLUDE_CONTINUUM_ROBOT_CONTINUUM_H_
 #define CONTINUUM_ROBOT_INCLUDE_CONTINUUM_ROBOT_CONTINUUM_H_
-#include <ros/ros.h>
+#include "rclcpp/rclcpp.hpp"
+
 #include <math.h>
-#include "std_msgs/String.h"
-#include <tf/transform_broadcaster.h>
+#include "std_msgs/msg/string.hpp"
+
+#include <tf2/LinearMath/Transform.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include "geometry_msgs/msg/transform_stamped.hpp"
+
+
+#include <tf2_ros/transform_broadcaster.h>
 #include <stdlib.h>
 #include <fstream>
-#include <ros/package.h>
-#include <visualization_msgs/MarkerArray.h>
+#include <ament_index_cpp/get_package_share_directory.hpp>
+#include "visualization_msgs/msg/marker_array.hpp"
+
 #include <termios.h>
 
 using namespace std;
@@ -29,15 +38,20 @@ using namespace std;
 #define UPDATERATE 50
 class Continuum {
 private:
-	 tf::Transform* endEffectorPose;
-	 tf::Transform* basePose;
-	 tf::Transform** segTFFrame; // array of array segTFFrame[segID][diskNo]
-	 tf::TransformBroadcaster* segTFBroadcaster;
-	 visualization_msgs::MarkerArray* cableMarkers;
-	 visualization_msgs::MarkerArray headMarkers;
-	 ros::Publisher* cablePublisher;
-	 ros::Publisher headPublisher;
-	 ros::Timer frame_timer;
+	 tf2::Transform* endEffectorPose;
+	 tf2::Transform* basePose;
+	 tf2::Transform** segTFFrame; // array of array segTFFrame[segID][diskNo]
+	 std::shared_ptr<tf2_ros::TransformBroadcaster> segTFBroadcaster;
+
+	 visualization_msgs::msg::MarkerArray* cableMarkers;
+	 visualization_msgs::msg::MarkerArray headMarkers;
+	// rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr cablePublisher;
+	 std::vector<rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr> cablePublisher;
+
+	 rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr headPublisher;
+
+	 rclcpp::TimerBase::SharedPtr frame_timer;
+
 	 bool hasHead;
 	 int headDisks;
 	 double headLength;
@@ -55,22 +69,22 @@ private:
 	                new_settings;
 	 int rateOfUpdate;
 	 //-------------------------------------------------------------
-	 std_msgs::String robotName;
+	 std_msgs::msg::String robotName;
 	 ofstream robotURDFfile;
 	 void createURDF(int segID, double length, int n_disks, double radius);
 	 void initCableMarker(int segID);
-	 tf::Quaternion getDiskQuaternion(int segID, int diskID);
-	 tf::Quaternion getHeadQuaternion(int diskID);
+	 tf2::Quaternion getDiskQuaternion(int segID, int diskID);
+	 tf2::Quaternion getHeadQuaternion(int diskID);
 
-	 tf::Vector3 getDiskPosition(int segID, int i);
-	 void timerScanning(const ros::TimerEvent&);
+	 tf2::Vector3 getDiskPosition(int segID, int i);
+	 void timerScanning();
 public:
 	Continuum();
 	 int numberOfSegments;
 
 	void addSegment(int segID, double length, int n_disks, double radius);
 
-	void setSegmentBasePose(int segID, tf::Vector3 basePos, tf::Quaternion baseRot);
+	void setSegmentBasePose(int segID, tf2::Vector3 basePos, tf2::Quaternion baseRot);
 	void setSegmentShape(int segID, double kappa, double phi);
 	void update(void);
 	void addHead(double len, int disks, double rad);

@@ -6,11 +6,21 @@
  */
 
 #include "continuum_robot/Continuum.h"
+#include <ament_index_cpp/get_package_share_directory.hpp>
+
+
 
 Continuum::Continuum()
 {
+
     // ...existing code...
+
+	//cablePublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
+	//headPublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
+
     auto node = rclcpp::Node::make_shared("continuum_robot");
+	//cablePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
+	//headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
     char cableTopic[30];
     node->declare_parameter("number_of_sections", 3);
     node->get_parameter("number_of_sections", this->numberOfSegments);
@@ -22,21 +32,31 @@ Continuum::Continuum()
     this->basePose = new tf2::Transform[noOfSeg];
     this->segKappa = new double[noOfSeg];
     this->segPhi = new double[noOfSeg];
-    this->segTFBroadcaster = new tf2_ros::TransformBroadcaster[noOfSeg];
+    //this->segTFBroadcaster = new tf2_ros::TransformBroadcaster[noOfSeg];
+	std::shared_ptr<tf2_ros::TransformBroadcaster> segTFBroadcaster;
+
+	segTFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
+
     this->segTFFrame = (tf2::Transform**)malloc(noOfSeg * sizeof(tf2::Transform*)); // https://stackoverflow.com/questions/455960/dynamic-allocating-array-of-arrays-in-c
     this->arrayOfKappa = new double[(noOfSeg + 1) * delay];
     this->arrayOfPhi = new double[(noOfSeg + 1) * delay];
 
     this->cableMarkers = new visualization_msgs::msg::MarkerArray[noOfSeg + 1];
-    this->cablePublisher = new rclcpp::Publisher<visualization_msgs::msg::MarkerArray>[noOfSeg + 1];
+    //this->cablePublisher = new rclcpp::Publisher<visualization_msgs::msg::MarkerArray>[noOfSeg + 1];
+////////////////////////check which one of these twolines i should change
+	//std::vector<rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr> cablePublisher;
+	//this->cablePublisher = std::vector<rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr>(noOfSeg + 1);
+	
+	this->cablePublisher.resize(noOfSeg+1);
+
     this->frame_timer = node->create_wall_timer(std::chrono::milliseconds(100), std::bind(&Continuum::timerScanning, this));
     for (int s = 0; s <= noOfSeg; s++)
     {
         sprintf(cableTopic, "cable_%d", s);
         cableMarkers[s].markers.resize(RESOLUTION);
-        cablePublisher[s] = node->create_publisher<visualization_msgs::msg::MarkerArray>(cableTopic, 1);
+        this->cablePublisher[s] = node->create_publisher<visualization_msgs::msg::MarkerArray>(cableTopic, 1);
     }
-    headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("headMarkers", 1);
+    this->headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("headMarkers", 1);
     // Keyboard
     tcgetattr(0, &initial_settings);
 
@@ -139,7 +159,7 @@ tf2::Matrix3x3 Rot;
 tf2::Quaternion qRot;
 Rot.setValue(pow(cos(segPhi[segID]),2) * (cos(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])) - 1) + 1, sin(segPhi[segID])*cos(segPhi[segID])*( cos(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])) - 1), -cos(segPhi[segID])*sin(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])),
 						sin(segPhi[segID])*cos(segPhi[segID])*( cos(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])) - 1), pow(cos(segPhi[segID]),2) * ( 1 - cos(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])) ) + cos( segKappa[segID] * ((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])),  -sin(segPhi[segID])*sin(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])),
-						 cos(segPhi[segID])*sin(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])),  sin(segPhi[segID])*sin(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])), cos(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID]));
+						 cos(segPhi[segID])*sin(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])),  sin(segPhi[segID])*sin(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])), cos(segKappa[segID]*((diskID/((double)noOfDisks[segID]-1))*segmentLength[segID])));
 Rot.getRotation(qRot);
 //endEffectorPose[segID].setRotation(basePose[segID].getRotation() * qRot);
 return qRot;
@@ -171,7 +191,7 @@ tf2::Vector3 Continuum::getDiskPosition(int segID, int i){
 /******************************************************/
 void Continuum::update(void) {
 char childFrameName[30];
-ros::Rate rate(15);
+rclcpp::Rate rate(15);
 tf2::Vector3 heeP;
 /*************************************** WITH HEAD *********************************************/
 
@@ -254,7 +274,7 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 	tf2::Vector3 eePc;
 
 
-	for(int i=0;i<noOfDisks[segID]&&ros::ok();i++){
+	for(int i=0;i<noOfDisks[segID]&&rclcpp::ok();i++){
 	eeP[0] = cos(segPhi[segID])*(cos(segKappa[segID]*((i/((double)noOfDisks[segID]-1))*segmentLength[segID])) - 1)/segKappa[segID];
 	eeP[1] = sin(segPhi[segID])*( cos(segKappa[segID]*((i/((double)noOfDisks[segID]-1))*segmentLength[segID])) - 1)/segKappa[segID];
 	eeP[2] = (sin(segKappa[segID]*((i/((double)noOfDisks[segID]-1))*segmentLength[segID]))/segKappa[segID]);
@@ -265,13 +285,29 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 	this->segTFFrame[segID][i].setRotation(basePose[segID].getRotation() * getDiskQuaternion(segID,i));
 
 	sprintf(childFrameName, "S%dL%d", segID,i);
-	segTFBroadcaster[segID].sendTransform(tf2::StampedTransform(segTFFrame[segID][i], ros::Time::now(),"base_link",childFrameName));
+	geometry_msgs::msg::TransformStamped transformStamped;
+	transformStamped.header.stamp = rclcpp::Clock().now();
+	transformStamped.header.frame_id = "base_link";
+	transformStamped.child_frame_id = childFrameName;
+	transformStamped.transform.translation.x = segTFFrame[segID][i].getOrigin().x();
+	transformStamped.transform.translation.y = segTFFrame[segID][i].getOrigin().y();
+	transformStamped.transform.translation.z = segTFFrame[segID][i].getOrigin().z();
+
+	tf2::Quaternion q = segTFFrame[segID][i].getRotation();
+	transformStamped.transform.rotation.x = q.x();
+	transformStamped.transform.rotation.y = q.y();
+	transformStamped.transform.rotation.z = q.z();
+	transformStamped.transform.rotation.w = q.w();
+
+	segTFBroadcaster->sendTransform(transformStamped);
+
+	//segTFBroadcaster[segID].sendTransform(tf2::StampedTransform(segTFFrame[segID][i], rclcpp::Clock().now(),"base_link",childFrameName));
 	//	slerpQuaternion = basePose[segID].getRotation().slerp(endEffectorPose[segID].getRotation(),(double)((i/((double)noOfDisks[segID]-1))));
 
 	}
 
 
-	for(int i=0;i<RESOLUTION&&ros::ok();i++){
+	for(int i=0;i<RESOLUTION&&rclcpp::ok();i++){
 		eePc[0] = cos(segPhi[segID])*(cos(segKappa[segID]*((i/((double)RESOLUTION-1))*segmentLength[segID])) - 1)/segKappa[segID];
 		eePc[1] =  sin(segPhi[segID])*(cos(segKappa[segID]*((i/((double)RESOLUTION-1))*segmentLength[segID])) - 1)/segKappa[segID];
 		eePc[2] = (sin(segKappa[segID]*((i/((double)RESOLUTION-1))*segmentLength[segID]))/segKappa[segID]);
@@ -288,8 +324,8 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 			cableMarkers[segID].markers[i].pose.orientation.w = 1;//slerpQuaternionCable.w();
 
 		}
-cablePublisher[segID].publish(cableMarkers[segID]);
-
+cablePublisher[segID]->publish(cableMarkers[segID]);
+//////
 }
 
 rate.sleep();
@@ -298,7 +334,8 @@ rate.sleep();
 /******************************************************/
 
 void Continuum::createURDF(int segID, double segLength, int n_disks, double radius){	// TODO Auto-generated constructor stub
-	 std::string path= ros::package::getPath("continuum_robot");  path =path+ "/urdf/robot_model.urdf";
+	std::string path = ament_index_cpp::get_package_share_directory("continuum_robot");
+	path =path+ "/urdf/robot_model.urdf";
 if(segID == 0)
 { // if the first time to create the robot, delete the previous file
 	remove(path.c_str());
@@ -356,7 +393,7 @@ void Continuum::initCableMarker(int segID){
 
 	    // Set the frame ID and timestamp.  See the TF tutorials for information on these.
 	    cableMarkers[segID].markers[r].header.frame_id = "base_link";
-	    cableMarkers[segID].markers[r].header.stamp = ros::Time::now();
+	    cableMarkers[segID].markers[r].header.stamp = rclcpp::Clock().now();
 
 	    // Set the namespace and id for this marker.  This serves to create a unique ID
 	    // Any marker sent with the same namespace and id will overwrite the old one
@@ -379,7 +416,7 @@ void Continuum::initCableMarker(int segID){
 	    // Set the color -- be sure to set alpha to something non-zero!
 	    cableMarkers[segID].markers[r].color.b = 1.0f;
 	    cableMarkers[segID].markers[r].color.a = 1.0;
-	    cableMarkers[segID].markers[r].lifetime = ros::Duration();
+	    cableMarkers[segID].markers[r].lifetime = rclcpp::Duration(0,0);
 	  }
 }
 /******************************************************/
@@ -397,7 +434,7 @@ uint32_t shape = visualization_msgs::msg::Marker::CYLINDER;
 
 	    // Set the frame ID and timestamp.  See the TF tutorials for information on these.
 		  headMarkers.markers[r].header.frame_id = "base_link";
-		  headMarkers.markers[r].header.stamp = ros::Time::now();
+		  headMarkers.markers[r].header.stamp = rclcpp::Clock().now();//this->now()
 
 	    // Set the namespace and id for this marker.  This serves to create a unique ID
 	    // Any marker sent with the same namespace and id will overwrite the old one
@@ -420,7 +457,7 @@ uint32_t shape = visualization_msgs::msg::Marker::CYLINDER;
 	    // Set the color -- be sure to set alpha to something non-zero!
 		  headMarkers.markers[r].color.g = 1.0f;
 		  headMarkers.markers[r].color.a = 1.0;
-		  headMarkers.markers[r].lifetime = ros::Duration();
+		  headMarkers.markers[r].lifetime = rclcpp::Duration(0,0);
 	  }
 	  headMarkers.markers[disks-1].color.r = 1.0f;
 	  initCableMarker(this->numberOfSegments);

@@ -1,6 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 project(continuum_robot)
 
+
+# Add the correct path for header files
+include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(/home/pawilder11/code/RCETI/RCETI/continuum_robot/include)
+
+
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(visualization_msgs REQUIRED)
