@@ -14,6 +14,9 @@
   <build_depend>rosidl_default_generators</build_depend>
   <build_depend>interactive_markers</build_depend>
 
+  <depend>tf2_geometry_msgs</depend>
+
+
   <exec_depend>rclcpp</exec_depend>
   <exec_depend>visualization_msgs</exec_depend>
   <exec_depend>tf2_ros</exec_depend>

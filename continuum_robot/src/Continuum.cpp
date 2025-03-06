@@ -10,7 +10,7 @@
 
 
 
-Continuum::Continuum()
+Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
 {
 
     // ...existing code...
@@ -18,9 +18,9 @@ Continuum::Continuum()
 	//cablePublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
 	//headPublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
 
-    auto node = rclcpp::Node::make_shared("continuum_robot");
-	//cablePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
-	//headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
+    //auto node = rclcpp::Node::make_shared("continuum_robot");
+	//this -> cablePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
+	headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
     char cableTopic[30];
     node->declare_parameter("number_of_sections", 3);
     node->get_parameter("number_of_sections", this->numberOfSegments);
@@ -176,6 +176,7 @@ Rot.setValue(pow(cos(headPhi),2) * (cos(headKappa*((diskID/((double)headDisks-1)
 Rot.getRotation(qRot);
 //endEffectorPose[segID].setRotation(basePose[segID].getRotation() * qRot);
 return qRot;*/
+return tf2::Quaternion(0, 0, 0, 1); // Return identity quaternion
 
 }
 

@@ -79,7 +79,7 @@ private:
 	 tf2::Vector3 getDiskPosition(int segID, int i);
 	 void timerScanning();
 public:
-	Continuum();
+	Continuum(std::shared_ptr<rclcpp::Node> node);
 	 int numberOfSegments;
 
 	void addSegment(int segID, double length, int n_disks, double radius);
