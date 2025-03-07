@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32
 import time  # for delays/testing
-import gpiozero  # motor control
+import lgpio
 
 class RCETIRobotController(Node):
 
@@ -35,36 +35,29 @@ class RCETIRobotController(Node):
         self.z_position = 0.0
         self.pitch_angle = 0.0
 
-        #GPIO motors
-        self.x_Axis = gpiozero.Motor(20, 21)  
-        self.z_Axis = gpiozero.Motor(18, 19)  
+        self.LED = 26
+
+        # open the gpio chip and set the LED pin as output
+        self.test = lgpio.gpiochip_open(0)
+        lgpio.gpio_claim_output(self.test, self.LED)
 
     def x_position_callback(self, msg):
         if self.x_position != msg.data:
             self.get_logger().info(f"Moving X to {msg.data}")
             self.x_position = msg.data
+            lgpio.gpio_write(self.test, self.LED, 1)
+            time.sleep(1)
 
-            if msg.data < 0:  #left when A
-                self.x_Axis.backward()
-            elif msg.data > 0:  #right when D
-                self.x_Axis.forward()
-            else:
-                self.x_Axis.stop()
+            # Turn the GPIO pin off
+            lgpio.gpio_write(self.test, self.LED, 0)
+            time.sleep(1)
 
     def z_position_callback(self, msg):
         if self.z_position != msg.data:
             self.get_logger().info(f"Moving Z to {msg.data}")
             self.z_position = msg.data
 
-            if msg.data > 0:  #up when W
-                self.z_Axis.forward()
-            elif msg.data < 0:  #down when S
-                self.z_Axis.backward()
-            else:
-                self.z_Axis.stop()  
-
     def pitch_angle_callback(self, msg):
-        """Adjust robot pitch (for tilting platforms, arms, etc.)"""
         if self.pitch_angle != msg.data:
             self.get_logger().info(f"Adjusting Pitch to {msg.data}")
             self.pitch_angle = msg.data
