@@ -5,7 +5,7 @@
 #include <string.h>
 
 using namespace std;
-#define NoOfSegments 1
+#define NoOfSegments 3
 #define NoOfDisks 10
 #define Length 5
 ofstream myfile;

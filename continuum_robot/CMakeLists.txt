@@ -70,14 +70,12 @@ ament_target_dependencies(create_cont_robot
 target_link_libraries(create_cont_robot ${PROJECT_NAME})
 
 install(TARGETS
-  ${PROJECT_NAME}
   interface
   core_node
   create_cont_robot
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
+  DESTINATION lib/${PROJECT_NAME}
 )
+
 
 ament_package()
 

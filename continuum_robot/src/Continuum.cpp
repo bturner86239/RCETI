@@ -25,20 +25,33 @@ Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
     node->declare_parameter("number_of_sections", 3);
     node->get_parameter("number_of_sections", this->numberOfSegments);
     int noOfSeg = this->numberOfSegments;
-    this->segmentLength = new double(noOfSeg);
-    this->segmentMode = new int(noOfSeg);
+    this->segmentLength = new double[noOfSeg];//changed () to []
+    this->segmentMode = new int[noOfSeg];//changed () to []
     this->noOfDisks = new int(noOfSeg);
     this->endEffectorPose = new tf2::Transform[noOfSeg];
     this->basePose = new tf2::Transform[noOfSeg];
     this->segKappa = new double[noOfSeg];
     this->segPhi = new double[noOfSeg];
+
+
     //this->segTFBroadcaster = new tf2_ros::TransformBroadcaster[noOfSeg];
-	std::shared_ptr<tf2_ros::TransformBroadcaster> segTFBroadcaster;
+	//std::shared_ptr<tf2_ros::TransformBroadcaster> segTFBroadcaster;
+	this->segTFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
 
-	segTFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
+	//std::shared_ptr<tf2_ros::TransformBroadcaster> segTFBroadcaster;
 
-    this->segTFFrame = (tf2::Transform**)malloc(noOfSeg * sizeof(tf2::Transform*)); // https://stackoverflow.com/questions/455960/dynamic-allocating-array-of-arrays-in-c
-    this->arrayOfKappa = new double[(noOfSeg + 1) * delay];
+	//segTFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
+
+ //OG->   //this->segTFFrame = (tf2::Transform**)malloc(noOfSeg * sizeof(tf2::Transform*)); // https://stackoverflow.com/questions/455960/dynamic-allocating-array-of-arrays-in-c
+    //this->segTFFrame = tf2::Transform[noOfSeg];
+
+	this->segTFFrame = new tf2::Transform*[noOfSeg];
+	for (int i = 0; i < noOfSeg; i++) {
+		this->segTFFrame[i] = new tf2::Transform[RESOLUTION]; // Ensure it's initialized properly
+	}
+	
+
+	this->arrayOfKappa = new double[(noOfSeg + 1) * delay];
     this->arrayOfPhi = new double[(noOfSeg + 1) * delay];
 
     this->cableMarkers = new visualization_msgs::msg::MarkerArray[noOfSeg + 1];
@@ -84,11 +97,20 @@ void Continuum::timerScanning()
 void Continuum::addSegment(int segID, double segLength, int n_disks, double radius){	// TODO Auto-generated constructor stub
 	// Continuum robot segment
 	this->createURDF(segID, segLength, n_disks, radius);
-	segTFFrame[segID] = (tf2::Transform*) malloc(n_disks*sizeof(tf2::Transform));
+	//segTFFrame[segID] = (tf2::Transform*) malloc(n_disks*sizeof(tf2::Transform));
+	segTFFrame[segID] = new tf2::Transform[n_disks];  // Use 'new' to call constructors
+
 
 	segmentLength[segID] = segLength;
 	noOfDisks[segID] = n_disks;
 	initCableMarker(segID);
+
+
+	//debug for segfauts
+	//RCLCPP_INFO(rclcpp::get_logger("continuum_robot"), "Setting transform origin: x=%f, y=%f, z=%f",
+	//eeP.x(), eeP.y(), eeP.z());
+
+
 
 if(segID >0)
 {
@@ -100,7 +122,8 @@ else
 	basePose[segID].setOrigin(tf2::Vector3(0,0,0));
 	basePose[segID].setRotation(tf2::Quaternion(0,0,0,1));
 
-	endEffectorPose[segID].setOrigin(tf2::Vector3(0,0,segLength));
+	//endEffectorPose[segID].setOrigin(tf2::Vector3(0,0,segLength));
+	endEffectorPose[segID].setOrigin(tf2::Vector3(0,0,segmentLength[segID]));
 	endEffectorPose[segID].setRotation(tf2::Quaternion(0,0,0,1));
 
 }
@@ -282,6 +305,15 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 	eeP =  tf2::Matrix3x3(basePose[segID].getRotation())*eeP;
 
 
+				for (int segID = 0; segID < this->numberOfSegments; segID++) {
+					if (basePose[segID].getOrigin().length() == 0) {
+						basePose[segID].setOrigin(tf2::Vector3(0, 0, 0));
+						basePose[segID].setRotation(tf2::Quaternion(0, 0, 0, 1));
+					}
+				}
+	
+
+
 	this->segTFFrame[segID][i].setOrigin(tf2::Vector3(basePose[segID].getOrigin().x() + eeP.getX(), basePose[segID].getOrigin().y() + eeP.getY(), basePose[segID].getOrigin().z() + eeP.getZ()) );
 	this->segTFFrame[segID][i].setRotation(basePose[segID].getRotation() * getDiskQuaternion(segID,i));
 
@@ -307,8 +339,12 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 
 	}
 
+	if (segID >= numberOfSegments || noOfDisks[segID] <= 0) continue; // Prevent invalid access
 
 	for(int i=0;i<RESOLUTION&&rclcpp::ok();i++){
+
+			if (!segTFFrame[segID]) continue;
+
 		eePc[0] = cos(segPhi[segID])*(cos(segKappa[segID]*((i/((double)RESOLUTION-1))*segmentLength[segID])) - 1)/segKappa[segID];
 		eePc[1] =  sin(segPhi[segID])*(cos(segKappa[segID]*((i/((double)RESOLUTION-1))*segmentLength[segID])) - 1)/segKappa[segID];
 		eePc[2] = (sin(segKappa[segID]*((i/((double)RESOLUTION-1))*segmentLength[segID]))/segKappa[segID]);
@@ -473,6 +509,16 @@ void Continuum::setHeadParameters(double headKap, double headPhi, int MODE){
 }
 Continuum::~Continuum()
 {
+	delete[] segmentLength;
+    delete[] segmentMode;
+    delete[] noOfDisks;
+    delete[] segKappa;
+    delete[] segPhi;
+    delete[] endEffectorPose;
+    delete[] basePose;
+    delete[] segTFFrame;
+    delete[] arrayOfKappa;
+    delete[] arrayOfPhi;
     // TODO Auto-generated destructor stub
     tcsetattr(0, TCSANOW, &initial_settings);
 }
