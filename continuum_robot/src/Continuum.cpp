@@ -20,9 +20,9 @@ Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
 
     //auto node = rclcpp::Node::make_shared("continuum_robot");
 	//this -> cablePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
-	headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
+	headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("headMarkers", 10);
     char cableTopic[30];
-    node->declare_parameter("number_of_sections", 3);
+    node->declare_parameter("number_of_sections", 10);
     node->get_parameter("number_of_sections", this->numberOfSegments);
     int noOfSeg = this->numberOfSegments;
     this->segmentLength = new double[noOfSeg];//changed () to []
@@ -133,12 +133,18 @@ else
 /******************************************************/
 
 void Continuum::setSegmentBasePose(int segID, tf2::Vector3 basePos, tf2::Quaternion baseRot){
+
 	basePose[segID].setOrigin(basePos);
 	basePose[segID].setRotation(baseRot);
 
 	for (int s=segID+1;s<this->numberOfSegments;s++)
 
 	{
+
+		RCLCPP_INFO(rclcpp::get_logger("continuum_robot"),
+    "Base Pose Before Setting: x=%f, y=%f, z=%f | Quaternion: x=%f, y=%f, z=%f, w=%f",
+    basePos.x(), basePos.y(), basePos.z(),
+    baseRot.x(), baseRot.y(), baseRot.z(), baseRot.w());
 
 		basePose[s].setOrigin(basePose[s-1].getOrigin() + (tf2::Matrix3x3(basePose[s-1].getRotation())*getDiskPosition(s-1,(noOfDisks[s-1]-1))));
 		basePose[s].setRotation(basePose[s-1].getRotation()*getDiskQuaternion(s-1,(noOfDisks[s-1]-1)));
@@ -313,7 +319,7 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 				}
 	
 
-
+				
 	this->segTFFrame[segID][i].setOrigin(tf2::Vector3(basePose[segID].getOrigin().x() + eeP.getX(), basePose[segID].getOrigin().y() + eeP.getY(), basePose[segID].getOrigin().z() + eeP.getZ()) );
 	this->segTFFrame[segID][i].setRotation(basePose[segID].getRotation() * getDiskQuaternion(segID,i));
 
