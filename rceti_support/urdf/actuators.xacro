@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Material Definitions -->
+    <xacro:property name="wood_color" value="0.76 0.6 0.42 1"/>
+    <xacro:property name="metal_color" value="0.75 0.75 0.75 1"/>
+
+    <material name="wood">
+        <color rgba="${wood_color}"/>
+    </material>
+
+    <material name="metal">
+        <color rgba="${metal_color}"/>
+    </material>
+
+    <!-- Macro for a Linear Actuator -->
+    <xacro:macro name="linear_actuator" params="name size parent child axis lower upper">
+        <link name="${name}_link">
+            <visual>
+                <geometry>
+                    <box size="${size}"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
+
+        <link name="${name}_moving_link">
+            <visual>
+                <geometry>
+                    <box size="${size}"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
+
+        <joint name="${name}_joint" type="prismatic">
+            <parent link="${parent}"/>
+            <child link="${name}_moving_link"/>
+            <origin xyz="0 0 0"/>
+            <axis xyz="${axis}"/>
+            <limit effort="100.0" lower="${lower}" upper="${upper}" velocity="0.5"/>
+        </joint>
+    </xacro:macro>
+
+    <!-- Macro for a Revolute Joint -->
+    <xacro:macro name="revolute_joint" params="name parent child axis lower upper">
+        <joint name="${name}" type="revolute">
+            <parent link="${parent}"/>
+            <child link="${child}"/>
+            <origin xyz="0 0 0"/>
+            <axis xyz="${axis}"/>
+            <limit effort="50.0" lower="${lower}" upper="${upper}" velocity="1.0"/>
+        </joint>
+    </xacro:macro>
+
+</robot>

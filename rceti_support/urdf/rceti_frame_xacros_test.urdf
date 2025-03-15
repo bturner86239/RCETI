@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <!-- Import the separate Xacro file -->
+    <xacro:include filename="$(find your_package)/urdf/actuators.xacro"/>
+
+    <!-- Base Link -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.31 0.15 0.08"/>
+            </geometry>
+            <material name="wood"/>
+        </visual>
+    </link>
+
+    <!-- Z-Axis Actuator (Vertical) -->
+    <xacro:linear_actuator name="z_actuator"
+                           size="0.1 0.1 0.4"
+                           parent="base_link"
+                           child="z_actuator_moving"
+                           axis="0 0 1"
+                           lower="0.0"
+                           upper="0.4"/>
+
+    <!-- X-Axis Actuator (Horizontal) -->
+    <xacro:linear_actuator name="x_actuator"
+                           size="0.6 0.1 0.2"
+                           parent="z_actuator_moving"
+                           child="x_actuator_moving"
+                           axis="1 0 0"
+                           lower="0.0"
+                           upper="0.3"/>
+
+    <!-- Pitch Actuator (Rotates) -->
+    <link name="pitch_actuator_link">
+        <visual>
+            <geometry>
+                <box size="0.3 0.1 0.1"/>
+            </geometry>
+            <material name="metal"/>
+        </visual>
+    </link>
+
+    <xacro:revolute_joint name="x_to_pitch"
+                          parent="x_actuator_moving"
+                          child="pitch_actuator_link"
+                          axis="0 1 0"
+                          lower="-1.57"
+                          upper="1.57"/>
+</robot>
