@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<robot name="rcetiframe">
+
+    <material name="wood">
+    <color rgba="0.76 0.6 0.42 1"/>
+    </material>
+
+    <material name="metal">
+        <color rgba="0.75 0.75 0.75 1"/>
+    </material>
+
+    <!-- Base Link (Fixed) -->
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.31 0.15 0.08"/>
+            </geometry>
+            <material name="wood"/>
+        </visual>
+    </link>
+
+    <!-- Z-Axis Actuator (Vertical) -->
+    <link name="z_actuator_link">
+        <visual>
+            <geometry>
+                <box size="0.1 0.1 0.4"/>  <!-- Slim vertical actuator -->
+            </geometry>
+            <material name="metal"/>
+        </visual>
+    </link>
+
+    <!-- Fixed Joint: Base to Vertical (Z) Actuator -->
+    <joint name="base_to_z_actuator" type="fixed">
+        <parent link="base_link"/>
+        <child link="z_actuator_link"/>
+        <origin xyz="0 0 0.2"/>  <!-- Placed above the base -->
+    </joint>
+
+    <!-- Z Moving Link (Moves Vertically) -->
+    <link name="z_moving_link">
+        <visual>
+            <geometry>
+                <box size="0.1 0.1 0.4"/>
+            </geometry>
+            <material name="metal"/>
+        </visual>
+    </link>
+
+    <!-- Prismatic Joint: Vertical Movement (Z-Axis) -->
+    <joint name="z_actuator_to_z_moving" type="prismatic">
+        <parent link="z_actuator_link"/>
+        <child link="z_moving_link"/>
+        <origin xyz="0 0 0"/>
+        <axis xyz="0 0 1"/>  <!-- Moves up and down along Z -->
+        <limit effort="100.0" lower="0.0" upper="0.4" velocity="0.5"/>
+    </joint>
+
+    <!-- X-Axis Actuator (Horizontal) -->
+    <link name="x_actuator_link">
+        <visual>
+            <geometry>
+                <box size="0.6 0.1 0.2"/>  <!-- Wider horizontal actuator -->
+            </geometry>
+            <material name="metal"/>
+        </visual>
+    </link>
+
+    <!-- Fixed Joint: Attach Horizontal (X) Actuator to the moving part of Z -->
+    <joint name="z_moving_to_x_actuator" type="fixed">
+        <parent link="z_moving_link"/>
+        <child link="x_actuator_link"/>
+        <origin xyz="0 0.2 0"/>  <!-- Positioned properly relative to the Z moving link -->
+    </joint>
+
+    <!-- X Moving Link (Moves Horizontally) -->
+    <link name="x_moving_link">
+        <visual>
+            <geometry>
+                <box size="0.6 0.1 0.2"/>
+            </geometry>
+            <material name="metal"/>
+        </visual>
+    </link>
+
+    <!-- Prismatic Joint: X Moves Along X-Axis -->
+    <joint name="x_actuator_to_x_moving" type="prismatic">
+        <parent link="x_actuator_link"/>
+        <child link="x_moving_link"/>
+        <origin xyz="0 0 0"/>
+        <axis xyz="1 0 0"/>  <!-- Moves left-right along X -->
+        <limit effort="100.0" lower="0.0" upper="0.3" velocity="0.5"/>
+    </joint>
+
+    <!-- Pitch Actuator (Resting on the moving part of X actuator) -->
+    <link name="pitch_actuator_link">
+        <visual>
+            <geometry>
+                <box size="0.3 0.1 0.1"/>  <!-- A smaller piece for pitch movement -->
+            </geometry>
+            <material name="metal"/>
+        </visual>
+    </link>
+
+    <!-- Joint: Pitch Actuator attached to Moving X -->
+    <joint name="x_to_pitch_actuator" type="revolute">
+        <parent link="x_moving_link"/>
+        <child link="pitch_actuator_link"/>
+        <origin xyz="0 0 0"/>  <!-- Aligned with moving X -->
+        <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
+        <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
+    </joint>
+
+</robot>
