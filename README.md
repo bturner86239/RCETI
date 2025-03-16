@@ -24,3 +24,11 @@ Enter the following commands into your terminal in Ubuntu 22.04
 
 This should set up your ROS IP so that it can talk with the Raspberry Pi
 
+### Running RCETI System
+- Build your workspace (outside of project directory)
+```colcon build```
+- source workspace (outside of project directory)
+```source install/setup.bash```
+- run the launch files inside of RCETI deployment package
+```ros2 launch rceti_deployment rceti_deployment.launch.xml```
+
