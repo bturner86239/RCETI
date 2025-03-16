@@ -35,26 +35,34 @@ class RCETIRobotController(Node):
         self.z_position = 0.0
         self.pitch_angle = 0.0
 
-        self.LED = 26
+        self.X_DIRECTION_PIN = 21
+        self.X_PULSE_PIN = 20
+        self.Z_DIRECTION_PIN = 19
+        self.Z_PULSE_PIN = 18
 
         # open the gpio chip and set the LED pin as output
-        self.test = lgpio.gpiochip_open(0)
-        lgpio.gpio_claim_output(self.test, self.LED)
+        self.chip = lgpio.gpiochip_open(0)
+        lgpio.gpio_claim_output(self.chip, self.X_DIRECTION_PIN)
+        lgpio.gpio_claim_output(self.chip, self.X_PULSE_PIN)
+        lgpio.gpio_claim_output(self.chip, self.Z_DIRECTION_PIN)
+        lgpio.gpio_claim_output(self.chip, self.Z_PULSE_PIN)
+
 
     def x_position_callback(self, msg):
         if self.x_position != msg.data:
             self.get_logger().info(f"Moving X to {msg.data}")
+            self.move_stepper(500, 1, self.X_DIRECTION_PIN, self.X_PULSE_PIN)
+            time.sleep(1)
+            self.move_stepper(500, 0, self.X_DIRECTION_PIN, self.X_PULSE_PIN)
             self.x_position = msg.data
-            lgpio.gpio_write(self.test, self.LED, 1)
-            time.sleep(1)
 
-            # Turn the GPIO pin off
-            lgpio.gpio_write(self.test, self.LED, 0)
-            time.sleep(1)
 
     def z_position_callback(self, msg):
         if self.z_position != msg.data:
             self.get_logger().info(f"Moving Z to {msg.data}")
+            self.move_stepper(500, 1, self.Z_DIRECTION_PIN, self.Z_PULSE_PIN)
+            time.sleep(1)
+            self.move_stepper(500, 0, self.Z_DIRECTION_PIN, self.Z_PULSE_PIN)
             self.z_position = msg.data
 
     def pitch_angle_callback(self, msg):
@@ -62,6 +70,15 @@ class RCETIRobotController(Node):
             self.get_logger().info(f"Adjusting Pitch to {msg.data}")
             self.pitch_angle = msg.data
             # TODO: Implement pitch 
+
+    def move_stepper(self, steps, direction, direction_pin, pulse_pin, delay=0.001):
+        lgpio.gpio_write(self.chip, direction_pin, direction)
+
+        for _ in range(steps):
+                lgpio.gpio_write(self.chip, pulse_pin, 1)
+                time.sleep(delay)
+                lgpio.gpio_write(self.chip, pulse_pin, 0)
+                time.sleep(delay)
 
 def main(args=None):
     rclpy.init(args=args)
