@@ -22,7 +22,7 @@ Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
 	//this -> cablePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
 	headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("headMarkers", 10);
     char cableTopic[30];
-    node->declare_parameter("number_of_sections", 10);
+    node->declare_parameter("number_of_sections", 2);
     node->get_parameter("number_of_sections", this->numberOfSegments);
     int noOfSeg = this->numberOfSegments;
     this->segmentLength = new double[noOfSeg];//changed () to []

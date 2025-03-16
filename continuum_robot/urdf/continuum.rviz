@@ -8,8 +8,8 @@ Panels:
         - /Status1
         - /Grid1
         - /RobotModel1
-        - /TF1
-        - /TF1/Frames1
+        - /TF
+        - /TF/Frames1
         - /MarkerArray1
         - /MarkerArray2
         - /MarkerArray3

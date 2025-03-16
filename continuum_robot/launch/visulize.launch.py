@@ -20,7 +20,7 @@ def generate_launch_description():
             output="screen",
             parameters=[{
                 "robot_description": os.path.join(continuum_robot_path, "urdf", "robot_model.urdf"),
-                "number_of_sections": 1
+                "number_of_sections": 2
             }]
         ),
         

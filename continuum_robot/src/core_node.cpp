@@ -15,13 +15,16 @@ int main(int argc, char** argv)
     tf2::Quaternion q;
     q.setRPY(0.0, 90 * PI / 180, 0.0);
     robot.setSegmentBasePose(0, tf2::Vector3(0, 0, 0), q);
+    
+
 
 
 
 
     // Assign the parameters for each section
-    for (int i = 0; i <= robot.numberOfSegments; i++)
+    for (int i = 0; i <= robot.numberOfSegments -1; i++)
     {
+        //RCLCPP_INFO(node->get_logger(), "Number of segments: %d", robot.numberOfSegments);
         robot.addSegment(i, 5 * (i + 1), 20, .3); // SegID , Length, noOfSegments, radius of disk
         robot.setSegmentShape(0, 0.0001, 0); // SegID , Kappa, Phi
     }
@@ -54,6 +57,7 @@ int main(int argc, char** argv)
             robot.update();
         }
     }
-    rclcpp::shutdown();
-    return 0;
+
+    //rclcpp::shutdown();
+    //return 0;
 }
