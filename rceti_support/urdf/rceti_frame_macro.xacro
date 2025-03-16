@@ -1,5 +1,6 @@
-<?xml version="1.0"?>
-<robot name="rcetiframe">
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+<xacro:macro name="rceti_robot" params="prefix">
 
     <material name="wood">
     <color rgba="0.76 0.6 0.42 1"/>
@@ -29,7 +30,7 @@
         </visual>
     </link>
 
-    <!-- Fixed Joint: Base to Vertical (Z) Actuator -->
+    <!-- Fixed Joint Base to Vertical (Z) Actuator -->
     <joint name="base_to_z_actuator" type="fixed">
         <parent link="base_link"/>
         <child link="z_actuator_link"/>
@@ -46,7 +47,7 @@
         </visual>
     </link>
 
-    <!-- Prismatic Joint: Vertical Movement (Z-Axis) -->
+    <!-- Prismatic Joint Vertical Movement (Z-Axis) -->
     <joint name="z_actuator_to_z_moving" type="prismatic">
         <parent link="z_actuator_link"/>
         <child link="z_moving_link"/>
@@ -65,7 +66,7 @@
         </visual>
     </link>
 
-    <!-- Fixed Joint: Attach Horizontal (X) Actuator to the moving part of Z -->
+    <!-- Fixed Joint Attach Horizontal (X) Actuator to the moving part of Z -->
     <joint name="z_moving_to_x_actuator" type="fixed">
         <parent link="z_moving_link"/>
         <child link="x_actuator_link"/>
@@ -82,7 +83,7 @@
         </visual>
     </link>
 
-    <!-- Prismatic Joint: X Moves Along X-Axis -->
+    <!-- Prismatic Joint X Moves Along X-Axis -->
     <joint name="x_actuator_to_x_moving" type="prismatic">
         <parent link="x_actuator_link"/>
         <child link="x_moving_link"/>
@@ -101,7 +102,7 @@
         </visual>
     </link>
 
-    <!-- Joint: Pitch Actuator attached to Moving X -->
+    <!-- Joint Pitch Actuator attached to Moving X -->
     <joint name="x_to_pitch_actuator" type="revolute">
         <parent link="x_moving_link"/>
         <child link="pitch_actuator_link"/>
@@ -109,5 +110,5 @@
         <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
         <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
     </joint>
-
+</xacro:macro>
 </robot>
