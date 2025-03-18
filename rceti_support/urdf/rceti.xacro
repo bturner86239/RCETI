@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<robot name="rceti_robot" xmlns:xacro="http://ros.org/wiki/xacro">
-    <xacro:include filename="$(find rceti_support)/urdf/rceti_frame_macro.xacro" />
-    <xacro:rceti_robot prefix=""/>
-</robot>
-
-

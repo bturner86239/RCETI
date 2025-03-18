@@ -1,114 +1,124 @@
 <?xml version="1.0" ?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro">
-<xacro:macro name="rceti_robot" params="prefix">
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="rceti_robot">
+    
+    <!-- Ensure the property is defined before the macro -->
+    <xacro:property name="meshes_directory" default=""/>
 
-    <material name="wood">
-    <color rgba="0.76 0.6 0.42 1"/>
-    </material>
+    <xacro:macro name="rceti_robot" params="meshes_directory">
+        
+        <material name="wood">
+        <color rgba="0.76 0.6 0.42 1"/>
+        </material>
 
-    <material name="metal">
-        <color rgba="0.75 0.75 0.75 1"/>
-    </material>
+        <material name="metal">
+            <color rgba="0.75 0.75 0.75 1"/>
+        </material>
 
-    <!-- Base Link (Fixed) -->
-    <link name="base_link">
-        <visual>
-            <geometry>
-                <box size="0.31 0.15 0.08"/>
-            </geometry>
-            <material name="wood"/>
-        </visual>
-    </link>
+        <!-- Base Link (Fixed) -->
+        <link name="base_link">
+            <visual>
+                <geometry>
+                    <box size="0.2 0.1 0.01"/>
+                </geometry>
+                <material name="wood"/>
+            </visual>
+        </link>
 
-    <!-- Z-Axis Actuator (Vertical) -->
-    <link name="z_actuator_link">
-        <visual>
-            <geometry>
-                <box size="0.1 0.1 0.4"/>  <!-- Slim vertical actuator -->
-            </geometry>
-            <material name="metal"/>
-        </visual>
-    </link>
+        <!-- X-Axis Actuator (Horizontal, fixed) -->
+        <link name="x_actuator_link">
+            <visual>
+                <geometry>
+                    <!--box size="0.6 0.1 0.2"/>  Wider horizontal actuator -->
+                    <mesh filename="file://$(arg meshes_directory)/LA_rail.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
 
-    <!-- Fixed Joint Base to Vertical (Z) Actuator -->
-    <joint name="base_to_z_actuator" type="fixed">
-        <parent link="base_link"/>
-        <child link="z_actuator_link"/>
-        <origin xyz="0 0 0.2"/>  <!-- Placed above the base -->
-    </joint>
+        <!-- Fixed Joint Attach X Actuator to Base Link -->
+        <joint name="base_to_x_actuator" type="fixed">
+            <parent link="base_link"/>
+            <child link="x_actuator_link"/>
+            <origin xyz="-0.2 0 0"/>  <!-- X actuator is now anchored to the base link -->
+        </joint>
 
-    <!-- Z Moving Link (Moves Vertically) -->
-    <link name="z_moving_link">
-        <visual>
-            <geometry>
-                <box size="0.1 0.1 0.4"/>
-            </geometry>
-            <material name="metal"/>
-        </visual>
-    </link>
+        <!-- X Moving Link (Moves Horizontally) -->
+        <link name="x_moving_link">
+            <visual>
+                <geometry>
+                    <!-- box size="0.6 0.1 0.2"/-->
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
 
-    <!-- Prismatic Joint Vertical Movement (Z-Axis) -->
-    <joint name="z_actuator_to_z_moving" type="prismatic">
-        <parent link="z_actuator_link"/>
-        <child link="z_moving_link"/>
-        <origin xyz="0 0 0"/>
-        <axis xyz="0 0 1"/>  <!-- Moves up and down along Z -->
-        <limit effort="100.0" lower="0.0" upper="0.4" velocity="0.5"/>
-    </joint>
+        <!-- Prismatic Joint X Moves Along X-Axis -->
+        <joint name="x_actuator_to_x_moving" type="prismatic">
+            <parent link="x_actuator_link"/>
+            <child link="x_moving_link"/>
+            <origin xyz="0.2 0 0"/>
+            <axis xyz="1 0 0"/>  <!-- Moves left-right along X -->
+            <limit effort="100.0" lower="-0.2" upper="0.2" velocity="0.5"/>
+        </joint>
 
-    <!-- X-Axis Actuator (Horizontal) -->
-    <link name="x_actuator_link">
-        <visual>
-            <geometry>
-                <box size="0.6 0.1 0.2"/>  <!-- Wider horizontal actuator -->
-            </geometry>
-            <material name="metal"/>
-        </visual>
-    </link>
+        <!-- Z-Axis Actuator (Vertical, fixed) -->
+        <link name="z_actuator_link">
+            <visual>
+                <origin rpy="0 1.5708 0" xyz="0 0 0"/>  <!-- Rotate 90 degrees around X -->
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_rail.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
 
-    <!-- Fixed Joint Attach Horizontal (X) Actuator to the moving part of Z -->
-    <joint name="z_moving_to_x_actuator" type="fixed">
-        <parent link="z_moving_link"/>
-        <child link="x_actuator_link"/>
-        <origin xyz="0 0.2 0"/>  <!-- Positioned properly relative to the Z moving link -->
-    </joint>
+        <!-- Fixed Joint Attach Z Actuator to the Center of the X Slider -->
+        <joint name="x_moving_to_z_actuator" type="fixed">
+            <parent link="x_moving_link"/>
+            <child link="z_actuator_link"/>
+            <origin xyz="0 0 0"/>  <!-- Centered on X slider -->
+        </joint>
 
-    <!-- X Moving Link (Moves Horizontally) -->
-    <link name="x_moving_link">
-        <visual>
-            <geometry>
-                <box size="0.6 0.1 0.2"/>
-            </geometry>
-            <material name="metal"/>
-        </visual>
-    </link>
+        <!-- Z Moving Link (Moves Vertically) -->
+        <link name="z_moving_link">
+            <visual>
+                <origin rpy="0 1.5708 0" xyz="0 0 0"/>  <!-- Rotate 90 degrees around X -->
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
 
-    <!-- Prismatic Joint X Moves Along X-Axis -->
-    <joint name="x_actuator_to_x_moving" type="prismatic">
-        <parent link="x_actuator_link"/>
-        <child link="x_moving_link"/>
-        <origin xyz="0 0 0"/>
-        <axis xyz="1 0 0"/>  <!-- Moves left-right along X -->
-        <limit effort="100.0" lower="0.0" upper="0.3" velocity="0.5"/>
-    </joint>
+        <!-- Prismatic Joint Vertical Movement (Z-Axis) -->
+        <joint name="z_actuator_to_z_moving" type="prismatic">
+            <parent link="z_actuator_link"/>
+            <child link="z_moving_link"/>
+            <origin xyz="0 0 0"/>
+            <axis xyz="0 0 -1"/>  <!-- Moves down from top of Z -->
+            <limit effort="100.0" lower="0.0" upper="0.4" velocity="0.5"/> <!--UPDATE WITH LENGTH OF ACTUATOR-->
+        </joint>
 
-    <!-- Pitch Actuator (Resting on the moving part of X actuator) -->
-    <link name="pitch_actuator_link">
-        <visual>
-            <geometry>
-                <box size="0.3 0.1 0.1"/>  <!-- A smaller piece for pitch movement -->
-            </geometry>
-            <material name="metal"/>
-        </visual>
-    </link>
+        <!-- Pitch Actuator (Resting on the moving part of X actuator) -->
+        <link name="pitch_actuator_link">
+            <visual>
+                <geometry>
+                    <!--box size="0.3 0.1 0.1"/>   A smaller piece for pitch movement -->
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
 
-    <!-- Joint Pitch Actuator attached to Moving X -->
-    <joint name="x_to_pitch_actuator" type="revolute">
-        <parent link="x_moving_link"/>
-        <child link="pitch_actuator_link"/>
-        <origin xyz="0 0 0"/>  <!-- Aligned with moving X -->
-        <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
-        <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
-    </joint>
-</xacro:macro>
+        <!-- Joint Pitch Actuator attached to Moving X -->
+        <joint name="z_moving_to_pitch_actuator" type="revolute">
+            <parent link="z_moving_link"/>
+            <child link="pitch_actuator_link"/>
+            <origin xyz="0 0 0"/>  <!-- Aligned with moving X -->
+            <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
+            <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
+        </joint>
+    </xacro:macro>
+    <xacro:rceti_robot meshes_directory="$(arg meshes_directory)"/>
 </robot>

@@ -1,48 +1,64 @@
-<?xml version="1.0"?>
-<robot xmlns:xacro="http://ros.org/wiki/xacro">
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="rceti_robot">
+
     <!-- Import the separate Xacro file -->
-    <xacro:include filename="$(find your_package)/urdf/actuators.xacro"/>
+    <xacro:include filename="$(find rceti_support)/urdf/actuators.xacro"/>
+
+    <!-- Define Mesh Directory Property -->
+    <xacro:property name="meshes_directory" value="$(arg meshes_directory)"/>
+
+    <!-- Materials -->
+    <material name="wood">
+        <color rgba="0.76 0.6 0.42 1"/>
+    </material>
+
+    <material name="metal">
+        <color rgba="0.75 0.75 0.75 1"/>
+    </material>
 
     <!-- Base Link -->
     <link name="base_link">
         <visual>
             <geometry>
-                <box size="0.31 0.15 0.08"/>
+                <box size="0.2 0.1 0.01"/>
             </geometry>
             <material name="wood"/>
         </visual>
     </link>
 
-    <!-- Z-Axis Actuator (Vertical) -->
-    <xacro:linear_actuator name="z_actuator"
-                           size="0.1 0.1 0.4"
-                           parent="base_link"
-                           child="z_actuator_moving"
-                           axis="0 0 1"
-                           lower="0.0"
-                           upper="0.4"/>
-
     <!-- X-Axis Actuator (Horizontal) -->
     <xacro:linear_actuator name="x_actuator"
                            size="0.6 0.1 0.2"
-                           parent="z_actuator_moving"
-                           child="x_actuator_moving"
+                           parent="base_link"
+                           child="x_moving_link"
                            axis="1 0 0"
-                           lower="0.0"
-                           upper="0.3"/>
+                           lower="-0.2"
+                           upper="0.2"
+                           meshes_directory="${meshes_directory}"/>
 
-    <!-- Pitch Actuator (Rotates) -->
+    <!-- Z-Axis Actuator (Vertical) -->
+    <xacro:linear_actuator name="z_actuator"
+                           size="0.1 0.1 0.4"
+                           parent="x_moving_link"
+                           child="z_moving_link"
+                           axis="0 0 -1"
+                           lower="0.0"
+                           upper="0.4"
+                           meshes_directory="${meshes_directory}"/>
+
+    <!-- Pitch Actuator -->
     <link name="pitch_actuator_link">
         <visual>
             <geometry>
-                <box size="0.3 0.1 0.1"/>
+                <mesh filename="file://${meshes_directory}/LA_slider.stl"/>
             </geometry>
             <material name="metal"/>
         </visual>
     </link>
 
-    <xacro:revolute_joint name="x_to_pitch"
-                          parent="x_actuator_moving"
+    <!-- Revolute Joint: Pitch Movement -->
+    <xacro:revolute_joint name="z_moving_to_pitch"
+                          parent="z_moving_link"
                           child="pitch_actuator_link"
                           axis="0 1 0"
                           lower="-1.57"
