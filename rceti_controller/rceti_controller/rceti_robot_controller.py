@@ -4,6 +4,10 @@ from std_msgs.msg import Float32
 import time  # for delays/testing
 import lgpio
 
+#Constants:
+# maximum amount of request stepper motors will take at any given time
+TOPIC_SUBSCRIPTION_BUFFER = 5
+
 class RCETIRobotController(Node):
 
     def __init__(self):
@@ -13,17 +17,17 @@ class RCETIRobotController(Node):
             Float32,
             'rceti/x_position',
             self.x_position_callback,
-            10)
+            TOPIC_SUBSCRIPTION_BUFFER)
         self.z_position_sub = self.create_subscription(
             Float32,
             'rceti/z_position',
             self.z_position_callback,
-            10)
+            TOPIC_SUBSCRIPTION_BUFFER)
         self.pitch_angle_sub = self.create_subscription(
             Float32,
             'rceti/pitch_angle',
             self.pitch_angle_callback,
-            10)
+            TOPIC_SUBSCRIPTION_BUFFER)
 
         #prevent unused variable warning
         self.x_position_sub  
@@ -47,31 +51,69 @@ class RCETIRobotController(Node):
         lgpio.gpio_claim_output(self.chip, self.Z_DIRECTION_PIN)
         lgpio.gpio_claim_output(self.chip, self.Z_PULSE_PIN)
 
+    # Define stepper steps per unit in x and Z directions
+    steps_per_mm_x = 40
+    steps_per_mm_z = 40
 
     def x_position_callback(self, msg):
         if self.x_position != msg.data:
+            self.get_logger().info(f"Moving X to {msg.data}")
+
+            # Calculate the number of steps
+            steps = int( abs(msg.data - self.x_position) * 1000 * self.steps_per_mm_x )
+            # Determine direction
+            direction = 1 if msg.data > self.x_position else 0
+
+            self.move_stepper(steps, direction, self.X_DIRECTION_PIN, self.X_PULSE_PIN)
+            self.x_position = msg.data
+
+            '''
             self.get_logger().info(f"Moving X to {msg.data}")
             self.move_stepper(500, 1, self.X_DIRECTION_PIN, self.X_PULSE_PIN)
             time.sleep(1)
             self.move_stepper(500, 0, self.X_DIRECTION_PIN, self.X_PULSE_PIN)
             self.x_position = msg.data
+            '''
 
 
     def z_position_callback(self, msg):
         if self.z_position != msg.data:
             self.get_logger().info(f"Moving Z to {msg.data}")
+
+            # Calculate the number of steps
+            steps = int(abs(msg.data - self.z_position) * 1000 * self.steps_per_mm_z)
+            # Determine direction
+            direction = 1 if msg.data > self.z_position else 0
+
+            self.move_stepper(steps, direction, self.Z_DIRECTION_PIN, self.Z_PULSE_PIN)
+            self.z_position = msg.data
+
+            '''
+            self.get_logger().info(f"Moving Z to {msg.data}")
             self.move_stepper(500, 1, self.Z_DIRECTION_PIN, self.Z_PULSE_PIN)
             time.sleep(1)
             self.move_stepper(500, 0, self.Z_DIRECTION_PIN, self.Z_PULSE_PIN)
             self.z_position = msg.data
+            '''
 
     def pitch_angle_callback(self, msg):
-        if self.pitch_angle != msg.data:
-            self.get_logger().info(f"Adjusting Pitch to {msg.data}")
-            self.pitch_angle = msg.data
-            # TODO: Implement pitch 
+        
+        '''
+        TODO: finish implementation
+        if self.z_position != msg.data:
+            self.get_logger().info(f"Moving Z to {msg.data}")
+
+            # Calculate the number of steps
+            steps = int(abs(msg.data - self.z_position) * 100 * self.steps_per_mm_z)
+            # Determine direction
+            direction = 1 if msg.data > self.z_position else 0
+
+            self.move_stepper(steps, direction, self.Z_DIRECTION_PIN, self.Z_PULSE_PIN)
+            self.z_position = msg.data'
+        '''
 
     def move_stepper(self, steps, direction, direction_pin, pulse_pin, delay=0.001):
+        self.get_logger().info(f"move_stepper function recieved steps:{steps}, direction:{direction}, direction_pin:{direction_pin}, pulse_pin:s{pulse_pin}")
         lgpio.gpio_write(self.chip, direction_pin, direction)
 
         for _ in range(steps):
