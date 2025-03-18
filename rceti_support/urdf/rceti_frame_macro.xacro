@@ -39,14 +39,13 @@
         <joint name="base_to_x_actuator" type="fixed">
             <parent link="base_link"/>
             <child link="x_actuator_link"/>
-            <origin xyz="-0.2 0 0"/>  <!-- X actuator is now anchored to the base link -->
+            <origin xyz="0 0 0.35"/>  <!-- X actuator is now anchored to the base link -->
         </joint>
 
         <!-- X Moving Link (Moves Horizontally) -->
         <link name="x_moving_link">
             <visual>
                 <geometry>
-                    <!-- box size="0.6 0.1 0.2"/-->
                     <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
                 </geometry>
                 <material name="metal"/>
@@ -57,9 +56,9 @@
         <joint name="x_actuator_to_x_moving" type="prismatic">
             <parent link="x_actuator_link"/>
             <child link="x_moving_link"/>
-            <origin xyz="0.2 0 0"/>
+            <origin xyz="0.193 0.012 0"/>
             <axis xyz="1 0 0"/>  <!-- Moves left-right along X -->
-            <limit effort="100.0" lower="-0.2" upper="0.2" velocity="0.5"/>
+            <limit effort="100.0" lower="-0.1545" upper="0.1545" velocity="0.5"/>
         </joint>
 
         <!-- Z-Axis Actuator (Vertical, fixed) -->
@@ -77,7 +76,7 @@
         <joint name="x_moving_to_z_actuator" type="fixed">
             <parent link="x_moving_link"/>
             <child link="z_actuator_link"/>
-            <origin xyz="0 0 0"/>  <!-- Centered on X slider -->
+            <origin xyz="0 0.03965 0.13176"/>  <!-- Centered on X slider -->
         </joint>
 
         <!-- Z Moving Link (Moves Vertically) -->
@@ -95,17 +94,17 @@
         <joint name="z_actuator_to_z_moving" type="prismatic">
             <parent link="z_actuator_link"/>
             <child link="z_moving_link"/>
-            <origin xyz="0 0 0"/>
+            <origin xyz="0 0.012 -0.038"/>
             <axis xyz="0 0 -1"/>  <!-- Moves down from top of Z -->
-            <limit effort="100.0" lower="0.0" upper="0.4" velocity="0.5"/> <!--UPDATE WITH LENGTH OF ACTUATOR-->
+            <limit effort="100.0" lower="0.0" upper="0.309" velocity="0.5"/> <!--UPDATE WITH LENGTH OF ACTUATOR-->
         </joint>
 
         <!-- Pitch Actuator (Resting on the moving part of X actuator) -->
         <link name="pitch_actuator_link">
             <visual>
                 <geometry>
-                    <!--box size="0.3 0.1 0.1"/>   A smaller piece for pitch movement -->
-                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                    <box size="0.03 0.01 0.01" />
+                    <!-- <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/> -->
                 </geometry>
                 <material name="metal"/>
             </visual>
