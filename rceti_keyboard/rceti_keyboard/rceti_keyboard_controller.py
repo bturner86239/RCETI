@@ -41,14 +41,15 @@ class RcetiKeyboardController(Node):
         key = self.detectKey(settings, key_timeout)
 
         if key:
+            # Changed to 0.01 instead of .1, since .1 is 10cm
             if key == 'a':  # Move left (decrease x)
-                self.x_position -= 0.1
+                self.x_position -= 0.01
             elif key == 'd':  # Move right (increase x)
-                self.x_position += 0.1
+                self.x_position += 0.01
             elif key == 'w':  # Move forward (increase z)
-                self.z_position += 0.1
+                self.z_position += 0.01
             elif key == 's':  # Move backward (decrease z)
-                self.z_position -= 0.1
+                self.z_position -= 0.01
             elif key == 'p':  # Increase pitch angle
                 self.pitch_angle += 0.1
             elif key == 'l':  # Increase pitch angle
@@ -71,7 +72,7 @@ class RcetiKeyboardController(Node):
 
         pitch_msg = Float32()
         pitch_msg.data = round(self.pitch_angle, 2)  # Round to 2 decimal places
-        self.pitch_angle_publisher.publish(z_msg)
+        self.pitch_angle_publisher.publish(pitch_msg)
 
         self.get_logger().info(f"Published X: {x_msg.data}, Z: {z_msg.data}, Pitch: {pitch_msg.data}")
 
