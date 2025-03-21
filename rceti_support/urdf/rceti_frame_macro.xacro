@@ -58,7 +58,8 @@
             <child link="x_moving_link"/>
             <origin xyz="0.193 0.012 0"/>
             <axis xyz="1 0 0"/>  <!-- Moves left-right along X -->
-            <limit effort="100.0" lower="-0.1545" upper="0.1545" velocity="0.5"/>
+            <limit effort="100.0" lower="-0.128" upper="0.2155" velocity="0.5"/>
+            <!-- previous values- lower = -0.1545, upper = 0.1545-->
         </joint>
 
         <!-- Z-Axis Actuator (Vertical, fixed) -->
@@ -96,7 +97,8 @@
             <child link="z_moving_link"/>
             <origin xyz="0 0.012 -0.038"/>
             <axis xyz="0 0 -1"/>  <!-- Moves down from top of Z -->
-            <limit effort="100.0" lower="0.0" upper="0.309" velocity="0.5"/> <!--UPDATE WITH LENGTH OF ACTUATOR-->
+            <limit effort="100.0" lower="0.0375" upper="0.367" velocity="0.5"/>
+            <!-- previous values- lower = 0.0, upper = 0.309-->
         </joint>
 
         <!-- Pitch Actuator (Resting on the moving part of X actuator) -->

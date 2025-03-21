@@ -42,9 +42,11 @@
                            parent="x_moving_link"
                            child="z_moving_link"
                            axis="0 0 -1"
-                           lower="0.0"
-                           upper="0.4"
+                           lower="$(0.0 + 0.0075)"
+                           upper="$(0.4 - 0.052)"
                            meshes_directory="${meshes_directory}"/>
+                           <!-- Added offsets to map joints to avaiable range of motion on physical robot exactly-->
+                           
 
     <!-- Pitch Actuator -->
     <link name="pitch_actuator_link">

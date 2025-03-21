@@ -3,22 +3,23 @@
     <include file="$(find-pkg-share rceti_deployment)/launch/load_rceti_deployment.launch.xml" />
 
     <!-- Input Arguments -->
-    <arg name="sim_robot" default="True" description="[Bool] Robot Joint State Simulated or listen for /joint_states topic?" />
+    <arg name="sim_robot" default="True" description="[Bool] Robot Joint State Controlled with GUI or simply set to listen for /joint_states topic" />
     <arg name="rviz_config" default="$(find-pkg-share rceti_deployment)/config/visualize_description.rviz" description="[String] Path to RViz config file." />
 
-    <!-- Simulate Joint State -->
+    <!-- Start Joint State Publisher GUI node -->
     <group if="$(var sim_robot)" >
         <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" output="screen" />
     </group>
 
-    <!-- Publish the robot state (tf transforms) -->
+    <!-- Gets joint state messages and publishes the robot state (tf transforms) to RVIZ -->
     <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen" >
         <param name="robot_description" value="$(var robot_description)" />
     </node>
 
-    <!-- User Interaction -->
+    <!-- RVIZ node -->
     <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)" >
-        <param name="robot_description" value="$(var robot_description)" />
+        <!-- This line is actually unnecessary since robot_state_publisher publishes the robot description to the robot_description topic, which RVIZ is subscribed to. 
+        param name="robot_description" value="$(var robot_description)" /> -->
     </node>
 
 </launch>
