@@ -101,22 +101,22 @@
             <!-- previous values- lower = 0.0, upper = 0.309-->
         </joint>
 
-        <!-- Pitch Actuator (Resting on the moving part of X actuator) -->
+        <!-- Pitch Actuator (Resting on the moving part of X actuator) -->                      
         <link name="pitch_actuator_link">
             <visual>
                 <geometry>
                     <box size="0.03 0.01 0.01" />
-                    <!-- <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/> -->
+                    <!-- <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/> -->    
                 </geometry>
-                <material name="metal"/>
+                <material name="metal"/>                                                     
             </visual>
         </link>
-
+        <!--Added offsets to center it on the block attached to the z rail. 0.034 / 2 = 0.017  =  x offset, 0.005 + 0.036 =  0.041  =  y offset, 0.046 / 2 = 0.023  =  z offset, but negative to go down-->
         <!-- Joint Pitch Actuator attached to Moving X -->
         <joint name="z_moving_to_pitch_actuator" type="revolute">
             <parent link="z_moving_link"/>
             <child link="pitch_actuator_link"/>
-            <origin xyz="0 0 0"/>  <!-- Aligned with moving X -->
+            <origin xyz="0.017 0.041 -0.023"/>  <!-- Aligned with moving X -->
             <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
             <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
         </joint>

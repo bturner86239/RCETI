@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
-    <include file="$(find-pkg-share rceti_deployment)/launch/load_rceti_deployment.launch.xml" />
+    <arg name="meshes_directory" default="$(find-pkg-share rceti_support)/meshes/visual/scale_slightly_readjusted" description="[String] Path to meshes directory." />
+    <arg name="robot_description" default="$(command 'xacro $(find-pkg-share rceti_support)/urdf/rceti_frame_macro.xacro meshes_directory:=$(var meshes_directory)')" description="[String] Path to URDF." />
+    <!-- <include file="$(find-pkg-share rceti_deployment)/launch/load_rceti_deployment.launch.xml" /> -->
 
     <!-- Input Arguments -->
     <arg name="sim_robot" default="True" description="[Bool] Robot Joint State Controlled with GUI or simply set to listen for /joint_states topic" />
