@@ -4,7 +4,7 @@ project(continuum_robot)
 
 # Add the correct path for header files
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(/home/pawilder11/code/RCETI/RCETI/continuum_robot/include)
+#include_directories(/home/pawilder11/code/RCETI/RCETI/continuum_robot/include)
 
 
 
@@ -74,6 +74,10 @@ install(TARGETS
   core_node
   create_cont_robot
   DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}/launch
 )
 
 
