@@ -1,25 +1,29 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="meshes_directory" default="$(find-pkg-share rceti_support)/meshes/visual/scale_slightly_readjusted" description="[String] Path to meshes directory." />
-    <arg name="robot_description" default="$(command 'xacro $(find-pkg-share rceti_support)/urdf/rceti_frame_macro.xacro meshes_directory:=$(var meshes_directory)')" description="[String] Path to URDF." />
+    
     <!-- <include file="$(find-pkg-share rceti_deployment)/launch/load_rceti_deployment.launch.xml" /> -->
 
     <!-- Input Arguments -->
     <arg name="sim_robot" default="True" description="[Bool] Robot Joint State Controlled with GUI or simply set to listen for /joint_states topic" />
     <arg name="rviz_config" default="$(find-pkg-share rceti_deployment)/config/visualize_description.rviz" description="[String] Path to RViz config file." />
 
+    <arg name="meshes_directory" default="$(find-pkg-share rceti_support)/meshes/visual/scale_slightly_readjusted" description="[String] Path to meshes directory." />
+    <arg name="robot_description" default="$(command 'xacro $(find-pkg-share rceti_support)/urdf/rceti_frame_macro.xacro meshes_directory:=$(var meshes_directory)')" description="[String] Path to URDF." />
+
+    <arg name="log_level" default="info" description="argument to specify logging level for the following nodes" />
+
     <!-- Start Joint State Publisher GUI node -->
     <group if="$(var sim_robot)" >
-        <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" output="screen" />
+        <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" output="screen" args="--ros-args --log-level $(var log_level)"/>
     </group>
 
     <!-- Gets joint state messages and publishes the robot state (tf transforms) to RVIZ -->
-    <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen" >
+    <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen" args="--ros-args --log-level $(var log_level)">
         <param name="robot_description" value="$(var robot_description)" />
     </node>
 
     <!-- RVIZ node -->
-    <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)" >
+    <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config) --ros-args --log-level $(var log_level)">
         <!-- This line is actually unnecessary since robot_state_publisher publishes the robot description to the robot_description topic, which RVIZ is subscribed to. 
         param name="robot_description" value="$(var robot_description)" /> -->
     </node>
