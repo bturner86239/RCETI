@@ -10,7 +10,10 @@
     <arg name="meshes_directory" default="$(find-pkg-share rceti_support)/meshes/visual/scale_slightly_readjusted" description="[String] Path to meshes directory." />
     <arg name="robot_description" default="$(command 'xacro $(find-pkg-share rceti_support)/urdf/rceti_frame_macro.xacro meshes_directory:=$(var meshes_directory)')" description="[String] Path to URDF." />
 
+    <!-- Log level parameter for debugging. A useful option is "debug"-->
     <arg name="log_level" default="info" description="argument to specify logging level for the following nodes" />
+    <!-- Also if you didnt know (i didn't), you can add command line arugments to the launch command by just adding <param_name>:=<option>, to the end-->
+    <!-- So like to use this argument you'd go: launch rceti_deployment rceti_deployment.launch.xml log_level:=debug   (or info, or warn, or a few others)-->
 
     <!-- Start Joint State Publisher GUI node -->
     <group if="$(var sim_robot)" >

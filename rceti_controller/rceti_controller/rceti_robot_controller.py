@@ -57,12 +57,12 @@ class RCETIRobotController(Node):
 
     def x_position_callback(self, msg):
         if self.x_position != msg.data:
-            self.get_logger().info(f"Moving X to {msg.data}")
+            self.get_logger().info(f"Moving X to {msg.data:.4f} from {self.x_position:.4f}")
 
             # Calculate the number of steps
             steps = int( abs(msg.data - self.x_position) * 1000 * self.steps_per_mm_x )
-            # Determine direction
-            direction = 1 if msg.data > self.x_position else 0
+            # Determine directiondd
+            direction = 0 if msg.data > self.x_position else 1
 
             self.move_stepper(steps, direction, self.X_DIRECTION_PIN, self.X_PULSE_PIN)
             self.x_position = msg.data
@@ -78,12 +78,12 @@ class RCETIRobotController(Node):
 
     def z_position_callback(self, msg):
         if self.z_position != msg.data:
-            self.get_logger().info(f"Moving Z to {msg.data}")
+            self.get_logger().info(f"Moving Z to {msg.data:.4f} from {self.z_position:.4f}")
 
             # Calculate the number of steps
             steps = int(abs(msg.data - self.z_position) * 1000 * self.steps_per_mm_z)
             # Determine direction
-            direction = 1 if msg.data > self.z_position else 0
+            direction = 0 if msg.data > self.z_position else 1
 
             self.move_stepper(steps, direction, self.Z_DIRECTION_PIN, self.Z_PULSE_PIN)
             self.z_position = msg.data

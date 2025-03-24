@@ -6,12 +6,15 @@ from std_msgs.msg import Float32
 import rclpy
 from rclpy.node import Node
 
+#Constants:
+# maximum amount of request stepper motors will take at any given time
+TOPIC_SUBSCRIPTION_BUFFER = 5
 class RcetiKeyboardController(Node):
     def __init__(self):
         super().__init__('rceti_keyboard')
-        self.x_position_publisher = self.create_publisher(Float32, 'rceti/x_position', 10)
-        self.z_position_publisher = self.create_publisher(Float32, 'rceti/z_position', 10)
-        self.pitch_angle_publisher = self.create_publisher(Float32, 'rceti/pitch_angle', 10)
+        self.x_position_publisher = self.create_publisher(Float32, 'rceti/x_position', TOPIC_SUBSCRIPTION_BUFFER)
+        self.z_position_publisher = self.create_publisher(Float32, 'rceti/z_position', TOPIC_SUBSCRIPTION_BUFFER)
+        self.pitch_angle_publisher = self.create_publisher(Float32, 'rceti/pitch_angle', TOPIC_SUBSCRIPTION_BUFFER)
         
         self.x_position = 0.0  # Initialize x position
         self.z_position = 0.0  # Initialize z position
@@ -20,7 +23,7 @@ class RcetiKeyboardController(Node):
         timer_period = 0.01  # Adjust the timer period for responsiveness
         self.timer = self.create_timer(timer_period, self.keyboard_callback)
 
-        self.declare_parameter('key_timeout', 0.1)
+        self.declare_parameter('key_timeout', 0.5)
 
     def detectKey(self, settings, timeout):
         """Detects a single key press with a timeout."""
@@ -61,20 +64,20 @@ class RcetiKeyboardController(Node):
             self.publish_positions()
 
     def publish_positions(self):
-        """Publishes the updated x and z positions, as well as the pitch angle, rounded to 2 decimal places."""
+        """Publishes the updated x and z positions, as well as the pitch angle, rounded to 4 decimal places."""
         x_msg = Float32()
-        x_msg.data = round(self.x_position, 2)  # Round to 2 decimal places
+        x_msg.data = round(self.x_position, 4)  # Round to 4 decimal places
         self.x_position_publisher.publish(x_msg)
 
         z_msg = Float32()
-        z_msg.data = round(self.z_position, 2)  # Round to 2 decimal places
+        z_msg.data = round(self.z_position, 4)  # Round to 4 decimal places
         self.z_position_publisher.publish(z_msg)
 
         pitch_msg = Float32()
-        pitch_msg.data = round(self.pitch_angle, 2)  # Round to 2 decimal places
+        pitch_msg.data = round(self.pitch_angle, 4)  # Round to 4 decimal places
         self.pitch_angle_publisher.publish(pitch_msg)
 
-        self.get_logger().info(f"Published X: {x_msg.data}, Z: {z_msg.data}, Pitch: {pitch_msg.data}")
+        self.get_logger().info(f"Published X: {x_msg.data:.4f}, Z: {z_msg.data:.4f}, Pitch: {pitch_msg.data:.4f}")
 
 
 def main(args=None):
