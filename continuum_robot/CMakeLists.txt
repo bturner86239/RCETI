@@ -1,12 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
 project(continuum_robot)
 
-
 # Add the correct path for header files
 include_directories(${PROJECT_SOURCE_DIR}/include)
-#include_directories(/home/pawilder11/code/RCETI/RCETI/continuum_robot/include)
-
-
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 #target_link_libraries(interface
 #  tf2_geometry_msgs::tf2_geometry_msgs
@@ -17,7 +14,7 @@ find_package(rclcpp REQUIRED)
 find_package(visualization_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
-find_package(tf2_geometry_msgs REQUIRED) 
+find_package(tf2_geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(interactive_markers REQUIRED)
@@ -76,14 +73,18 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+install(TARGETS ${PROJECT_NAME}
+  LIBRARY DESTINATION lib/${PROJECT_NAME}
+)
+
 install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
-set_target_properties(core_node PROPERTIES
+# Set RPATH for executables
+set_target_properties(interface core_node create_cont_robot PROPERTIES
   INSTALL_RPATH "$ORIGIN"
+  BUILD_WITH_INSTALL_RPATH TRUE
 )
 
-
 ament_package()
-
