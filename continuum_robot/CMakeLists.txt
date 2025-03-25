@@ -80,6 +80,10 @@ install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
+set_target_properties(core_node PROPERTIES
+  INSTALL_RPATH "$ORIGIN"
+)
+
 
 ament_package()
 
