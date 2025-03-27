@@ -21,4 +21,7 @@
         <param name="robot_description" value="$(var robot_description)" />
     </node>
 
+    <node pkg="rceti_keyboard" exec="rceti_keyboard" output="screen" 
+          launch-prefix="gnome-terminal -- bash -c 'echo Starting rceti_keyboard node... Use WASD to control; ros2 run rceti_keyboard rceti_keyboard'" />
+
 </launch>
