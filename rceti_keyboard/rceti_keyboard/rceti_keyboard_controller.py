@@ -15,6 +15,13 @@ class RcetiKeyboardController(Node):
         self.x_position = 0.0  # Initialize x position
         self.z_position = 0.0  # Initialize z position
         self.pitch_angle = 0.0  # Initialize pitch angle
+
+        self.MAX_X_POSITION = 0.1545  # Maximum x position
+        self.MIN_X_POSITION = -0.1545  # Minimum x position
+        self.MAX_Z_POSITION = 0.309  # Maximum z position
+        self.MIN_Z_POSITION = 0.0  # Minimum z position
+        self.MAX_PITCH_ANGLE = 1.57  # Maximum pitch angle (in radians)
+        self.MIN_PITCH_ANGLE = -1.57  # Minimum pitch angle (in radians)
         
         # Timer for keyboard input
         self.keyboard_timer = self.create_timer(0.01, self.keyboard_callback)
@@ -43,14 +50,26 @@ class RcetiKeyboardController(Node):
         key = self.detectKey(settings, key_timeout)
 
         if key:
-            if key == 'a':  # Move left (decrease x)
-                self.x_position -= 0.01
-            elif key == 'd':  # Move right (increase x)
-                self.x_position += 0.01
-            elif key == 'w':  # Move forward (increase z)
-                self.z_position += 0.01
-            elif key == 's':  # Move backward (decrease z)
-                self.z_position -= 0.01
+            if key == 'd':  # Move left (decrease x)
+                if (self.x_position - 0.01) < self.MIN_X_POSITION:
+                    self.get_logger().info("Cannot move right, at minimum x position")
+                else:
+                    self.x_position -= 0.01
+            elif key == 'a':  # Move right (increase x)
+                if (self.x_position + 0.01) > self.MAX_X_POSITION:
+                    self.get_logger().info("Cannot move left, at maximum x position")
+                else:
+                    self.x_position += 0.01
+            elif key == 's':  # Move forward (increase z)
+                if (self.z_position + 0.01) > self.MAX_Z_POSITION:
+                    self.get_logger().info("Cannot move down, at minimum z position")
+                else:
+                    self.z_position += 0.01
+            elif key == 'w':  # Move backward (decrease z)
+                if (self.z_position - 0.01) < self.MIN_Z_POSITION:
+                    self.get_logger().info("Cannot move left, at minimum x position")
+                else:
+                    self.z_position -= 0.01
             elif key == 'p':  # Increase pitch angle
                 self.pitch_angle += 0.1
             elif key == 'l':  # Decrease pitch angle
