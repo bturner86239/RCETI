@@ -277,7 +277,7 @@ void makeMovingMarker( const tf2::Vector3& position )
 }
 // %EndTag(Moving)%
 
-int main(int argc, char** argv)
+/* int main(int argc, char** argv)
 {
     rclcpp::init(argc, argv);
     auto node = rclcpp::Node::make_shared("interface");
@@ -318,5 +318,5 @@ int main(int argc, char** argv)
     tcsetattr(0, TCSANOW, &initial_settings);
     return 0;
 }
-
+*/
 
