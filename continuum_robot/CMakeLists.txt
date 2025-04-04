@@ -18,6 +18,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(interactive_markers REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 
 add_library(${PROJECT_NAME} SHARED src/Continuum.cpp)
 ament_target_dependencies(${PROJECT_NAME}
@@ -28,6 +29,7 @@ ament_target_dependencies(${PROJECT_NAME}
   tf2_geometry_msgs
   std_msgs
   interactive_markers
+  ament_index_cpp
 )
 
 add_executable(interface src/interface.cpp)
