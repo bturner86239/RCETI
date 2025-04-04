@@ -104,12 +104,29 @@
         <link name="pitch_actuator_link">
             <visual>
                 <geometry>
-                    <box size="0.03 0.01 0.01" />
-                    <!-- <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/> -->
+                    <!--<box size="0.03 0.01 0.01" />-->
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Top_Meters.stl"/>
                 </geometry>
                 <material name="metal"/>
             </visual>
         </link>
+
+        <link name="pitch_actuator_bottom_link">
+            <visual>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_V8_Piece_Bottom_Meters.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+        </link>
+
+        <!-- Fixed Joint Attach top and bottom of the continuum base parts into one -->
+        <joint name="pitch_bottom_to_top" type="fixed">
+            <parent link="pitch_actuator_link"/>
+            <child link="pitch_actuator_bottom_link"/>
+            <origin xyz="0 0 -0.14002818298339844"/>
+        </joint>
+
 
         <!-- Joint Pitch Actuator attached to Moving X -->
         <joint name="z_moving_to_pitch_actuator" type="revolute">
