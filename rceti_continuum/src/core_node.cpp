@@ -1,5 +1,5 @@
 #include <iostream>
-#include "continuum_robot/Continuum.h"
+#include "rceti_continuum/Continuum.h"
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <tf2/LinearMath/Quaternion.h>

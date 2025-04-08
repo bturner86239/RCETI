@@ -5,7 +5,7 @@
  *      Author: haitham
  */
 
-#include "continuum_robot/Continuum.h"
+#include "rceti_continuum/Continuum.h"
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
 
@@ -18,7 +18,7 @@ Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
 	//cablePublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
 	//headPublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
 
-    //auto node = rclcpp::Node::make_shared("continuum_robot");
+    //auto node = rclcpp::Node::make_shared("rceti_continuum");
 	//this -> cablePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
 	headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("headMarkers", 10);
     char cableTopic[30];
@@ -107,7 +107,7 @@ void Continuum::addSegment(int segID, double segLength, int n_disks, double radi
 
 
 	//debug for segfauts
-	//RCLCPP_INFO(rclcpp::get_logger("continuum_robot"), "Setting transform origin: x=%f, y=%f, z=%f",
+	//RCLCPP_INFO(rclcpp::get_logger("rceti_continuum"), "Setting transform origin: x=%f, y=%f, z=%f",
 	//eeP.x(), eeP.y(), eeP.z());
 
 
@@ -141,7 +141,7 @@ void Continuum::setSegmentBasePose(int segID, tf2::Vector3 basePos, tf2::Quatern
 
 	{
 
-		RCLCPP_INFO(rclcpp::get_logger("continuum_robot"),
+		RCLCPP_INFO(rclcpp::get_logger("rceti_continuum"),
     "Base Pose Before Setting: x=%f, y=%f, z=%f | Quaternion: x=%f, y=%f, z=%f, w=%f",
     basePos.x(), basePos.y(), basePos.z(),
     baseRot.x(), baseRot.y(), baseRot.z(), baseRot.w());
@@ -377,7 +377,7 @@ rate.sleep();
 /******************************************************/
 
 void Continuum::createURDF(int segID, double segLength, int n_disks, double radius){	// TODO Auto-generated constructor stub
-	std::string path = ament_index_cpp::get_package_share_directory("continuum_robot");
+	std::string path = ament_index_cpp::get_package_share_directory("rceti_continuum");
 	path =path+ "/urdf/robot_model.urdf";
 if(segID == 0)
 { // if the first time to create the robot, delete the previous file
@@ -385,7 +385,7 @@ if(segID == 0)
 
 robotURDFfile.open (path.c_str(), std::fstream::app);
 robotURDFfile << "<?xml version=\"1.0\"?>" <<endl;
-robotURDFfile << "<robot name=\"continuum_robot\">"<<endl;
+robotURDFfile << "<robot name=\"rceti_continuum\">"<<endl;
 robotURDFfile << "<link name=\"base_link\"/>"<<endl;
 robotURDFfile << "<material name=\"while\">"<<endl;
 robotURDFfile << "<color rgba=\"0 1 0 1\"/>"<<endl;

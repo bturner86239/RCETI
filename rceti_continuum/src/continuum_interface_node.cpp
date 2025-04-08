@@ -1,5 +1,5 @@
-#include "continuum_robot/ContinuumInterfaceNode.hpp"
-#include "continuum_robot/Continuum.h"
+#include "rceti_continuum/ContinuumInterfaceNode.hpp"
+#include "rceti_continuum/Continuum.h"
 
 using namespace std::chrono_literals;
 

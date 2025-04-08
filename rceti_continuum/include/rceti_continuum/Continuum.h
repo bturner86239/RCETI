@@ -5,8 +5,8 @@
  *      Author: haitham
  */
 //
-#ifndef CONTINUUM_ROBOT_INCLUDE_CONTINUUM_ROBOT_CONTINUUM_H_
-#define CONTINUUM_ROBOT_INCLUDE_CONTINUUM_ROBOT_CONTINUUM_H_
+#ifndef rceti_continuum_INCLUDE_rceti_continuum_CONTINUUM_H_
+#define rceti_continuum_INCLUDE_rceti_continuum_CONTINUUM_H_
 #include "rclcpp/rclcpp.hpp"
 
 #include <math.h>
@@ -94,4 +94,4 @@ public:
 	virtual ~Continuum();
 };
 
-#endif /* CONTINUUM_ROBOT_INCLUDE_CONTINUUM_ROBOT_CONTINUUM_H_ */
+#endif /* rceti_continuum_INCLUDE_rceti_continuum_CONTINUUM_H_ */

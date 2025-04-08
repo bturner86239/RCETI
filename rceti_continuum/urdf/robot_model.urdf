@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="continuum_robot">
+<robot name="rceti_continuum">
 <link name="base_link"/>
 <material name="while">
 <color rgba="0 1 0 1"/>
