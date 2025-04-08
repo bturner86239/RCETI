@@ -9,8 +9,15 @@ import lgpio
 TOPIC_SUBSCRIPTION_BUFFER = 5
 
 class RCETIRobotController(Node):
+    """RCETIRobotController is a ROS 2 node that controls the RCETI robot's stepper motors and pitch servo.
+
+    Args:
+        Node (Node): The node of the ROS 2 system that handles the robot's control logic.
+    """
 
     def __init__(self):
+        """Initializes the RCETIRobotController node, subscribes to the /joint_states topic, and sets up GPIO pins for stepper motors.
+        """
         super().__init__('rceti_controller')
 
         # Subscribe to the /joint_states topic
@@ -44,7 +51,13 @@ class RCETIRobotController(Node):
         self.steps_per_mm_z = 40
 
     def joint_state_callback(self, msg):
-        """Callback to handle joint state updates."""
+        """Handles incoming joint state messages and moves the stepper motors accordingly.
+        This function is called whenever a new message is received on the /joint_states topic.
+        Moves the x stepper motor, z stepper motor, and pitch servo motor based on the joint states received.
+
+        Args:
+            msg (sensor_msgs/JointState.msg): The messages recieved from the /joint_states topic.
+        """
         # Extract joint positions from the message
         try:
             x_index = msg.name.index('x_actuator_to_x_moving')
@@ -81,7 +94,15 @@ class RCETIRobotController(Node):
             self.get_logger().error(f"Joint name not found in joint_states: {e}")
 
     def move_stepper(self, steps, direction, direction_pin, pulse_pin, delay=0.001):
-        """Moves the stepper motor."""
+        """Stepper Motor Helper Function, handles all stepper movement
+
+        Args:
+            steps (int): the amount of "steps" the stepper motor will take
+            direction (int/bool): the direction the stepper motor will move, 0 is for backward, 1 is for forward
+            direction_pin (int): the GPIO pin used to set the direction of the stepper motor
+            pulse_pin (int): the GPIO pin used to pulse the stepper motor
+            delay (float, optional): the delay between steps, defaults to 0.001.
+        """
         self.get_logger().info(f"Moving stepper: steps={steps}, direction={direction}, direction_pin={direction_pin}, pulse_pin={pulse_pin}")
         lgpio.gpio_write(self.chip, direction_pin, direction)
 
@@ -92,6 +113,11 @@ class RCETIRobotController(Node):
             time.sleep(delay)
 
 def main(args=None):
+    """The main function initializes the ROS 2 node and starts the RCETIRobotController.
+
+    Args:
+        args (N/A optional):Defaults to None, shouldn't be set to anything
+    """
     rclpy.init(args=args)
     robot_controller = RCETIRobotController()
     rclpy.spin(robot_controller)
