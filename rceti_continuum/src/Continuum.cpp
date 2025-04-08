@@ -12,14 +12,6 @@
 
 Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
 {
-
-    // ...existing code...
-
-	//cablePublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
-	//headPublisher = this->create_publisher<visualization_msgs::msg::MarkerArray>("head_markers", 10);
-
-    //auto node = rclcpp::Node::make_shared("rceti_continuum");
-	//this -> cablePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("cable_markers", 10);
 	headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("headMarkers", 10);
     char cableTopic[30];
     node->declare_parameter("number_of_sections", 2);
@@ -32,36 +24,16 @@ Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
     this->basePose = new tf2::Transform[noOfSeg];
     this->segKappa = new double[noOfSeg];
     this->segPhi = new double[noOfSeg];
-
-
-    //this->segTFBroadcaster = new tf2_ros::TransformBroadcaster[noOfSeg];
-	//std::shared_ptr<tf2_ros::TransformBroadcaster> segTFBroadcaster;
 	this->segTFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
-
-	//std::shared_ptr<tf2_ros::TransformBroadcaster> segTFBroadcaster;
-
-	//segTFBroadcaster = std::make_shared<tf2_ros::TransformBroadcaster>(node);
-
- //OG->   //this->segTFFrame = (tf2::Transform**)malloc(noOfSeg * sizeof(tf2::Transform*)); // https://stackoverflow.com/questions/455960/dynamic-allocating-array-of-arrays-in-c
-    //this->segTFFrame = tf2::Transform[noOfSeg];
-
 	this->segTFFrame = new tf2::Transform*[noOfSeg];
 	for (int i = 0; i < noOfSeg; i++) {
 		this->segTFFrame[i] = new tf2::Transform[RESOLUTION]; // Ensure it's initialized properly
 	}
-	
-
 	this->arrayOfKappa = new double[(noOfSeg + 1) * delay];
     this->arrayOfPhi = new double[(noOfSeg + 1) * delay];
 
     this->cableMarkers = new visualization_msgs::msg::MarkerArray[noOfSeg + 1];
-    //this->cablePublisher = new rclcpp::Publisher<visualization_msgs::msg::MarkerArray>[noOfSeg + 1];
-////////////////////////check which one of these twolines i should change
-	//std::vector<rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr> cablePublisher;
-	//this->cablePublisher = std::vector<rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr>(noOfSeg + 1);
-	
 	this->cablePublisher.resize(noOfSeg+1);
-
     this->frame_timer = node->create_wall_timer(std::chrono::milliseconds(100), std::bind(&Continuum::timerScanning, this));
     for (int s = 0; s <= noOfSeg; s++)
     {
@@ -72,7 +44,6 @@ Continuum::Continuum(std::shared_ptr<rclcpp::Node> node)
     this->headPublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("headMarkers", 1);
     // Keyboard
     tcgetattr(0, &initial_settings);
-
     new_settings = initial_settings;
     new_settings.c_lflag &= ~ICANON;
     new_settings.c_lflag &= ~ECHO;
@@ -97,20 +68,11 @@ void Continuum::timerScanning()
 void Continuum::addSegment(int segID, double segLength, int n_disks, double radius){	// TODO Auto-generated constructor stub
 	// Continuum robot segment
 	this->createURDF(segID, segLength, n_disks, radius);
-	//segTFFrame[segID] = (tf2::Transform*) malloc(n_disks*sizeof(tf2::Transform));
 	segTFFrame[segID] = new tf2::Transform[n_disks];  // Use 'new' to call constructors
-
 
 	segmentLength[segID] = segLength;
 	noOfDisks[segID] = n_disks;
 	initCableMarker(segID);
-
-
-	//debug for segfauts
-	//RCLCPP_INFO(rclcpp::get_logger("rceti_continuum"), "Setting transform origin: x=%f, y=%f, z=%f",
-	//eeP.x(), eeP.y(), eeP.z());
-
-
 
 if(segID >0)
 {
@@ -121,8 +83,6 @@ else
 {
 	basePose[segID].setOrigin(tf2::Vector3(0,0,0));
 	basePose[segID].setRotation(tf2::Quaternion(0,0,0,1));
-
-	//endEffectorPose[segID].setOrigin(tf2::Vector3(0,0,segLength));
 	endEffectorPose[segID].setOrigin(tf2::Vector3(0,0,segmentLength[segID]));
 	endEffectorPose[segID].setRotation(tf2::Quaternion(0,0,0,1));
 
@@ -197,16 +157,7 @@ return qRot;
 
 /******************************************************/
 tf2::Quaternion Continuum::getHeadQuaternion(int diskID){ // Not Used~!
-/*tf2::Matrix3x3 Rot;
-tf2::Quaternion qRot;
-Rot.setValue(pow(cos(headPhi),2) * (cos(headKappa*((diskID/((double)headDisks-1))*headLength)) - 1) + 1, sin(headPhi)*cos(headPhi)*( cos(headKappa*((diskID/((double)headDisks-1))*headLength)) - 1), -cos(headPhi)*sin(headKappa*((diskID/((double)headDisks-1))*headLength)),
-						sin(headPhi)*cos(headPhi)*( cos(headKappa*((diskID/((double)headDisks-1))*headLength)) - 1), pow(cos(headPhi),2) * ( 1 - cos(headKappa*((diskID/((double)headDisks-1))*headLength)) ) + cos( headKappa * ((diskID/((double)headDisks-1))*headLength)),  -sin(headPhi)*sin(headKappa*((diskID/((double)headDisks-1))*headLength)),
-						 cos(headPhi)*sin(headKappa*((diskID/((double)headDisks-1))*headLength)),  sin(headPhi)*sin(headKappa*((diskID/((double)headDisks-1))*headLength)), cos(headKappa*((diskID/((double)headDisks-1))*headLength)));
-Rot.getRotation(qRot);
-//endEffectorPose[segID].setRotation(basePose[segID].getRotation() * qRot);
-return qRot;*/
 return tf2::Quaternion(0, 0, 0, 1); // Return identity quaternion
-
 }
 
 /******************************************************/
@@ -223,79 +174,6 @@ void Continuum::update(void) {
 char childFrameName[30];
 rclcpp::Rate rate(15);
 tf2::Vector3 heeP;
-/*************************************** WITH HEAD *********************************************/
-
-/*if(this->hasHead)  // Not Used~!
-{
-
-	if(headMode == FLIPPED)
-	{
-		tf2::Quaternion headTopQuat = tf2::Quaternion(headMarkers.markers[headMarkers.markers.size()-1].pose.orientation.x,headMarkers.markers[headMarkers.markers.size()-1].pose.orientation.y,headMarkers.markers[headMarkers.markers.size()-1].pose.orientation.z,headMarkers.markers[headMarkers.markers.size()-1].pose.orientation.w);
-		for(int i=0;i<this->headMarkers.markers.size();i++){
-				heeP[0] = cos(headPhi)*(cos(headKappa*((i/((double)headDisks-1))*headLength)) - 1)/headKappa;
-				heeP[1] = sin(headPhi)*( cos(headKappa*((i/((double)headDisks-1))*headLength)) - 1)/headKappa;
-				heeP[2] = (sin(headKappa*((i/((double)headDisks-1))*headLength))/headKappa);
-				heeP = tf2::Matrix3x3(headTopQuat)*heeP;
-
-				headMarkers.markers[headMarkers.markers.size()-1-i].pose.position.x = headMarkers.markers[this->headMarkers.markers.size()-1].pose.position.x + heeP.getX();
-				headMarkers.markers[headMarkers.markers.size()-1-i].pose.position.y = headMarkers.markers[this->headMarkers.markers.size()-1].pose.position.y + heeP.getY();
-				headMarkers.markers[headMarkers.markers.size()-1-i].pose.position.z = headMarkers.markers[this->headMarkers.markers.size()-1].pose.position.z + heeP.getZ();
-				headMarkers.markers[headMarkers.markers.size()-1-i].pose.orientation.x = (headTopQuat*getHeadQuaternion(i)).x();
-				headMarkers.markers[headMarkers.markers.size()-1-i].pose.orientation.y = (headTopQuat*getHeadQuaternion(i)).y();
-				headMarkers.markers[headMarkers.markers.size()-1-i].pose.orientation.z = (headTopQuat*getHeadQuaternion(i)).z();
-				headMarkers.markers[headMarkers.markers.size()-1-i].pose.orientation.w = (headTopQuat*getHeadQuaternion(i)).w();
-		}
-
-		for(int i=0;i<RESOLUTION&&ros::ok();i++){
-				heeP[0] = cos(headPhi)*(cos(headKappa*((i/((double)RESOLUTION-1))*headLength)) - 1)/headKappa;
-						heeP[1] = sin(headPhi)*( cos(headKappa*((i/((double)RESOLUTION-1))*headLength)) - 1)/headKappa;
-						heeP[2] = (sin(headKappa*((i/((double)RESOLUTION-1))*headLength))/headKappa);
-						heeP = tf2::Matrix3x3(headTopQuat)*heeP;
-
-				cableMarkers[this->numberOfSegments].markers[RESOLUTION-1-i].pose.position.x = headMarkers.markers[this->headMarkers.markers.size()-1].pose.position.x + heeP[0];
-				cableMarkers[this->numberOfSegments].markers[RESOLUTION-1-i].pose.position.y = headMarkers.markers[this->headMarkers.markers.size()-1].pose.position.y + heeP[1];
-				cableMarkers[this->numberOfSegments].markers[RESOLUTION-1-i].pose.position.z = headMarkers.markers[this->headMarkers.markers.size()-1].pose.position.z + heeP[2];
-
-				}
-
-		this->setSegmentBasePose(0,tf2::Vector3(headMarkers.markers[0].pose.position.x,headMarkers.markers[0].pose.position.y,headMarkers.markers[0].pose.position.z),
-				tf2::Quaternion(headMarkers.markers[0].pose.orientation.x, headMarkers.markers[0].pose.orientation.y, headMarkers.markers[0].pose.orientation.z, headMarkers.markers[0].pose.orientation.w));
-
-	}
-	else{
-	for(int i=0;i<this->headMarkers.markers.size();i++){
-		heeP[0] = cos(headPhi)*(cos(headKappa*((i/((double)headDisks-1))*headLength)) - 1)/headKappa;
-		heeP[1] = sin(headPhi)*( cos(headKappa*((i/((double)headDisks-1))*headLength)) - 1)/headKappa;
-		heeP[2] = (sin(headKappa*((i/((double)headDisks-1))*headLength))/headKappa);
-		heeP = tf2::Matrix3x3(basePose[0].getRotation())*heeP;
-
-		headMarkers.markers[i].pose.position.x = basePose[0].getOrigin().x() - heeP.getX();
-		headMarkers.markers[i].pose.position.y = basePose[0].getOrigin().y() - heeP.getY();
-		headMarkers.markers[i].pose.position.z = basePose[0].getOrigin().z() - heeP.getZ();
-		headMarkers.markers[i].pose.orientation.x = (basePose[0].getRotation() * getHeadQuaternion(i)).x();
-		headMarkers.markers[i].pose.orientation.y = (basePose[0].getRotation() * getHeadQuaternion(i)).y();
-		headMarkers.markers[i].pose.orientation.z = (basePose[0].getRotation() * getHeadQuaternion(i)).z();
-		headMarkers.markers[i].pose.orientation.w = (basePose[0].getRotation() * getHeadQuaternion(i)).w();
-		}
-
-
-	for(int i=0;i<RESOLUTION&&ros::ok();i++){
-		heeP[0] = cos(headPhi)*(cos(headKappa*((i/((double)RESOLUTION-1))*headLength)) - 1)/headKappa;
-				heeP[1] = sin(headPhi)*( cos(headKappa*((i/((double)RESOLUTION-1))*headLength)) - 1)/headKappa;
-				heeP[2] = (sin(headKappa*((i/((double)RESOLUTION-1))*headLength))/headKappa);
-				heeP = tf2::Matrix3x3(basePose[0].getRotation())*heeP;
-
-		cableMarkers[this->numberOfSegments].markers[i].pose.position.x = basePose[0].getOrigin().x()- heeP[0];
-		cableMarkers[this->numberOfSegments].markers[i].pose.position.y = basePose[0].getOrigin().y()- heeP[1];
-		cableMarkers[this->numberOfSegments].markers[i].pose.position.z = basePose[0].getOrigin().z()- heeP[2];
-
-		}
-	}
-	headPublisher.publish(headMarkers);
-	cablePublisher[this->numberOfSegments].publish(cableMarkers[this->numberOfSegments]);
-
-}*/
-/*************************************** NO HEAD *********************************************/
 for (int segID = 0;segID<this->numberOfSegments;segID++)
 {
 
@@ -340,9 +218,6 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 
 	segTFBroadcaster->sendTransform(transformStamped);
 
-	//segTFBroadcaster[segID].sendTransform(tf2::StampedTransform(segTFFrame[segID][i], rclcpp::Clock().now(),"base_link",childFrameName));
-	//	slerpQuaternion = basePose[segID].getRotation().slerp(endEffectorPose[segID].getRotation(),(double)((i/((double)noOfDisks[segID]-1))));
-
 	}
 
 	if (segID >= numberOfSegments || noOfDisks[segID] <= 0) continue; // Prevent invalid access
@@ -360,7 +235,6 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 				cableMarkers[segID].markers[i].pose.position.y = basePose[segID].getOrigin().y()+ eePc[1];
 				cableMarkers[segID].markers[i].pose.position.z = basePose[segID].getOrigin().z()+ eePc[2];
 		// Slerp for spherical interpolation
-		//	slerpQuaternionCable = basePose[segID].getRotation().slerp(endEffectorPose[segID].getRotation(),(double)((i/((double)RESOLUTION-1))));
 			cableMarkers[segID].markers[i].pose.orientation.x = 0;//slerpQuaternionCable.x();
 			cableMarkers[segID].markers[i].pose.orientation.y = 0;//slerpQuaternionCable.y();
 			cableMarkers[segID].markers[i].pose.orientation.z = 0;//slerpQuaternionCable.z();

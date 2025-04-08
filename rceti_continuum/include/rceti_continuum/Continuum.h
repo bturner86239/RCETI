@@ -45,7 +45,6 @@ private:
 
 	 visualization_msgs::msg::MarkerArray* cableMarkers;
 	 visualization_msgs::msg::MarkerArray headMarkers;
-	// rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr cablePublisher;
 	 std::vector<rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr> cablePublisher;
 
 	 rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr headPublisher;

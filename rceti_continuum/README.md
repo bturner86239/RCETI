@@ -5,15 +5,23 @@ To run the demo visualization on youtube:
 
 1- download the package from github inot your src folder of yor ROS workspace.
 
-2- catkin_make your ROS workspace.
+2- colcon build ROS workspace.
 
-3- Launch the continuum robot visualizer
+3- Run the rceti_continuum core_node
 
-roslaunch continuum_robot visulize.launch
+ros2 run rceti_continuum core_node
 
-Notes:
-- The number of segments for a continumm robot is defined as a parameter in the visulize.launch file.
-- The continuum robot class depends on creating the URDF file at first with the specified number of sections which appears in the core_node.cpp file. If you change the construction of the robot again in the core file (number of sections, lengths, the radius of disks ..) you need to restart the launch file again because it looks for the URDF file at the beginning.
+4- launch rviz
+
+ros2 launch rceti_continuum visulize.launch.py
+
+5- Input user char into core_node
+
+6- Change fixed frame to base_link
+
+7- Add interactive marker topic cable0
+
+8- User input in core_node again to display
 
 
 Cite as:
