@@ -23,7 +23,7 @@
     <link name="world"/>
 
     <!-- Intubation Robot -->
-    <xacro:include filename="$(find rceti_support)/urdf/rceti.xacro"/>
+    <xacro:include filename="$(find rceti_support)/urdf/rceti_frame_macro.xacro"/>
     <joint name="fix_origin_rceti" type="fixed">
         <parent link="world"/>
         <child link="base_link"/>
