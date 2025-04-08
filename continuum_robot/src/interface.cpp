@@ -10,6 +10,9 @@
 #include <termios.h>
 #include <math.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
+#include <geometry_msgs/msg/transform_stamped.hpp>
 
 #define PI 3.1415926
 
@@ -178,6 +181,7 @@ void make6DofMarker( bool fixed, unsigned int interaction_mode, const tf2::Vecto
 
   server->insert(int_marker);
   server->setCallback(int_marker.name, &processFeedback);
+  server->applyChanges();
  }
 // %EndTag(6DOF)%
 // %Tag(frameCallback)%
@@ -186,57 +190,53 @@ void frameCallback(std::shared_ptr<rclcpp::Node> node)
 {
     static double thetaPitch = 0;
     static double thetaYaw = 0;
-    static uint32_t counter = 0;
-
-    //static tf2_ros::TransformBroadcaster br;
-    static std::shared_ptr<tf2_ros::TransformBroadcaster> br;
-    br = std::make_shared<tf2_ros::TransformBroadcaster>(node);
-
+    static std::shared_ptr<tf2_ros::TransformBroadcaster> br = std::make_shared<tf2_ros::TransformBroadcaster>(node);
 
     static geometry_msgs::msg::TransformStamped t;
 
-    rclcpp::Time time = rclcpp::Clock().now();
+    rclcpp::Time time = node->get_clock()->now();
     int n = getchar();
 
     if (n == '\033') { // if the first value is esc
         getchar(); // skip the [
         switch(getchar()) { // the real value
             case 'A':
-                cout << "ARROW UP" << endl; // code for arrow up
                 thetaPitch -= 90;
                 break;
             case 'B':
-                cout << "ARROW DOWN" << endl; // code for down up
                 thetaPitch += 90;
                 break;
             case 'C':
-                cout << "ARROW right" << endl; // code for arrow right
                 thetaYaw -= 90;
                 break;
             case 'D':
-                cout << "ARROW left" << endl; // code for arrow left
                 thetaYaw += 90;
                 break;
         }
         directionQauat.setRPY(0.0, (thetaPitch * PI) / 180, (thetaYaw * PI) / 180);
     }
-    cout << "p = [" << t.transform.translation.x << ", " << t.transform.translation.y << ", " << t.transform.translation.z << "]" << endl;
-
-    t.transform.rotation = tf2::toMsg(directionQauat);
-    //t.transform.rotation = tf2::Quaternion(directionQauat.x(), directionQauat.y(), directionQauat.z(), directionQauat.w());
 
     t.header.stamp = time;
     t.header.frame_id = "base_link";
     t.child_frame_id = "moving_frame";
-    //br.sendTransform(t);
-    br->sendTransform(t);
+    t.transform.rotation = tf2::toMsg(directionQauat);
 
-    //t.transform.translation.x += tf2::Matrix3x3(directionQauat) * tf2::Vector3((float(1) / 140.0) * 2.0, 0, 0);
     tf2::Vector3 translation_offset = tf2::Matrix3x3(directionQauat) * tf2::Vector3((float(1) / 140.0) * 2.0, 0, 0);
+    t.transform.translation.x += translation_offset.x();
+    t.transform.translation.y += translation_offset.y();
+    t.transform.translation.z += translation_offset.z();
 
-t.transform.translation.x += translation_offset.x();
-t.transform.translation.y += translation_offset.y();
-t.transform.translation.z += translation_offset.z();
+    RCLCPP_INFO(node->get_logger(), "Broadcasting moving_frame transform");
+    RCLCPP_INFO(node->get_logger(), "frameCallback is being executed");
+    RCLCPP_INFO(node->get_logger(), "Transform: [%f, %f, %f] [%f, %f, %f, %f]",
+                t.transform.translation.x,
+                t.transform.translation.y,
+                t.transform.translation.z,
+                t.transform.rotation.x,
+                t.transform.rotation.y,
+                t.transform.rotation.z,
+                t.transform.rotation.w);
+    br->sendTransform(t);
 }
 
 // %EndTag(frameCallback)%
@@ -274,15 +274,37 @@ void makeMovingMarker( const tf2::Vector3& position )
 
   server->insert(int_marker);
   server->setCallback(int_marker.name, &processFeedback);
+  server->applyChanges();
 }
 // %EndTag(Moving)%
 
-/* int main(int argc, char** argv)
+void readMovingFrameTransform(std::shared_ptr<rclcpp::Node> node)
+{
+    static tf2_ros::Buffer tf_buffer(node->get_clock());
+    static tf2_ros::TransformListener tf_listener(tf_buffer);
+
+    try {
+        auto transform = tf_buffer.lookupTransform("base_link", "moving_frame", tf2::TimePointZero);
+        RCLCPP_INFO(node->get_logger(), "Transform: [%f, %f, %f] [%f, %f, %f, %f]",
+                    transform.transform.translation.x,
+                    transform.transform.translation.y,
+                    transform.transform.translation.z,
+                    transform.transform.rotation.x,
+                    transform.transform.rotation.y,
+                    transform.transform.rotation.z,
+                    transform.transform.rotation.w);
+    } catch (tf2::TransformException &ex) {
+        RCLCPP_WARN(node->get_logger(), "Could not transform moving_frame to base_link: %s", ex.what());
+    }
+}
+
+int main(int argc, char** argv)
 {
     rclcpp::init(argc, argv);
     auto node = rclcpp::Node::make_shared("interface");
     rclcpp::Rate r(1);
     directionQauat = tf2::Quaternion(0, 0, 0, 1);
+
     // Keyboard
     tcgetattr(0, &initial_settings);
 
@@ -295,21 +317,23 @@ void makeMovingMarker( const tf2::Vector3& position )
 
     tcsetattr(0, TCSANOW, &new_settings);
 
-    // create a timer to update the published transforms
-    //auto frame_timer = node->create_wall_timer(std::chrono::milliseconds(50), frameCallback);
-    //auto frame_timer = node->create_wall_timer(std::chrono::milliseconds(50), std::bind(frameCallback, node));
+    // Create a timer to update the published transforms
     auto frame_timer = node->create_wall_timer(
-      std::chrono::milliseconds(50),
-      [node]() { frameCallback(node); }
-  );
+        std::chrono::milliseconds(50),
+        [node]() { frameCallback(node); }
+    );
 
+    auto tf_timer = node->create_wall_timer(
+        std::chrono::milliseconds(100),
+        [node]() { readMovingFrameTransform(node); }
+    );
 
     auto robotShapePublisher = node->create_publisher<visualization_msgs::msg::MarkerArray>("robot_shape", 1);
     server.reset(new interactive_markers::InteractiveMarkerServer("basic_controls", node, rclcpp::QoS(10).transient_local()));
     rclcpp::sleep_for(std::chrono::milliseconds(100));
     tf2::Vector3 position;
     position = tf2::Vector3(0, 0, 0);
-    make6DofMarker(false, visualization_msgs::msg::InteractiveMarkerControl::NONE, position, false);
+    make6DofMarker(false, visualization_msgs::msg::InteractiveMarkerControl::MOVE_ROTATE_3D, position, true);
     server->applyChanges();
 
     rclcpp::spin(node);
@@ -318,5 +342,4 @@ void makeMovingMarker( const tf2::Vector3& position )
     tcsetattr(0, TCSANOW, &initial_settings);
     return 0;
 }
-*/
 

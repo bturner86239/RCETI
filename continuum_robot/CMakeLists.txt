@@ -27,7 +27,6 @@ include_directories(
 add_executable(core_node
   src/core_node.cpp
   src/Continuum.cpp
-  src/interface.cpp
 )
 ament_target_dependencies(core_node
   rclcpp
@@ -45,7 +44,6 @@ ament_target_dependencies(core_node
 add_executable(continuum_interface_node
   src/continuum_interface_node.cpp
   src/Continuum.cpp
-  src/interface.cpp
 )
 ament_target_dependencies(continuum_interface_node
   rclcpp
@@ -59,10 +57,15 @@ ament_target_dependencies(continuum_interface_node
   interactive_markers
 )
 
+# Build interface
+add_executable(interface src/interface.cpp)
+ament_target_dependencies(interface rclcpp visualization_msgs interactive_markers tf2 tf2_ros tf2_geometry_msgs)
+
 # Install targets
 install(TARGETS
   core_node
   continuum_interface_node
+  interface
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -72,8 +75,8 @@ install(DIRECTORY include/
 )
 
 # Install launch files
-install(DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}/
+install(DIRECTORY launch/
+  DESTINATION share/${PROJECT_NAME}/launch
 )
 
 ament_package()
