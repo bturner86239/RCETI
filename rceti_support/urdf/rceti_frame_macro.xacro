@@ -2,7 +2,9 @@
 <!-- URDF of the Frame of the RCETI Intubation Robot-->
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="rceti_robot">
     
-    <!-- Ensure the property is defined before the macro -->
+    <!-- This file wraps a standard URDF in a Xacro which is a URDF scripting language. 
+    This file is ultimately what will generate the interactive virtual model of the robot frame -->
+    
     <xacro:property name="meshes_directory" default=""/>
 
     <xacro:macro name="rceti_robot" params="meshes_directory">
@@ -15,7 +17,7 @@
             <color rgba="0.75 0.75 0.75 1"/>
         </material>
 
-        <!-- Base Link (Fixed) -->
+        <!-- Base Link (Fixed) serves as our origin -->
         <link name="base_link">
             <visual>
                 <geometry>
@@ -25,26 +27,26 @@
             </visual>
         </link>
 
-        <!-- X-Axis Actuator (Horizontal, fixed) -->
+        <!-- X-Axis Linear Actuator (Horizontal, fixed) -->
         <link name="x_actuator_link">
             <visual>
                 <geometry>
-                    <!--box size="0.6 0.1 0.2"/>  Wider horizontal actuator -->
+                    <!--box size="0.6 0.1 0.2"/>  testing before stl -->
                     <mesh filename="file://$(arg meshes_directory)/LA_rail.stl"/>
                 </geometry>
                 <material name="metal"/>
             </visual>
         </link>
 
-        <!-- Fixed Joint Attach X Actuator to Base Link -->
+        <!-- Fixed Joint to ensure X actuator is anchored to the base link -->
         <joint name="base_to_x_actuator" type="fixed">
             <parent link="base_link"/>
             <child link="x_actuator_link"/>
-            <origin xyz="0 0 0.35"/>  <!-- X actuator is now anchored to the base link -->
+            <origin xyz="0 0 0.35"/>  
         </joint>
 
-        <!-- X Moving Link (Moves Horizontally) -->
-        <link name="x_moving_link">
+        <!-- X Slider (Moves Horizontally along X actuator) -->
+        <link name="x_slider_link">
             <visual>
                 <geometry>
                     <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
@@ -53,16 +55,16 @@
             </visual>
         </link>
 
-        <!-- Prismatic Joint X Moves Along X-Axis -->
-        <joint name="x_actuator_to_x_moving" type="prismatic">
+        <!-- Prismatic Joint Moves Along X-Axis -->
+        <joint name="x_actuator_to_x_slider" type="prismatic">
             <parent link="x_actuator_link"/>
-            <child link="x_moving_link"/>
+            <child link="x_slider_link"/>
             <origin xyz="0.193 0.012 0"/>
-            <axis xyz="1 0 0"/>  <!-- Moves left-right along X -->
+            <axis xyz="1 0 0"/>  <!-- Moves left-right along X actuator-->
             <limit effort="100.0" lower="-0.1545" upper="0.1545" velocity="0.5"/>
         </joint>
 
-        <!-- Z-Axis Actuator (Vertical, fixed) -->
+        <!-- Z-Axis Linear Actuator (Vertical, fixed) -->
         <link name="z_actuator_link">
             <visual>
                 <origin rpy="0 1.5708 0" xyz="0 0 0"/>  <!-- Rotate 90 degrees around X -->
@@ -74,14 +76,14 @@
         </link>
 
         <!-- Fixed Joint Attach Z Actuator to the Center of the X Slider -->
-        <joint name="x_moving_to_z_actuator" type="fixed">
-            <parent link="x_moving_link"/>
+        <joint name="x_slider_to_z_actuator" type="fixed">
+            <parent link="x_slider_link"/>
             <child link="z_actuator_link"/>
             <origin xyz="0 0.03965 0.13176"/>  <!-- Centered on X slider -->
         </joint>
 
-        <!-- Z Moving Link (Moves Vertically) -->
-        <link name="z_moving_link">
+        <!-- Z Slider Link (Moves Vertically) -->
+        <link name="z_slider_link">
             <visual>
                 <origin rpy="0 1.5708 0" xyz="0 0 0"/>  <!-- Rotate 90 degrees around X -->
                 <geometry>
@@ -91,30 +93,30 @@
             </visual>
         </link>
 
-        <!-- Prismatic Joint Vertical Movement (Z-Axis) -->
-        <joint name="z_actuator_to_z_moving" type="prismatic">
+        <!-- Prismatic Joint for Vertical Movement along Z-Axis -->
+        <joint name="z_actuator_to_z_slider" type="prismatic">
             <parent link="z_actuator_link"/>
-            <child link="z_moving_link"/>
+            <child link="z_slider_link"/>
             <origin xyz="0 0.012 -0.038"/>
-            <axis xyz="0 0 -1"/>  <!-- Moves down from top of Z -->
-            <limit effort="100.0" lower="0.0" upper="0.309" velocity="0.5"/> <!--UPDATE WITH LENGTH OF ACTUATOR-->
+            <axis xyz="0 0 -1"/>  <!-- Moves downward direction from top of Z -->
+            <limit effort="100.0" lower="0.0" upper="0.309" velocity="0.5"/>
         </joint>
 
-        <!-- Pitch Actuator (Resting on the moving part of X actuator) -->
-        <link name="pitch_actuator_link">
+        <!-- Pitch Actuator (Resting on the X slider) -->
+        <link name="pitch_servo_link">
             <visual>
                 <geometry>
-                    <!--<box size="0.03 0.01 0.01" />-->
-                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Top_Meters.stl"/>
+                    <!--<box size="0.05 0.05 0.05" />-->
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Top_Meters.STL"/>
                 </geometry>
                 <material name="metal"/>
             </visual>
         </link>
 
-        <link name="pitch_actuator_bottom_link">
+        <link name="pitch_servo_bottom_link">
             <visual>
                 <geometry>
-                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_V8_Piece_Bottom_Meters.stl"/>
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Bottom_Meters.STL"/>
                 </geometry>
                 <material name="metal"/>
             </visual>
@@ -122,16 +124,16 @@
 
         <!-- Fixed Joint Attach top and bottom of the continuum base parts into one -->
         <joint name="pitch_bottom_to_top" type="fixed">
-            <parent link="pitch_actuator_link"/>
-            <child link="pitch_actuator_bottom_link"/>
+            <parent link="pitch_servo_link"/>
+            <child link="pitch_servo_bottom_link"/>
             <origin xyz="0 0 -0.14002818298339844"/>
         </joint>
 
 
         <!-- Joint Pitch Actuator attached to Moving X -->
-        <joint name="z_moving_to_pitch_actuator" type="revolute">
-            <parent link="z_moving_link"/>
-            <child link="pitch_actuator_link"/>
+        <joint name="z_slider_to_pitch_servo" type="revolute">
+            <parent link="z_slider_link"/>
+            <child link="pitch_servo_link"/>
             <origin xyz="0 0 0"/>  <!-- Aligned with moving X -->
             <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
             <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
