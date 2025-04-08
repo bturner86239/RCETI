@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
+<!-- This is the main launch file used to launch all nodes on the "computer" side of the RCETI robot project-->
 <launch>
+    <!-- Includes load_rceti_deployment.launch.xml, this will load in the URDF-->
     <include file="$(find-pkg-share rceti_deployment)/launch/load_rceti_deployment.launch.xml" />
 
     <!-- Input Arguments -->
@@ -15,6 +17,7 @@
         <param name="robot_description" value="$(var robot_description)" />
     </node>
 
+    <!-- Launches rceti_keyboard node-->
     <node pkg="rceti_keyboard" exec="rceti_keyboard" output="screen" 
           launch-prefix="gnome-terminal -- bash -c 'echo Starting rceti_keyboard node... Use WASD to control; ros2 run rceti_keyboard rceti_keyboard'" />
 

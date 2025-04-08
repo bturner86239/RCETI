@@ -1,3 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+# This CMake file is used to build the rceti_moveit package, which contains
+# the implementation of the RCETI robot's MoveIt! interface.
+# The package is responsible for the robot's motion planning and control.
+# DO NOT EDIT THIS CMAKE FILE, NOTHING WILL NEED TO BE CHANGED HERE UNLESS MODIFYING PACKAGE STUCTURE
 cmake_minimum_required(VERSION 3.8)
 project(rceti_moveit)
 

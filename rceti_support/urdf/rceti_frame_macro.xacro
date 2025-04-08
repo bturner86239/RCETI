@@ -1,4 +1,5 @@
 <?xml version="1.0" ?>
+<!-- URDF of the Frame of the RCETI Intubation Robot-->
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="rceti_robot">
     
     <!-- Ensure the property is defined before the macro -->

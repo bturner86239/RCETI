@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+<!-- This is the launch file that handles all the URDF creation and support for adding the frame of the robot-->
 <launch>
     <include file="$(find-pkg-share rceti_support)/launch/load_rceti.launch.xml" />
 

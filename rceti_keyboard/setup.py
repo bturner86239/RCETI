@@ -1,5 +1,7 @@
 from setuptools import find_packages, setup
 
+# This is a setup script for the rceti_keyboard package. Equivalent to CMakeLists.txt in CMake.
+
 package_name = 'rceti_keyboard'
 
 setup(
