@@ -22,6 +22,7 @@ setup(
     entry_points={
         'console_scripts': [
             'rceti_controller = rceti_controller.rceti_robot_controller:main',
+            'test_controller = rceti_controller.test:main',
         ],
     },
 )
