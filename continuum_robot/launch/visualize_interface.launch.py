@@ -1,8 +1,7 @@
 import os
-import launch
-import launch_ros.actions
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
@@ -10,21 +9,18 @@ def generate_launch_description():
 
     return LaunchDescription([
         DeclareLaunchArgument("gui", default_value="False", description="Enable GUI"),
-        
-        # Launch the core_node
-        launch_ros.actions.Node(
+
+        Node(
             package="continuum_robot",
-            executable="core_node",
-            name="core_node",
+            executable="continuum_interface_node",
+            name="continuum_interface_node",
             output="screen",
             parameters=[{
-                "robot_description": os.path.join(continuum_robot_path, "urdf", "robot_model.urdf"),
-                "number_of_sections": 2
+                "number_of_segments": 2
             }]
         ),
 
-        # Launch RViz
-        launch_ros.actions.Node(
+        Node(
             package="rviz2",
             executable="rviz2",
             name="rviz",
