@@ -107,7 +107,7 @@
             <visual>
                 <geometry>
                     <!--<box size="0.05 0.05 0.05" />-->
-                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Top_Meters.STL"/>
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Top_Meters.STL" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="metal"/>
             </visual>
@@ -116,7 +116,7 @@
         <link name="pitch_servo_bottom_link">
             <visual>
                 <geometry>
-                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Bottom_Meters.STL"/>
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Bottom_Meters.STL" scale="0.001 0.001 0.001"/>
                 </geometry>
                 <material name="metal"/>
             </visual>
@@ -134,7 +134,7 @@
         <joint name="z_slider_to_pitch_servo" type="revolute">
             <parent link="z_slider_link"/>
             <child link="pitch_servo_link"/>
-            <origin xyz="0 0 0"/>  <!-- Aligned with moving X -->
+            <origin xyz="0 1 0" rpy="${pi/2} 0 ${pi}"/>  <!-- Aligned with moving X -->
             <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
             <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
         </joint>

@@ -105,7 +105,7 @@ class RcetiKeyboardController(Node):
         """
         joint_state = JointState()
         joint_state.header.stamp = self.get_clock().now().to_msg()
-        joint_state.name = ['x_actuator_to_x_moving', 'z_actuator_to_z_moving', 'z_moving_to_pitch_actuator']
+        joint_state.name = ['x_actuator_to_x_slider', 'z_actuator_to_z_slider', 'z_slider_to_pitch_servo']
         joint_state.position = [self.x_position, self.z_position, self.pitch_angle]
         self.joint_state_publisher.publish(joint_state)
 
