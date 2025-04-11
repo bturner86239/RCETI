@@ -259,6 +259,7 @@ void Continuum::createURDF(int segID, double segLength, int n_disks, double radi
     // Get the path to the URDF file
     std::string path = ament_index_cpp::get_package_share_directory("rceti_continuum");
     path = path + "/urdf/robot_model.urdf";
+	
 
     if (segID == 0)
     { // If the first time to create the robot, delete the previous file
@@ -292,7 +293,6 @@ void Continuum::createURDF(int segID, double segLength, int n_disks, double radi
         {
             // Scale the size of the base box
             robotURDFfile << "<box size=\"" << scale_factor * 1 << " " << scale_factor * 1 << " " << scale_factor * 0.05 << "\"/>" << std::endl;
-			RCLCPP_INFO(rclcpp::get_logger("rceti_continuum"), "PLEASEPLEASEPLEASEPLEASE");
 
         }
         else
