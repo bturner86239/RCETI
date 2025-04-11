@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="segment">
 
 <xacro:property name="disk_length" value="0.1" />
-<xacro:property name="disk_radius" value="0.5" />
+<xacro:property name="disk_radius" value="0.05" />
 <!-- SEGMNET 1 (10 DISKS)-->
   <link name="base_link">
     <visual>

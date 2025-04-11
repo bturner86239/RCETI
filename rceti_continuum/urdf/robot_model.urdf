@@ -8,7 +8,7 @@
 <link name="S0L0">
 <visual>
 <geometry>
-<box size="1 1 0.5"/>
+<box size="1 1 0.05"/>
 <origin rpy="0 0 0" xyz="0 0 0"/>
 </geometry>
 <material name="white"/>

@@ -67,6 +67,7 @@ void Continuum::timerScanning()
 /******************************************************/
 void Continuum::addSegment(int segID, double segLength, int n_disks, double radius){	// TODO Auto-generated constructor stub
 	// Continuum robot segment
+	//this->createURDF(segID, segLength, n_disks, .003);
 	this->createURDF(segID, segLength, n_disks, radius);
 	segTFFrame[segID] = new tf2::Transform[n_disks];  // Use 'new' to call constructors
 
@@ -250,57 +251,86 @@ rate.sleep();
 }
 /******************************************************/
 
-void Continuum::createURDF(int segID, double segLength, int n_disks, double radius){	// TODO Auto-generated constructor stub
-	std::string path = ament_index_cpp::get_package_share_directory("rceti_continuum");
-	path =path+ "/urdf/robot_model.urdf";
-if(segID == 0)
-{ // if the first time to create the robot, delete the previous file
-	remove(path.c_str());
+void Continuum::createURDF(int segID, double segLength, int n_disks, double radius)
+{
+    // Define a scaling factor
+    double scale_factor = .1; // Example: Scale down by 50%
 
-robotURDFfile.open (path.c_str(), std::fstream::app);
-robotURDFfile << "<?xml version=\"1.0\"?>" <<endl;
-robotURDFfile << "<robot name=\"rceti_continuum\">"<<endl;
-robotURDFfile << "<link name=\"base_link\"/>"<<endl;
-robotURDFfile << "<material name=\"while\">"<<endl;
-robotURDFfile << "<color rgba=\"0 1 0 1\"/>"<<endl;
-robotURDFfile << "</material>"<<endl;
+    // Get the path to the URDF file
+    std::string path = ament_index_cpp::get_package_share_directory("rceti_continuum");
+    path = path + "/urdf/robot_model.urdf";
+
+    if (segID == 0)
+    { // If the first time to create the robot, delete the previous file
+        remove(path.c_str());
+
+        robotURDFfile.open(path.c_str(), std::fstream::app);
+        robotURDFfile << "<?xml version=\"1.1\"?>" << std::endl;
+        robotURDFfile << "<robot name=\"rceti_continuum\">" << std::endl;
+        robotURDFfile << "<link name=\"base_link\"/>" << std::endl;
+		robotURDFfile << "<origin xyz=\"1.0 2.0 0.5\" rpy=\"0 0 0\"/>" << std::endl; // Set the position and orientation
+        robotURDFfile << "<material name=\"white\">" << std::endl;
+        robotURDFfile << "<color rgba=\"0 1 0 1\"/>" << std::endl;
+        robotURDFfile << "</material>" << std::endl;
+    }
+    else
+    {
+        robotURDFfile.open(path.c_str(), std::fstream::app);
+    }
+
+    robotURDFfile << std::endl;
+    for (int disk = 0; disk < n_disks; disk++)
+    {
+        // Scale the position of the disk
+        double scaled_position = scale_factor * (disk / (n_disks - 1)) * segLength;
+
+        robotURDFfile << "<link name=\"S" << segID << "L" << disk << "\">" << std::endl;
+        robotURDFfile << "<visual>" << std::endl;
+        robotURDFfile << "<geometry>" << std::endl;
+
+        if (segID == 0 && disk == 0)
+        {
+            // Scale the size of the base box
+            robotURDFfile << "<box size=\"" << scale_factor * 1 << " " << scale_factor * 1 << " " << scale_factor * 0.05 << "\"/>" << std::endl;
+			RCLCPP_INFO(rclcpp::get_logger("rceti_continuum"), "PLEASEPLEASEPLEASEPLEASE");
+
+        }
+        else
+        {
+            // Scale the size of the cylinder
+            robotURDFfile << "<cylinder length=\"" << scale_factor * 0.1 << "\" radius=\"" << scale_factor * radius << "\"/>" << std::endl;
+        }
+
+        // Scale the position of the origin
+        robotURDFfile << "<origin rpy=\"0 0 0\" xyz=\"0 0 " << scaled_position << "\"/>" << std::endl;
+        robotURDFfile << "</geometry>" << std::endl;
+
+        if (segID == 0 && disk == 0)
+        {
+            robotURDFfile << "<material name=\"white\"/>" << std::endl;
+        }
+
+        robotURDFfile << "</visual>" << std::endl;
+        robotURDFfile << "</link>" << std::endl;
+        robotURDFfile << std::endl;
+
+        // Scale the joint
+        robotURDFfile << "<joint name=\"S" << segID << "J" << disk << "\" type=\"floating\">" << std::endl;
+        robotURDFfile << "<parent link=\"base_link\"/>" << std::endl;
+        robotURDFfile << "<child link=\"S" << segID << "L" << disk << "\"/>" << std::endl;
+        robotURDFfile << "</joint>" << std::endl;
+        robotURDFfile << std::endl;
+    }
+
+    if (segID == (this->numberOfSegments - 1))
+    {
+        robotURDFfile << "</robot>" << std::endl; // Add closing tag
+    }
+
+    robotURDFfile.close();
 }
-else{robotURDFfile.open (path.c_str(), std::fstream::app);}
 
-robotURDFfile<<endl;
-	  for(int disk=0;disk<n_disks;disk++)
-	  {
-		  robotURDFfile << "<link name=\"S"<<segID<<"L"<<disk<<"\">"<<endl;
-		  robotURDFfile << "<visual>"<<endl;
-		  robotURDFfile << "<geometry>"<<endl;
-		  if(segID==0&&disk==0)
-			  robotURDFfile << "<box size=\"1 1 0.5\"/>"<<endl;
-		  else
-		  robotURDFfile << "<cylinder length=\"0.1\" radius=\""<<radius<<"\"/>"<<endl;
-		  robotURDFfile << "<origin rpy=\"0 0 0\" xyz=\"0 0 "<<(disk/(n_disks-1))*segLength<<"\"/>"<<endl;
-		  robotURDFfile << "</geometry>"<<endl;
-		  if(segID==0&&disk==0)
-		  			  robotURDFfile << "<material name=\"white\"/>"<<endl;
-		  		 // else
-		  robotURDFfile <<"</visual>"<<endl;
-/*		  robotURDFfile <<"<collision>"<<endl;
-		  robotURDFfile <<"<geometry>"<<endl;
-		  robotURDFfile << "<cylinder length=\"0.1\" radius=\""<<radius<<"\"/>"<<endl;
-		  robotURDFfile << "</geometry>"<<endl;
-		  robotURDFfile <<"</collision>"<<endl;*/
-		  robotURDFfile <<"</link>"<<endl;
-		  robotURDFfile <<endl;
-		  robotURDFfile<<"<joint name=\"S"<<segID<<"J"<<disk<<"\" type=\"floating\">"<<endl;
-		  robotURDFfile<<"<parent link=\"base_link\"/>"<<endl;
-		  robotURDFfile<<"<child link=\"S"<<segID<<"L"<<disk<<"\"/>"<<endl;
-		  robotURDFfile<<"</joint>"<<endl;
-		  robotURDFfile<<endl;
 
-	  }
-	 if(segID == (this->numberOfSegments - 1)) robotURDFfile <<"</robot>"<<endl; // a closing tag
-	  robotURDFfile.close();
-
-}
 /******************************************************/
 void Continuum::initCableMarker(int segID){
 	uint32_t shape = visualization_msgs::msg::Marker::SPHERE;
@@ -326,9 +356,9 @@ void Continuum::initCableMarker(int segID){
 	    // Set the pose of the marker.  This is a full 6DOF pose relative to the frame/time specified in the header
 
 	    // Set the scale of the marker -- 1x1x1 here means 1m on a side
-	    cableMarkers[segID].markers[r].scale.x = .1;
-	    cableMarkers[segID].markers[r].scale.y = .1;
-	    cableMarkers[segID].markers[r].scale.z = .1;
+	    cableMarkers[segID].markers[r].scale.x = .008225;//real dimension of physical continuum
+	    cableMarkers[segID].markers[r].scale.y = .008225;//real dimension of physical continuum
+	    cableMarkers[segID].markers[r].scale.z = .023;//real dimension of physical continuum
 
 	    // Set the color -- be sure to set alpha to something non-zero!
 	    cableMarkers[segID].markers[r].color.b = 1.0f;
