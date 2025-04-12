@@ -1,24 +1,28 @@
 <?xml version="1.0"?>
 <!-- This is the launch file that handles all the URDF creation and support for adding the frame of the robot-->
 <launch>
-    <include file="$(find-pkg-share rceti_support)/launch/load_rceti.launch.xml" />
+    <include file="$(find-pkg-share rceti_support)/launch/load_rceti.launch.xml"
+             launch-prefix="bash -c 'sleep 1; exec '" />
 
     <!-- Input Arguments -->
     <arg name="sim_robot" default="True" description="[Bool] Robot Joint State Simulated or listen for /joint_states topic?" />
     <arg name="rviz_config" default="$(find-pkg-share rceti_support)/config/visualize_description.rviz" description="[String] Path to RViz config file." />
 
     <!-- Simulate Joint State -->
-    <group if="$(var sim_robot)" >
-        <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" output="screen" />
+    <group if="$(var sim_robot)">
+        <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" output="screen"
+              launch-prefix="bash -c 'sleep 1; exec '" />
     </group>
 
     <!-- Publish the robot state (tf transforms) -->
-    <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen" >
+    <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen"
+          launch-prefix="bash -c 'sleep 1; exec '" >
         <param name="robot_description" value="$(var robot_description)" />
     </node>
 
     <!-- User Interaction -->
-    <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)" >
+    <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)" output="screen"
+          launch-prefix="bash -c 'sleep 1; exec '" >
         <param name="robot_description" value="$(var robot_description)" />
     </node>
 

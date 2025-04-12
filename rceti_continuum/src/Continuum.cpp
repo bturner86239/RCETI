@@ -205,7 +205,7 @@ for (int segID = 0;segID<this->numberOfSegments;segID++)
 	sprintf(childFrameName, "S%dL%d", segID,i);
 	geometry_msgs::msg::TransformStamped transformStamped;
 	transformStamped.header.stamp = rclcpp::Clock().now();
-	transformStamped.header.frame_id = "base_link";
+	transformStamped.header.frame_id = "continuum_base_link";
 	transformStamped.child_frame_id = childFrameName;
 	transformStamped.transform.translation.x = segTFFrame[segID][i].getOrigin().x();
 	transformStamped.transform.translation.y = segTFFrame[segID][i].getOrigin().y();
@@ -258,7 +258,7 @@ void Continuum::createURDF(int segID, double segLength, int n_disks, double radi
 
     // Get the path to the URDF file
     std::string path = ament_index_cpp::get_package_share_directory("rceti_continuum");
-    path = path + "/urdf/robot_model.urdf";
+    path = path + "/urdf/continuum_macro.xacro";
 	
 
     if (segID == 0)
@@ -267,8 +267,9 @@ void Continuum::createURDF(int segID, double segLength, int n_disks, double radi
 
         robotURDFfile.open(path.c_str(), std::fstream::app);
         robotURDFfile << "<?xml version=\"1.1\"?>" << std::endl;
-        robotURDFfile << "<robot name=\"rceti_continuum\">" << std::endl;
-        robotURDFfile << "<link name=\"base_link\"/>" << std::endl;
+        robotURDFfile << "<robot xmlns:xacro=\"http://ros.org/wiki/xacro\" name=\"rceti_continuum\">" << std::endl;
+		robotURDFfile << "<xacro:macro name=\"rceti_continuum\">" << std::endl;
+        robotURDFfile << "<link name=\"continuum_base_link\"/>" << std::endl;
 		robotURDFfile << "<origin xyz=\"1.0 2.0 0.5\" rpy=\"0 0 0\"/>" << std::endl; // Set the position and orientation
         robotURDFfile << "<material name=\"white\">" << std::endl;
         robotURDFfile << "<color rgba=\"0 1 0 1\"/>" << std::endl;
@@ -316,7 +317,7 @@ void Continuum::createURDF(int segID, double segLength, int n_disks, double radi
 
         // Scale the joint
         robotURDFfile << "<joint name=\"S" << segID << "J" << disk << "\" type=\"floating\">" << std::endl;
-        robotURDFfile << "<parent link=\"base_link\"/>" << std::endl;
+        robotURDFfile << "<parent link=\"continuum_base_link\"/>" << std::endl;
         robotURDFfile << "<child link=\"S" << segID << "L" << disk << "\"/>" << std::endl;
         robotURDFfile << "</joint>" << std::endl;
         robotURDFfile << std::endl;
@@ -324,6 +325,7 @@ void Continuum::createURDF(int segID, double segLength, int n_disks, double radi
 
     if (segID == (this->numberOfSegments - 1))
     {
+		robotURDFfile << "</xacro:macro>" << std::endl;
         robotURDFfile << "</robot>" << std::endl; // Add closing tag
     }
 
@@ -339,7 +341,7 @@ void Continuum::initCableMarker(int segID){
 	  {
 
 	    // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-	    cableMarkers[segID].markers[r].header.frame_id = "base_link";
+	    cableMarkers[segID].markers[r].header.frame_id = "continuum_base_link";
 	    cableMarkers[segID].markers[r].header.stamp = rclcpp::Clock().now();
 
 	    // Set the namespace and id for this marker.  This serves to create a unique ID
@@ -380,7 +382,7 @@ uint32_t shape = visualization_msgs::msg::Marker::CYLINDER;
 	  {
 
 	    // Set the frame ID and timestamp.  See the TF tutorials for information on these.
-		  headMarkers.markers[r].header.frame_id = "base_link";
+		  headMarkers.markers[r].header.frame_id = "continuum_base_link";
 		  headMarkers.markers[r].header.stamp = rclcpp::Clock().now();//this->now()
 
 	    // Set the namespace and id for this marker.  This serves to create a unique ID

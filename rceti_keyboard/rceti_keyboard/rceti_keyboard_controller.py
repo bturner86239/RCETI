@@ -23,8 +23,8 @@ class RcetiKeyboardController(Node):
         self.z_position = 0.0  # Initialize z position
         self.pitch_angle = 0.0  # Initialize pitch angle
 
-        self.MAX_X_POSITION = 0.1545  # Maximum x position
-        self.MIN_X_POSITION = -0.1545  # Minimum x position
+        self.MAX_X_POSITION = 0.309  # Maximum x position
+        self.MIN_X_POSITION = 0.0  # Minimum x position
         self.MAX_Z_POSITION = 0.309  # Maximum z position
         self.MIN_Z_POSITION = 0.0  # Minimum z position
         self.MAX_PITCH_ANGLE = 1.57  # Maximum pitch angle (in radians)
@@ -93,9 +93,15 @@ class RcetiKeyboardController(Node):
                 else:
                     self.z_position -= 0.01
             elif key == 'p':  # Increase pitch angle
-                self.pitch_angle += 0.1
+                if(self.pitch_angle + 0.1) > self.MAX_PITCH_ANGLE:
+                    self.get_logger().info("Cannot move up, at maximum pitch angle")
+                else:
+                    self.pitch_angle += 0.1
             elif key == 'l':  # Decrease pitch angle
-                self.pitch_angle -= 0.1
+                if (self.pitch_angle - 0.1) < self.MIN_PITCH_ANGLE:
+                    self.get_logger().info("Cannot move down, at minimum pitch angle")
+                else:
+                    self.pitch_angle -= 0.1
             elif key == '\x03':  # Ctrl+C to exit
                 rclpy.shutdown()
                 sys.exit(0)
