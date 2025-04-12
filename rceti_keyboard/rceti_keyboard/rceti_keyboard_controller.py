@@ -1,128 +1,203 @@
 import sys
+import time
+import select
 import termios
 import tty
-from select import select
 from std_msgs.msg import Float32
 from sensor_msgs.msg import JointState
 import rclpy
 from rclpy.node import Node
 
 class RcetiKeyboardController(Node):
-    """RcetiKeyboardController is a ROS 2 node that handles keyboard input to control the RCETI robot's joint states.
-
-    Args:
-        Node (Node): The node of the ROS 2 system that handles the keyboard input and joint state publishing.
+    """
+    ...
     """
     def __init__(self):
-        """Initializes the RcetiKeyboardController node, sets up the publisher for joint states, and initializes parameters.
+        """
+        ...
         """
         super().__init__('rceti_keyboard')
         self.joint_state_publisher = self.create_publisher(JointState, '/joint_states', 10)
         
-        self.x_position = 0.0  # Initialize x position
-        self.z_position = 0.0  # Initialize z position
-        self.pitch_angle = 0.0  # Initialize pitch angle
+        self.x_position = 0.0
+        self.z_position = 0.0
+        self.pitch_angle = 0.0
 
-        self.MAX_X_POSITION = 0.1545  # Maximum x position
-        self.MIN_X_POSITION = -0.1545  # Minimum x position
-        self.MAX_Z_POSITION = 0.309  # Maximum z position
-        self.MIN_Z_POSITION = 0.0  # Minimum z position
-        self.MAX_PITCH_ANGLE = 1.57  # Maximum pitch angle (in radians)
-        self.MIN_PITCH_ANGLE = -1.57  # Minimum pitch angle (in radians)
+        self.x_velocity = 0.0
+        self.z_velocity = 0.0
+        self.pitch_velocity = 0.0
+
+        self.x_target_velocity = 0.0
+        self.z_target_velocity = 0.0
+        self.pitch_target_velocity = 0.0
+
+        self.max_velocity = 0.05
+        self.acceleration = 0.1
+        self.deceleration = 0.2
+
+        self.MAX_X_POSITION = 0.1545
+        self.MIN_X_POSITION = -0.1545
+        self.MAX_Z_POSITION = 0.309
+        self.MIN_Z_POSITION = 0.0
+        self.MAX_PITCH_ANGLE = 1.57
+        self.MIN_PITCH_ANGLE = -1.57
         
-        # Timer for keyboard input
+        self.key_states = {'w': False, 'a': False, 's': False, 'd': False, 
+                           'p': False, 'l': False, ' ': False}
+        self.last_key = None
+
+        self.settings = termios.tcgetattr(sys.stdin)
+
         self.keyboard_timer = self.create_timer(0.01, self.keyboard_callback)
-        
-        # Timer for continuous joint state publishing
-        self.joint_state_timer = self.create_timer(0.1, self.publish_joint_states)
+        self.motion_timer = self.create_timer(0.01, self.motion_update)
+        self.publish_timer = self.create_timer(0.02, self.publish_joint_states)
 
-        self.declare_parameter('key_timeout', 0.1)
+        self.get_logger().info("Keyboard Controller Started")
+        self.get_logger().info("Use WASD to control X/Z axes, P/L for pitch, Space to stop")
 
-    def detectKey(self, settings, timeout):
-        """Detects a key press from the keyboard with a timeout
-
-        Args:
-            settings (String): The settings of the terminal for keyboard input
-            timeout (float): The timeout duration in seconds
-
-        Returns:
-            string: The key pressed or an empty string if no key was pressed within the timeout
+    def detect_keys(self):
+        """
+        ...
         """
         tty.setraw(sys.stdin.fileno())
-        rlist, _, _ = select([sys.stdin], [], [], timeout)
-        key = sys.stdin.read(1) if rlist else ''
-        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
-        return key
-
-    def saveTerminalSettings(self):
-        """Saves the current terminal settings for keyboard input
-
-        Returns:
-            string: The current terminal settings
-        """
-        return termios.tcgetattr(sys.stdin)
-
-    def keyboard_callback(self):
-        """Handles keyboard input to control the robot's joint states.
-        This function is called periodically to check for keyboard input.
-        It reads the key pressed and updates the robot's joint states accordingly.
-        """
-        settings = self.saveTerminalSettings()
-        key_timeout = self.get_parameter("key_timeout").get_parameter_value().double_value
-        key = self.detectKey(settings, key_timeout)
-
-        if key:
-            if key == 'd':  # Move left (decrease x)
-                if (self.x_position - 0.01) < self.MIN_X_POSITION:
-                    self.get_logger().info("Cannot move right, at minimum x position")
-                else:
-                    self.x_position -= 0.01
-            elif key == 'a':  # Move right (increase x)
-                if (self.x_position + 0.01) > self.MAX_X_POSITION:
-                    self.get_logger().info("Cannot move left, at maximum x position")
-                else:
-                    self.x_position += 0.01
-            elif key == 's':  # Move forward (increase z)
-                if (self.z_position + 0.01) > self.MAX_Z_POSITION:
-                    self.get_logger().info("Cannot move down, at minimum z position")
-                else:
-                    self.z_position += 0.01
-            elif key == 'w':  # Move backward (decrease z)
-                if (self.z_position - 0.01) < self.MIN_Z_POSITION:
-                    self.get_logger().info("Cannot move left, at minimum x position")
-                else:
-                    self.z_position -= 0.01
-            elif key == 'p':  # Increase pitch angle
-                self.pitch_angle += 0.1
-            elif key == 'l':  # Decrease pitch angle
-                self.pitch_angle -= 0.1
-            elif key == '\x03':  # Ctrl+C to exit
+        rlist, _, _ = select([sys.stdin], [], [], 0.01)
+        
+        if rlist:
+            key = sys.stdin.read(1)
+            
+            if key == '\x03' or key == '\x1b': 
+                self.get_logger().info("Exit requested")
+                termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.settings)
                 rclpy.shutdown()
                 sys.exit(0)
+                
+            if key in self.key_states:
+                self.key_states[key] = not self.key_states[key]
+                self.last_key = key
+                self.get_logger().debug(f"Key {key} is {'pressed' if self.key_states[key] else 'released'}")
+                
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.settings)
 
+    def keyboard_callback(self):
+        """
+        ...
+        """
+        self.detect_keys()
+        
+        self.x_target_velocity = 0.0
+        self.z_target_velocity = 0.0
+        self.pitch_target_velocity = 0.0
+        
+        if self.key_states['a']:
+            self.x_target_velocity = self.max_velocity  # Move right
+        if self.key_states['d']:
+            self.x_target_velocity = -self.max_velocity  # Move left
+            
+        if self.key_states['w']:
+            self.z_target_velocity = -self.max_velocity  # Move up
+        if self.key_states['s']:
+            self.z_target_velocity = self.max_velocity   # Move down
+            
+        if self.key_states['p']:
+            self.pitch_target_velocity = self.max_velocity   # Increase pitch
+        if self.key_states['l']:
+            self.pitch_target_velocity = -self.max_velocity  # Decrease pitch
+            
+        if self.key_states[' ']:  # Immediate stop
+            self.x_target_velocity = 0.0
+            self.z_target_velocity = 0.0
+            self.pitch_target_velocity = 0.0
+            self.x_velocity = 0.0
+            self.z_velocity = 0.0
+            self.pitch_velocity = 0.0
+
+    def motion_update(self):
+        """
+        ...
+        """
+        dt = 0.01  # Time step matching timer frequency
+        
+        # X-axis velocity
+        if self.x_velocity < self.x_target_velocity:
+            # Accelerate
+            self.x_velocity = min(
+                self.x_velocity + self.acceleration * dt,
+                self.x_target_velocity
+            )
+        elif self.x_velocity > self.x_target_velocity:
+            # Decelerate
+            self.x_velocity = max(
+                self.x_velocity - self.deceleration * dt,
+                self.x_target_velocity
+            )
+            
+        # Z-axis velocity
+        if self.z_velocity < self.z_target_velocity:
+            # Accelerate
+            self.z_velocity = min(
+                self.z_velocity + self.acceleration * dt,
+                self.z_target_velocity
+            )
+        elif self.z_velocity > self.z_target_velocity:
+            # Decelerate
+            self.z_velocity = max(
+                self.z_velocity - self.deceleration * dt,
+                self.z_target_velocity
+            )
+            
+        # Pitch velocity update
+        if self.pitch_velocity < self.pitch_target_velocity:
+            # Accelerate
+            self.pitch_velocity = min(
+                self.pitch_velocity + self.acceleration * dt,
+                self.pitch_target_velocity
+            )
+        elif self.pitch_velocity > self.pitch_target_velocity:
+            # Decelerate
+            self.pitch_velocity = max(
+                self.pitch_velocity - self.deceleration * dt,
+                self.pitch_target_velocity
+            )
+            
+        self.x_position += self.x_velocity * dt
+        self.z_position += self.z_velocity * dt
+        self.pitch_angle += self.pitch_velocity * dt
+        
+        self.x_position = max(min(self.x_position, self.MAX_X_POSITION), self.MIN_X_POSITION)
+        self.z_position = max(min(self.z_position, self.MAX_Z_POSITION), self.MIN_Z_POSITION)
+        self.pitch_angle = max(min(self.pitch_angle, self.MAX_PITCH_ANGLE), self.MIN_PITCH_ANGLE)
+        
     def publish_joint_states(self):
-        """Publishes the current joint states to the /joint_states topic.
+        """
+        ...
         """
         joint_state = JointState()
         joint_state.header.stamp = self.get_clock().now().to_msg()
         joint_state.name = ['x_actuator_to_x_moving', 'z_actuator_to_z_moving', 'z_moving_to_pitch_actuator']
         joint_state.position = [self.x_position, self.z_position, self.pitch_angle]
+        joint_state.velocity = [self.x_velocity, self.z_velocity, self.pitch_velocity]
+        
         self.joint_state_publisher.publish(joint_state)
-
-        self.get_logger().info(f"Published Joint States: X: {self.x_position}, Z: {self.z_position}, Pitch: {self.pitch_angle}")
+        self.get_logger().info(
+            f"Position: X={self.x_position:.4f}, Z={self.z_position:.4f}, P={self.pitch_angle:.4f} | "
+            f"Velocity: X={self.x_velocity:.4f}, Z={self.z_velocity:.4f}, P={self.pitch_velocity:.4f}"
+        )
 
 
 def main(args=None):
-    """Main function to initialize the RcetiKeyboardController node and start the ROS 2 event loop.
-
-    Args:
-        args (N/A optional):Defaults to None, shouldn't be set to anything
+    """
+    ...
     """
     rclpy.init(args=args)
     keyboard_controller = RcetiKeyboardController()
-    rclpy.spin(keyboard_controller)
-    keyboard_controller.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(keyboard_controller)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, keyboard_controller.settings)
+        keyboard_controller.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
