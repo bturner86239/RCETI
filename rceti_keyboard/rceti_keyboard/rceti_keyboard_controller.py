@@ -43,73 +43,78 @@ class RcetiKeyboardController(Node):
         self.MAX_PITCH_ANGLE = 1.57
         self.MIN_PITCH_ANGLE = -1.57
         
+        self.orig_settings = termios.tcgetattr(sys.stdin)
+        self.last_key_time = time.time()
+        self.key_timeout = 0.1
+
         self.keyboard_timer = self.create_timer(0.001, self.keyboard_callback)
-        self.motion_timer = self.create_timer(0.01, self.motion_update)
+        self.motion_timer = self.create_timer(0.001, self.motion_update)
         self.publish_timer = self.create_timer(0.1, self.publish_joint_states)
 
         self.get_logger().info("Keyboard Controller Started")
         self.get_logger().info("Use WASD to control X/Z axes, P/L for pitch, Space to stop")
 
-    def detect_keys(self, settings, timeout=0.1):
+    def detect_keys(self, timeout=0.001):
         """
         ...
         """
         tty.setraw(sys.stdin.fileno())
         rlist, _, _ = select([sys.stdin], [], [], timeout)
         key = sys.stdin.read(1) if rlist else ''
-        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+        termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.orig_settings)
         return key
 
-    def save_terminal_settings(self):
-        """
-        ...
-        """
-        return termios.tcgetattr(sys.stdin)
-    
     def keyboard_callback(self):
         """
         ...
         """
-        settings = self.save_terminal_settings()
-        key = self.detect_keys(settings)
-        
-        self.x_target_velocity = 0.0
-        self.z_target_velocity = 0.0
-        self.pitch_target_velocity = 0.0
-        
-        if key == 'a':
-            self.x_target_velocity = self.max_velocity  # Move right
-        if key == 'd':
-            self.x_target_velocity = -self.max_velocity  # Move left
-            
-        if key == 'w':
-            self.z_target_velocity = -self.max_velocity  # Move up
-        if key == 's':
-            self.z_target_velocity = self.max_velocity   # Move down
-            
-        if key == 'p':
-            self.pitch_target_velocity = self.max_velocity   # Increase pitch
-        if key == 'l':
-            self.pitch_target_velocity = -self.max_velocity  # Decrease pitch
-            
-        if key == ' ':  # Immediate stop
-            self.x_target_velocity = 0.0
-            self.z_target_velocity = 0.0
-            self.pitch_target_velocity = 0.0
-            self.x_velocity = 0.0
-            self.z_velocity = 0.0
-            self.pitch_velocity = 0.0
-
-        if key == '\x03':  # Ctrl+C to exit
-            rclpy.shutdown()
-            sys.exit(0)
+        key = self.detect_keys()
+        if key:
+            # Update the last key press time.
+            self.get_logger().info(f"Key detected: {repr(key)}")
+            self.last_key_time = time.time()
+            # Set target velocities based on key input.
+            if key == 'a':
+                self.x_target_velocity = self.max_velocity  # Move right.
+            elif key == 'd':
+                self.x_target_velocity = -self.max_velocity  # Move left.
+                
+            if key == 'w':
+                self.z_target_velocity = -self.max_velocity  # Move up.
+            elif key == 's':
+                self.z_target_velocity = self.max_velocity   # Move down.
+                
+            if key == 'p':
+                self.pitch_target_velocity = self.max_velocity   # Increase pitch.
+            elif key == 'l':
+                self.pitch_target_velocity = -self.max_velocity  # Decrease pitch.
+                
+            if key == ' ':
+                # Immediate stop.
+                self.x_target_velocity = 0.0
+                self.z_target_velocity = 0.0
+                self.pitch_target_velocity = 0.0
+                self.x_velocity = 0.0
+                self.z_velocity = 0.0
+                self.pitch_velocity = 0.0
+                
+            if key == '\x03':  # Ctrl+C to exit.
+                rclpy.shutdown()
+                sys.exit(0)
+        else:
+            # If no key is detected and enough time has passed since the last key press,
+            # set target velocities to zero.
+            if time.time() - self.last_key_time > self.key_timeout:
+                self.x_target_velocity = 0.0
+                self.z_target_velocity = 0.0
+                self.pitch_target_velocity = 0.0
         
 
     def motion_update(self):
         """
         ...
         """
-        dt = 0.01  # Time step matching timer frequency
+        dt = 0.001  # Time step matching timer frequency
         
         # X-axis velocity
         if self.x_velocity < self.x_target_velocity:
@@ -172,10 +177,10 @@ class RcetiKeyboardController(Node):
         # joint_state.velocity = [self.x_velocity, self.z_velocity, self.pitch_velocity]
         
         self.joint_state_publisher.publish(joint_state)
-        self.get_logger().info(
-            f"Position: X={self.x_position:.4f}, Z={self.z_position:.4f}, P={self.pitch_angle:.4f} | "
-            f"Velocity: X={self.x_velocity:.4f}, Z={self.z_velocity:.4f}, P={self.pitch_velocity:.4f}"
-        )
+        # self.get_logger().info(
+        #     f"Position: X={self.x_position:.4f}, Z={self.z_position:.4f}, P={self.pitch_angle:.4f} | "
+        #     f"Velocity: X={self.x_velocity:.4f}, Z={self.z_velocity:.4f}, P={self.pitch_velocity:.4f}"
+        # )
 
 
 def main(args=None):
