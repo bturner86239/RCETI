@@ -3,6 +3,7 @@ import time
 import select
 import termios
 import tty
+from select import select
 from std_msgs.msg import Float32
 from sensor_msgs.msg import JointState
 import rclpy
@@ -74,7 +75,7 @@ class RcetiKeyboardController(Node):
             if key in self.key_states:
                 self.key_states[key] = not self.key_states[key]
                 self.last_key = key
-                self.get_logger().debug(f"Key {key} is {'pressed' if self.key_states[key] else 'released'}")
+                self.get_logger().info(f"Key {key} is {'pressed' if self.key_states[key] else 'released'}")
                 
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.settings)
 
@@ -178,10 +179,10 @@ class RcetiKeyboardController(Node):
         joint_state.velocity = [self.x_velocity, self.z_velocity, self.pitch_velocity]
         
         self.joint_state_publisher.publish(joint_state)
-        self.get_logger().info(
-            f"Position: X={self.x_position:.4f}, Z={self.z_position:.4f}, P={self.pitch_angle:.4f} | "
-            f"Velocity: X={self.x_velocity:.4f}, Z={self.z_velocity:.4f}, P={self.pitch_velocity:.4f}"
-        )
+        # self.get_logger().info(
+        #     f"Position: X={self.x_position:.4f}, Z={self.z_position:.4f}, P={self.pitch_angle:.4f} | "
+        #     f"Velocity: X={self.x_velocity:.4f}, Z={self.z_velocity:.4f}, P={self.pitch_velocity:.4f}"
+        # )
 
 
 def main(args=None):
