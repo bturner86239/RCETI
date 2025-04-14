@@ -13,7 +13,11 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
     ],
-    install_requires=['setuptools'],
+    install_requires=[
+        'setuptools',
+        'adafruit-circuitpython-servokit',  # Add the Adafruit ServoKit package
+        'lgpio',                            # Add the lgpio package
+    ],
     zip_safe=True,
     maintainer='bturner86239',
     maintainer_email='turner.1893@buckeyemail.osu.edu',

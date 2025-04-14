@@ -4,9 +4,12 @@
 <package format="3">
   <name>rceti_keyboard</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>ROS 2 package for controlling RCETI robot with keyboard</description>
   <maintainer email="turner.1893@buckeyemail.osu.edu">bturner86239</maintainer>
   <license>Apache-2.0</license>
+
+  <exec_depend>python3-adafruit-circuitpython-servokit</exec_depend>
+  <exec_depend>python3-lgpio</exec_depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
