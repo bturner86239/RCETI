@@ -1,1 +1,3 @@
 adafruit-circuitpython-servokit
+adafruit-circuitpython-motor
+adafruit-circuitpython-busdevice

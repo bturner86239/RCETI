@@ -60,9 +60,9 @@ class RCETIRobotController(Node):
         """
         # Extract joint positions from the message
         try:
-            x_index = msg.name.index('x_actuator_to_x_moving')
-            z_index = msg.name.index('z_actuator_to_z_moving')
-            pitch_index = msg.name.index('z_moving_to_pitch_actuator')
+            x_index = msg.name.index('x_actuator_to_x_slider')
+            z_index = msg.name.index('z_actuator_to_z_slider')
+            pitch_index = msg.name.index('z_slider_to_pitch_servo')
 
             new_x_position = msg.position[x_index]
             new_z_position = msg.position[z_index]
