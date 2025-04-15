@@ -37,15 +37,27 @@ class RCETIRobotController(Node):
         servo2 = kit.servo[1]
         servo3 = kit.servo[2]
         # SERVO TEST
-        print("servos to 50")
+        print(f"servos to {angle}")
         x = 0
         angle = 0
         while x < 5 :
             angle += 10
             x += 1
+            print(f"servos to {angle}")
             servo2.angle = angle
             servo3.angle = angle
             time.sleep(1)
+
+        while x > 0 :
+            angle -= 10
+            x -= 1
+            print(f"servos to {angle}")
+            servo2.angle = angle
+            servo3.angle = angle
+            time.sleep(1)
+        
+        # servo2.angle = 0
+        # servo3.angle = 0
 
         # print("waiting 2 seconds")
         # time.sleep(1)  # Give time to move
