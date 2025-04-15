@@ -39,8 +39,8 @@ class RCETIRobotController(Node):
         # SERVO TEST
         print("servos to 90 angle")
         servo1.angle = 90
-        servo2.angle = 90
-        servo3.angle = 90
+        # servo2.angle = 90
+        # servo3.angle = 90
 
 
         print("waiting 2 seconds")
@@ -48,8 +48,18 @@ class RCETIRobotController(Node):
 
         print("servos to 0 angle")
         servo1.angle = 0
-        servo2.angle = 0
-        servo3.angle = 0
+        # servo2.angle = 0
+        # servo3.angle = 0
+
+        print("waiting 2 seconds")
+        time.sleep(2)  # Give time to move
+
+        print("servos to -90 angle")
+        servo1.angle = -90
+        # servo2.angle = 0
+        # servo3.angle = 0
+
+
         
         
         self.x_position_sub = self.create_subscription(
