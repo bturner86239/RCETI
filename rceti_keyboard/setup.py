@@ -23,6 +23,7 @@ setup(
     entry_points={
         'console_scripts': [
             'rceti_keyboard = rceti_keyboard.rceti_keyboard_controller:main',
+            'calibration = rceti_keyboard.rceti_keyboard_calibration:main',
         ],
     },
 )
