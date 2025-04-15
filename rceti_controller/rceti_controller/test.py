@@ -37,25 +37,21 @@ class RCETIRobotController(Node):
         servo2 = kit.servo[1]
         servo3 = kit.servo[2]
         # SERVO TEST
-        print("servos to 90 angle")
-        servo1.angle = 90
-        # servo2.angle = 90
-        # servo3.angle = 90
+        print("servos to 50")
+        x = 0
+        angle = 0
+        while x < 5 :
+            angle += 10
+            x += 1
+            servo2.angle = angle
+            servo3.angle = angle
+            time.sleep(1)
 
+        # print("waiting 2 seconds")
+        # time.sleep(1)  # Give time to move
 
-        print("waiting 2 seconds")
-        time.sleep(2)  # Give time to move
-
-        print("servos to 0 angle")
-        servo1.angle = 0
-        # servo2.angle = 0
-        # servo3.angle = 0
-
-        print("waiting 2 seconds")
-        time.sleep(2)  # Give time to move
-
-        print("servos to -90 angle")
-        servo1.angle = -90
+        # print("servos to -90 angle")
+        # servo1.angle = -90
         # servo2.angle = 0
         # servo3.angle = 0
 
