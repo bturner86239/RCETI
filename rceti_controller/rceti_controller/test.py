@@ -21,8 +21,7 @@ from adafruit_servokit import ServoKit
 kit = ServoKit(channels=16)
 
 import adafruit_motor.servo
-servo1 = kit.servo[1]
-servo2 = kit.servo[2]
+
 
 #Constants:
 # maximum amount of request stepper motors will take at any given time
@@ -34,14 +33,23 @@ class RCETIRobotController(Node):
     def __init__(self):
         super().__init__('rceti_controller')
 
+        servo1 = kit.servo[0]
+        servo2 = kit.servo[1]
+        servo3 = kit.servo[2]
         # SERVO TEST
-        servo1.angle = 180
-        servo2.angle = 180
+        print("servos to 90 angle")
+        servo1.angle = 90
+        servo2.angle = 90
+        servo3.angle = 90
 
+
+        print("waiting 2 seconds")
         time.sleep(2)  # Give time to move
 
+        print("servos to 0 angle")
         servo1.angle = 0
         servo2.angle = 0
+        servo3.angle = 0
         
         
         self.x_position_sub = self.create_subscription(
