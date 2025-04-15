@@ -4,7 +4,7 @@
   <link name="base_link">
     <visual>
       <geometry>
-        <cylinder length="0.1" radius="0.5"/>
+        <cylinder length="0.1" radius="0.05"/>
       </geometry>
     </visual>
   </link>
@@ -12,7 +12,7 @@
  <link name="seg1">
     <visual>
       <geometry>
-   <cylinder length="0.1" radius="0.5"/>
+   <cylinder length="0.1" radius="0.05"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>
@@ -21,7 +21,7 @@
    <link name="seg2">
     <visual>
       <geometry>
-   <cylinder length="0.1" radius="0.5"/>
+   <cylinder length="0.1" radius="0.05"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </visual>

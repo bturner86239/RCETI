@@ -18,7 +18,6 @@ find_package(ament_index_cpp REQUIRED)
 find_package(interactive_markers REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 
-
 include_directories(
   include
 )
@@ -40,10 +39,6 @@ ament_target_dependencies(core_node
   interactive_markers
 )
 
-
-
-
-
 # Build interface
 add_executable(interface src/interface.cpp)
 ament_target_dependencies(interface rclcpp visualization_msgs interactive_markers tf2 tf2_ros tf2_geometry_msgs)
@@ -63,6 +58,11 @@ install(DIRECTORY include/
 # Install launch files
 install(DIRECTORY launch/
   DESTINATION share/${PROJECT_NAME}/launch
+)
+
+# Install URDF files
+install(DIRECTORY urdf/
+  DESTINATION share/${PROJECT_NAME}/urdf
 )
 
 ament_package()

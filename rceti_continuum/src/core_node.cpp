@@ -43,13 +43,17 @@ int main(int argc, char **argv)
     // Assign parameters for each section
     for (int i = 0; i <= robot.numberOfSegments - 1; i++)
     {
-        robot.addSegment(i, 5 * (i + 1), 2, .3); // SegID, Length, noOfSegments, radius of disk
+        robot.addSegment(i, .23 , 2, .0003); // SegID, Length, noOfSegments, radius of disk
+        //        robot.addSegment(i, 1 * (i + 1), 2, .0003); // SegID, Length, noOfSegments, radius of disk
         robot.setSegmentShape(0, 0.0001, 0);     // SegID, Kappa, Phi
     }
 
     // Configure terminal for non-blocking input
     struct termios initial_settings, new_settings;
     configureTerminal(initial_settings, new_settings);
+
+    robot.setSegmentShape(0, 0, 0); 
+    robot.update();
 
     RCLCPP_INFO(node->get_logger(), "w/s: Increase/Decrease curvature (kappa)");
     RCLCPP_INFO(node->get_logger(), "a/d: Rotate left/right (phi)");

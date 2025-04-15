@@ -2,11 +2,15 @@
 <!-- URDF of the Frame of the RCETI Intubation Robot-->
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="rceti_robot">
     
-    <!-- Ensure the property is defined before the macro -->
+    <!-- This file wraps a standard URDF in a Xacro which is a URDF scripting language. 
+    This file is ultimately what will generate the interactive virtual model of the robot frame -->
+    
     <xacro:property name="meshes_directory" default=""/>
 
     <xacro:macro name="rceti_robot" params="meshes_directory">
         
+        <!-- MATERIALS -->
+
         <material name="wood">
         <color rgba="0.76 0.6 0.42 1"/>
         </material>
@@ -15,7 +19,9 @@
             <color rgba="0.75 0.75 0.75 1"/>
         </material>
 
-        <!-- Base Link (Fixed) -->
+        <!-- LINK GROUP -->
+
+        <!-- Base Link (Fixed) serves as our origin -->
         <link name="base_link">
             <visual>
                 <geometry>
@@ -23,102 +29,218 @@
                 </geometry>
                 <material name="wood"/>
             </visual>
+
+            <collision>
+                <geometry>
+                    <box size="0.01 0.01 0.01"/>
+                </geometry>
+            </collision>
         </link>
 
-        <!-- X-Axis Actuator (Horizontal, fixed) -->
+        <!-- X-Axis Linear Actuator (Horizontal, fixed) -->
         <link name="x_actuator_link">
             <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
                 <geometry>
-                    <!--box size="0.6 0.1 0.2"/>  Wider horizontal actuator -->
+                    <!--box size="0.6 0.1 0.2"/>  testing before stl -->
                     <mesh filename="file://$(arg meshes_directory)/LA_rail.stl"/>
                 </geometry>
                 <material name="metal"/>
             </visual>
+
+            <!-- Rail collision -->
+            <collision>
+                <origin xyz="0.2 0 0.015" rpy="0 ${pi/2} 0"/>
+                <geometry>
+                    <box size="0.045 0.02 0.4 "/>
+                </geometry>
+            </collision>
+
+            <!-- Left bracket collision -->
+            <collision>
+                <origin xyz="0.3925 0.025 0.015" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.0145 0.045 0.045"/>
+                </geometry>
+            </collision>
+
+            <!-- Right bracket collision-->
+            <collision>
+                <origin xyz="0.019 0.025 0.015" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.045 0.045"/>
+                </geometry>
+            </collision>
         </link>
 
-        <!-- Fixed Joint Attach X Actuator to Base Link -->
+        <!-- X Slider (Moves Horizontally along X actuator) -->
+        <link name="x_slider_link">
+            <visual>
+                <origin xyz="-0.019 -0.015 -0.014" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+
+            <collision>
+                <origin xyz="-0.019 -0.015 -0.014" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <!-- Z-Axis Linear Actuator (Vertical, fixed) -->
+        <link name="z_actuator_link">
+            <visual>
+                <origin xyz="-0.015 0 0" rpy="0 ${pi/2} 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_rail.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+
+            <!-- Rail collision -->
+            <collision>
+                <origin xyz="0 0.001 -0.2" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.02 0.4 "/>
+                </geometry>
+            </collision>
+
+            <!-- Top bracket collision -->
+            <collision>
+                <origin xyz="0 0.0175 -0.014" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.053 0.05"/>
+                </geometry>
+            </collision>
+
+            <!-- Bottom bracket collision-->
+            <collision>
+                <origin xyz="0 0.0175 -0.3975" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.053 0.025"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <!-- Z Slider Link (Moves Vertically) -->
+        <link name="z_slider_link">
+            <visual>
+                <origin xyz="-0.015 -0.014 0.019" rpy="0 ${pi/2} 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+
+            <collision>
+                <origin xyz="-0.015 -0.014 0.019" rpy="0 ${pi/2} 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+            </collision>
+            
+        </link>
+
+        <!-- Pitch Actuator (Resting on the X slider) -->
+        <link name="pitch_servo_link">
+            <visual>
+                <origin xyz="-0.070 -0.042 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Top_Meters.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0.035 0.075" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.15 0.07 0.15"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="pitch_servo_bottom_link">
+            <visual>
+                <origin xyz="-0.070 -0.042 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/IF_Attachment_Piece_V8_Bottom_Meters.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="metal"/>
+            </visual>
+
+            <!-- facing robot-> 1st = left/right = x, 2nd = up/down = z, 3rd = forward/back = y -->
+            <collision>
+                <origin xyz="0 -0.04 0.075" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.15 0.04 0.15"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="continuum_base_link">
+            <visual>
+                <geometry>
+                    <cylinder length="0.001" radius="0.001"/>
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </visual>
+
+        </link>
+
+        <!-- JOINT GROUP -->
+
+        <!-- Fixed Joint to ensure X actuator is anchored to the base link -->
         <joint name="base_to_x_actuator" type="fixed">
             <parent link="base_link"/>
             <child link="x_actuator_link"/>
-            <origin xyz="0 0 0.35"/>  <!-- X actuator is now anchored to the base link -->
+            <origin xyz="0 0 0.35"/>  
         </joint>
 
-        <!-- X Moving Link (Moves Horizontally) -->
-        <link name="x_moving_link">
-            <visual>
-                <geometry>
-                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
-                </geometry>
-                <material name="metal"/>
-            </visual>
-        </link>
-
-        <!-- Prismatic Joint X Moves Along X-Axis -->
-        <joint name="x_actuator_to_x_moving" type="prismatic">
+        <!-- Prismatic Joint Moves Along X-Axis -->
+        <joint name="x_actuator_to_x_slider" type="prismatic">
             <parent link="x_actuator_link"/>
-            <child link="x_moving_link"/>
-            <origin xyz="0.193 0.012 0"/>
-            <axis xyz="1 0 0"/>  <!-- Moves left-right along X -->
-            <limit effort="100.0" lower="-0.1545" upper="0.1545" velocity="0.5"/>
+            <child link="x_slider_link"/>
+            <origin xyz="0.0580 0.027 0.014"/>
+            <axis xyz="1 0 0"/>  <!-- Moves left-right along X actuator-->
+            <limit effort="100.0" lower="0" upper="0.308" velocity="0.5"/>
         </joint>
-
-        <!-- Z-Axis Actuator (Vertical, fixed) -->
-        <link name="z_actuator_link">
-            <visual>
-                <origin rpy="0 1.5708 0" xyz="0 0 0"/>  <!-- Rotate 90 degrees around X -->
-                <geometry>
-                    <mesh filename="file://$(arg meshes_directory)/LA_rail.stl"/>
-                </geometry>
-                <material name="metal"/>
-            </visual>
-        </link>
 
         <!-- Fixed Joint Attach Z Actuator to the Center of the X Slider -->
-        <joint name="x_moving_to_z_actuator" type="fixed">
-            <parent link="x_moving_link"/>
+        <joint name="x_slider_to_z_actuator" type="fixed">
+            <parent link="x_slider_link"/>
             <child link="z_actuator_link"/>
-            <origin xyz="0 0.03965 0.13176"/>  <!-- Centered on X slider -->
+            <origin xyz="0 0.03965 0.13176"/>
         </joint>
 
-        <!-- Z Moving Link (Moves Vertically) -->
-        <link name="z_moving_link">
-            <visual>
-                <origin rpy="0 1.5708 0" xyz="0 0 0"/>  <!-- Rotate 90 degrees around X -->
-                <geometry>
-                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
-                </geometry>
-                <material name="metal"/>
-            </visual>
-        </link>
-
-        <!-- Prismatic Joint Vertical Movement (Z-Axis) -->
-        <joint name="z_actuator_to_z_moving" type="prismatic">
+        <!-- Prismatic Joint for Vertical Movement along Z-Axis -->
+        <joint name="z_actuator_to_z_slider" type="prismatic">
             <parent link="z_actuator_link"/>
-            <child link="z_moving_link"/>
-            <origin xyz="0 0.012 -0.038"/>
-            <axis xyz="0 0 -1"/>  <!-- Moves down from top of Z -->
-            <limit effort="100.0" lower="0.0" upper="0.309" velocity="0.5"/> <!--UPDATE WITH LENGTH OF ACTUATOR-->
+            <child link="z_slider_link"/>
+            <origin xyz="0 0.026 -0.0580"/>
+            <axis xyz="0 0 -1"/>
+            <limit effort="100.0" lower="0.0" upper="0.309" velocity="0.5"/>
         </joint>
-
-        <!-- Pitch Actuator (Resting on the moving part of X actuator) -->
-        <link name="pitch_actuator_link">
-            <visual>
-                <geometry>
-                    <box size="0.03 0.01 0.01" />
-                    <!-- <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/> -->
-                </geometry>
-                <material name="metal"/>
-            </visual>
-        </link>
 
         <!-- Joint Pitch Actuator attached to Moving X -->
-        <joint name="z_moving_to_pitch_actuator" type="revolute">
-            <parent link="z_moving_link"/>
-            <child link="pitch_actuator_link"/>
-            <origin xyz="0 0 0"/>  <!-- Aligned with moving X -->
-            <axis xyz="0 1 0"/>  <!-- Rotation along Y-axis (Pitch) -->
-            <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>  <!-- -90 to +90 degrees -->
+        <joint name="z_slider_to_pitch_servo" type="revolute">
+            <parent link="z_slider_link"/>
+            <child link="pitch_servo_link"/>
+            <origin xyz="0 0.02 0" rpy="${pi/2} 0 ${pi}"/>
+            <axis xyz="0 0 1"/>
+            <limit effort="50.0" lower="-1.57" upper="1.57" velocity="1.0"/>
         </joint>
+
+        <!-- Fixed Joint Attach top and bottom of the continuum base parts into one -->
+        <joint name="pitch_bottom_to_top" type="fixed">
+            <parent link="pitch_servo_link"/>
+            <child link="pitch_servo_bottom_link"/>
+            <origin xyz="0 0.017 0"/>
+        </joint>
+
     </xacro:macro>
     <xacro:rceti_robot meshes_directory="$(arg meshes_directory)"/>
 </robot>

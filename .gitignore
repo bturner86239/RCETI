@@ -35,3 +35,8 @@
 build/
 install/
 log/
+venv/
+
+*.vscode/
+
+.vscode/*

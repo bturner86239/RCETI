@@ -217,7 +217,7 @@ void frameCallback(std::shared_ptr<rclcpp::Node> node)
     }
 
     t.header.stamp = time;
-    t.header.frame_id = "base_link";
+    t.header.frame_id = "continuum_base_link";
     t.child_frame_id = "moving_frame";
     t.transform.rotation = tf2::toMsg(directionQauat);
 
@@ -284,7 +284,7 @@ void readMovingFrameTransform(std::shared_ptr<rclcpp::Node> node)
     static tf2_ros::TransformListener tf_listener(tf_buffer);
 
     try {
-        auto transform = tf_buffer.lookupTransform("base_link", "moving_frame", tf2::TimePointZero);
+        auto transform = tf_buffer.lookupTransform("continuum_base_link", "moving_frame", tf2::TimePointZero);
         RCLCPP_INFO(node->get_logger(), "Transform: [%f, %f, %f] [%f, %f, %f, %f]",
                     transform.transform.translation.x,
                     transform.transform.translation.y,
@@ -294,7 +294,7 @@ void readMovingFrameTransform(std::shared_ptr<rclcpp::Node> node)
                     transform.transform.rotation.z,
                     transform.transform.rotation.w);
     } catch (tf2::TransformException &ex) {
-        RCLCPP_WARN(node->get_logger(), "Could not transform moving_frame to base_link: %s", ex.what());
+        RCLCPP_WARN(node->get_logger(), "Could not transform moving_frame to continuum_base_link: %s", ex.what());
     }
 }
 

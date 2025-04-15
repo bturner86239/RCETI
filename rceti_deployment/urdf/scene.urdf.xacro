@@ -30,5 +30,12 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
     </joint>
 
+    <xacro:include filename="$(find rceti_continuum)/urdf/continuum_macro.xacro"/>
+    <joint name="pitch_servo_to_base" type="fixed">
+        <parent link="pitch_servo_bottom_link"/>
+        <child link="continuum_base_link"/>
+        <origin xyz="0 -0.042 0.07" rpy="${pi/2} 0 0"/>
+    </joint>
+
     
 </robot>
