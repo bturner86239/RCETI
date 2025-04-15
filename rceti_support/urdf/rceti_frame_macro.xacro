@@ -29,6 +29,12 @@
                 </geometry>
                 <material name="wood"/>
             </visual>
+
+            <collision>
+                <geometry>
+                    <box size="0.01 0.01 0.01"/>
+                </geometry>
+            </collision>
         </link>
 
         <!-- X-Axis Linear Actuator (Horizontal, fixed) -->
@@ -41,6 +47,30 @@
                 </geometry>
                 <material name="metal"/>
             </visual>
+
+            <!-- Rail collision -->
+            <collision>
+                <origin xyz="0.2 0 0.015" rpy="0 ${pi/2} 0"/>
+                <geometry>
+                    <box size="0.045 0.02 0.4 "/>
+                </geometry>
+            </collision>
+
+            <!-- Left bracket collision -->
+            <collision>
+                <origin xyz="0.3925 0.025 0.015" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.0145 0.045 0.045"/>
+                </geometry>
+            </collision>
+
+            <!-- Right bracket collision-->
+            <collision>
+                <origin xyz="0.019 0.025 0.015" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.045 0.045"/>
+                </geometry>
+            </collision>
         </link>
 
         <!-- X Slider (Moves Horizontally along X actuator) -->
@@ -52,6 +82,13 @@
                 </geometry>
                 <material name="metal"/>
             </visual>
+
+            <collision>
+                <origin xyz="-0.019 -0.015 -0.014" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+            </collision>
         </link>
 
         <!-- Z-Axis Linear Actuator (Vertical, fixed) -->
@@ -63,6 +100,30 @@
                 </geometry>
                 <material name="metal"/>
             </visual>
+
+            <!-- Rail collision -->
+            <collision>
+                <origin xyz="0 0.001 -0.2" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.02 0.4 "/>
+                </geometry>
+            </collision>
+
+            <!-- Top bracket collision -->
+            <collision>
+                <origin xyz="0 0.0175 -0.014" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.053 0.05"/>
+                </geometry>
+            </collision>
+
+            <!-- Bottom bracket collision-->
+            <collision>
+                <origin xyz="0 0.0175 -0.3975" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.045 0.053 0.025"/>
+                </geometry>
+            </collision>
         </link>
 
         <!-- Z Slider Link (Moves Vertically) -->
@@ -74,6 +135,14 @@
                 </geometry>
                 <material name="metal"/>
             </visual>
+
+            <collision>
+                <origin xyz="-0.015 -0.014 0.019" rpy="0 ${pi/2} 0"/>
+                <geometry>
+                    <mesh filename="file://$(arg meshes_directory)/LA_slider.stl"/>
+                </geometry>
+            </collision>
+            
         </link>
 
         <!-- Pitch Actuator (Resting on the X slider) -->
@@ -85,6 +154,13 @@
                 </geometry>
                 <material name="metal"/>
             </visual>
+
+            <collision>
+                <origin xyz="0 0.035 0.075" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.15 0.07 0.15"/>
+                </geometry>
+            </collision>
         </link>
 
         <link name="pitch_servo_bottom_link">
@@ -95,6 +171,14 @@
                 </geometry>
                 <material name="metal"/>
             </visual>
+
+            <!-- facing robot-> 1st = left/right = x, 2nd = up/down = z, 3rd = forward/back = y -->
+            <collision>
+                <origin xyz="0 -0.04 0.075" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.15 0.04 0.15"/>
+                </geometry>
+            </collision>
         </link>
 
         <link name="continuum_base_link">
@@ -104,6 +188,7 @@
                 </geometry>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </visual>
+
         </link>
 
         <!-- JOINT GROUP -->
@@ -121,7 +206,7 @@
             <child link="x_slider_link"/>
             <origin xyz="0.0580 0.027 0.014"/>
             <axis xyz="1 0 0"/>  <!-- Moves left-right along X actuator-->
-            <limit effort="100.0" lower="0" upper="0.03965" velocity="0.5"/>
+            <limit effort="100.0" lower="0" upper="0.308" velocity="0.5"/>
         </joint>
 
         <!-- Fixed Joint Attach Z Actuator to the Center of the X Slider -->
