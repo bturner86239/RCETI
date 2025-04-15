@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!-- This is the main launch file used to launch all nodes on the "computer" side of the RCETI robot project-->
+<launch>
+    <!-- Includes load_rceti_deployment.launch.xml, this will load in the URDF-->
+    <include file="$(find-pkg-share rceti_deployment)/launch/load_rceti_deployment.launch.xml" />
+
+    <!-- Input Arguments -->
+    <arg name="rviz_config" default="$(find-pkg-share rceti_deployment)/config/visualize_description.rviz" description="[String] Path to RViz config file." />
+
+    <!-- Publish the robot state (tf transforms) -->
+    <node pkg="robot_state_publisher" exec="robot_state_publisher" output="screen" >
+        <param name="robot_description" value="$(var robot_description)" />
+    </node>
+
+    <!-- User Interaction -->
+    <node pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)" >
+        <param name="robot_description" value="$(var robot_description)" />
+    </node>
+
+    <!-- Gui Joint State Publisher -->
+    <node pkg="joint_state_publisher_gui" exec="joint_state_publisher_gui" output="screen" >
+        <param name="robot_description" value="$(var robot_description)" />
+    </node>
+
+    <!-- Launches rceti_keyboard node-->
+    <!--  <node pkg="rceti_keyboard" exec="rceti_keyboard" output="screen"  launch-prefix="gnome-terminal DOUBLEDASH bash -c 'echo Starting rceti_keyboard node... Use WASD to control; ros2 run rceti_keyboard rceti_keyboard'" /> -->
+
+</launch>
