@@ -33,7 +33,8 @@ class RCETIRobotController(Node):
         self.servo2 = kit.servo[1]       # pulls continuum
         self.servo3 = kit.servo[2]       # pulls continuum
 
-        self.servo1.actuation_range = 100
+        self.servo1.actuation_range = 200
+        self.servo1.set_pulse_width_range(500, 2000)
 
 
         # Subscribe to the /joint_states topic
@@ -47,7 +48,7 @@ class RCETIRobotController(Node):
         # Position tracking
         self.x_position = 0.0
         self.z_position = 0.0
-        self.pitch_angle = (math.pi)/4
+        self.pitch_angle = 0.730
 
         # GPIO pin definitions
         self.X_DIRECTION_PIN = 21
@@ -82,11 +83,8 @@ class RCETIRobotController(Node):
 
             new_x_position = msg.position[x_index]
             new_z_position = msg.position[z_index]
-            new_pitch_angle = msg.position[pitch_index]
+            pitch_angle_msg = msg.position[pitch_index]
 
-            # cap the range of motion to 90
-            if (new_pitch_angle < 0) : new_pitch_angle = 0
-            if (new_pitch_angle > (math.pi)/2 ) : new_pitch_angle = (math.pi)/2
 
             # Handle X-axis movement
             if self.x_position != new_x_position:
@@ -105,13 +103,11 @@ class RCETIRobotController(Node):
                 self.z_position = new_z_position
 
             # Handle pitch angle (if implemented in hardware)
-            if self.pitch_angle != new_pitch_angle:
+            new_pitch_angle = int( ( (pitch_angle_msg + 0.475) / (1.205) ) * 120 )
+
+            if (self.servo1.angle != new_pitch_angle): 
                 self.get_logger().info(f"Adjusting pitch to {new_pitch_angle}")
-
-                self.pitch_angle = new_pitch_angle
-
-                # TODO: Implement pitch angle movement if hardware supports it
-                self.servo1.angle = self.pitch_angle
+                self.servo1.angle = new_pitch_angle
                 
 
         except ValueError as e:

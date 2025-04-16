@@ -231,7 +231,7 @@
             <child link="pitch_servo_link"/>
             <origin xyz="0 0.02 0" rpy="${pi/2} 0 ${pi}"/>
             <axis xyz="0 0 1"/>
-            <limit effort="50.0" lower="${pi/2}" upper="0" velocity="1.0"/>
+            <limit effort="50.0" lower="0.730" upper="-0.475" velocity="1.0"/>
         </joint>
 
         <!-- Fixed Joint Attach top and bottom of the continuum base parts into one -->

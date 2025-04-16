@@ -37,10 +37,13 @@ class RCETIRobotController(Node):
         servo2 = kit.servo[1]
         servo3 = kit.servo[2]
 
+        servo1.actuation_range = 200
+        servo1.set_pulse_width_range(500, 2000)
+
         # SERVO TEST
         x = 0
         angle = 0
-        while x < 10 :
+        while x < 12 :
             angle = x * 10
             x += 2
             print(f"servos to {angle}")

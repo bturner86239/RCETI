@@ -8,7 +8,7 @@ from sensor_msgs.msg import JointState
 import rclpy
 from rclpy.node import Node
 
-TEN_DEGREES = (math.pi) / 18
+FIVE_DEGREES_FUNCTIONAL = 0.050208333
 class RcetiKeyboardController(Node):
     """RcetiKeyboardController is a ROS 2 node that handles keyboard input to control the RCETI robot's joint states.
 
@@ -24,14 +24,14 @@ class RcetiKeyboardController(Node):
         
         self.x_position = 0.0  # Initialize x position
         self.z_position = 0.0  # Initialize z position
-        self.pitch_angle = (math.pi)/4  # Initialize pitch angle at 45 degrees
+        self.pitch_angle = 0.730 # start at the maximum
 
         self.MAX_X_POSITION = 0.309  # Maximum x position
         self.MIN_X_POSITION = 0.0  # Minimum x position
         self.MAX_Z_POSITION = 0.309  # Maximum z position
         self.MIN_Z_POSITION = 0.0  # Minimum z position
-        self.MAX_PITCH_ANGLE = (math.pi)/2 + TEN_DEGREES # Maximum pitch angle (in radians)
-        self.MIN_PITCH_ANGLE = 0 - TEN_DEGREES  # Minimum pitch angle (in radians)
+        self.MAX_PITCH_ANGLE = 0.730 # Maximum pitch angle (in radians)
+        self.MIN_PITCH_ANGLE = -0.475 # Minimum pitch angle (in radians)
         
         # Timer for keyboard input
         self.keyboard_timer = self.create_timer(0.01, self.keyboard_callback)
