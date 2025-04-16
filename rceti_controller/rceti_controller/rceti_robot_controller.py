@@ -1,8 +1,15 @@
+import math
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import JointState
 import time  # for delays/testing
 import lgpio
+
+from adafruit_servokit import ServoKit
+import adafruit_motor.servo
+
+kit = ServoKit(channels=16)
+
 
 # Constants:
 # Maximum amount of request stepper motors will take at any given time
@@ -16,9 +23,19 @@ class RCETIRobotController(Node):
     """
 
     def __init__(self):
-        """Initializes the RCETIRobotController node, subscribes to the /joint_states topic, and sets up GPIO pins for stepper motors.
+        """Initializes the RCETIRobotController node, subscribes to the /joint_states topic, and sets up GPIO pins for stepper motors and servo motors
         """
         super().__init__('rceti_controller')
+
+
+        # Initialize servo motors
+        self.servo1 = kit.servo[0]       # tilts continuum base
+        self.servo2 = kit.servo[1]       # pulls continuum
+        self.servo3 = kit.servo[2]       # pulls continuum
+
+        self.servo1.actuation_range = 200
+        self.servo1.set_pulse_width_range(500, 2000)
+
 
         # Subscribe to the /joint_states topic
         self.joint_state_sub = self.create_subscription(
@@ -31,7 +48,7 @@ class RCETIRobotController(Node):
         # Position tracking
         self.x_position = 0.0
         self.z_position = 0.0
-        self.pitch_angle = 0.0
+        self.pitch_angle = 0.730
 
         # GPIO pin definitions
         self.X_DIRECTION_PIN = 21
@@ -60,13 +77,14 @@ class RCETIRobotController(Node):
         """
         # Extract joint positions from the message
         try:
-            x_index = msg.name.index('x_actuator_to_x_moving')
-            z_index = msg.name.index('z_actuator_to_z_moving')
-            pitch_index = msg.name.index('z_moving_to_pitch_actuator')
+            x_index = msg.name.index('x_actuator_to_x_slider')
+            z_index = msg.name.index('z_actuator_to_z_slider')
+            pitch_index = msg.name.index('z_slider_to_pitch_servo')
 
             new_x_position = msg.position[x_index]
             new_z_position = msg.position[z_index]
-            new_pitch_angle = msg.position[pitch_index]
+            pitch_angle_msg = msg.position[pitch_index]
+
 
             # Handle X-axis movement
             if self.x_position != new_x_position:
@@ -85,10 +103,12 @@ class RCETIRobotController(Node):
                 self.z_position = new_z_position
 
             # Handle pitch angle (if implemented in hardware)
-            if self.pitch_angle != new_pitch_angle:
+            new_pitch_angle = int( ( (pitch_angle_msg + 0.475) / (1.205) ) * 120 )
+
+            if (self.servo1.angle != new_pitch_angle): 
                 self.get_logger().info(f"Adjusting pitch to {new_pitch_angle}")
-                # TODO: Implement pitch angle movement if hardware supports it
-                self.pitch_angle = new_pitch_angle
+                self.servo1.angle = new_pitch_angle
+                
 
         except ValueError as e:
             self.get_logger().error(f"Joint name not found in joint_states: {e}")

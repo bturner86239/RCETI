@@ -1,3 +1,4 @@
+import math
 import sys
 import termios
 import tty
@@ -7,12 +8,14 @@ from sensor_msgs.msg import JointState
 import rclpy
 from rclpy.node import Node
 
+FIVE_DEGREES_FUNCTIONAL = 0.050208333
 class RcetiKeyboardController(Node):
     """RcetiKeyboardController is a ROS 2 node that handles keyboard input to control the RCETI robot's joint states.
 
     Args:
         Node (Node): The node of the ROS 2 system that handles the keyboard input and joint state publishing.
     """
+
     def __init__(self):
         """Initializes the RcetiKeyboardController node, sets up the publisher for joint states, and initializes parameters.
         """
@@ -21,14 +24,14 @@ class RcetiKeyboardController(Node):
         
         self.x_position = 0.0  # Initialize x position
         self.z_position = 0.0  # Initialize z position
-        self.pitch_angle = 0.0  # Initialize pitch angle
+        self.pitch_angle = 0.730 # start at the maximum
 
         self.MAX_X_POSITION = 0.309  # Maximum x position
         self.MIN_X_POSITION = 0.0  # Minimum x position
         self.MAX_Z_POSITION = 0.309  # Maximum z position
         self.MIN_Z_POSITION = 0.0  # Minimum z position
-        self.MAX_PITCH_ANGLE = 1.57  # Maximum pitch angle (in radians)
-        self.MIN_PITCH_ANGLE = -1.57  # Minimum pitch angle (in radians)
+        self.MAX_PITCH_ANGLE = 0.730 # Maximum pitch angle (in radians)
+        self.MIN_PITCH_ANGLE = -0.475 # Minimum pitch angle (in radians)
         
         # Timer for keyboard input
         self.keyboard_timer = self.create_timer(0.01, self.keyboard_callback)
@@ -92,16 +95,17 @@ class RcetiKeyboardController(Node):
                     self.get_logger().info("Cannot move left, at minimum x position")
                 else:
                     self.z_position -= 0.01
-            elif key == 'p':  # Increase pitch angle
-                if(self.pitch_angle + 0.1) > self.MAX_PITCH_ANGLE:
-                    self.get_logger().info("Cannot move up, at maximum pitch angle")
-                else:
-                    self.pitch_angle += 0.1
-            elif key == 'l':  # Decrease pitch angle
-                if (self.pitch_angle - 0.1) < self.MIN_PITCH_ANGLE:
+            elif key == 'p':  # Decrease pitch angle
+                if (self.pitch_angle - FIVE_DEGREES_FUNCTIONAL) < self.MIN_PITCH_ANGLE:
                     self.get_logger().info("Cannot move down, at minimum pitch angle")
                 else:
-                    self.pitch_angle -= 0.1
+                    self.pitch_angle -= FIVE_DEGREES_FUNCTIONAL
+            elif key == 'l':  # Increase pitch angle
+                if(self.pitch_angle + FIVE_DEGREES_FUNCTIONAL) > self.MAX_PITCH_ANGLE:
+                    self.get_logger().info("Cannot move up, at maximum pitch angle")
+                else:
+                    self.pitch_angle += FIVE_DEGREES_FUNCTIONAL
+            
             elif key == '\x03':  # Ctrl+C to exit
                 rclpy.shutdown()
                 sys.exit(0)
