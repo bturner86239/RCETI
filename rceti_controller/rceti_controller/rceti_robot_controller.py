@@ -36,6 +36,13 @@ class RCETIRobotController(Node):
         self.servo1.actuation_range = 200
         self.servo1.set_pulse_width_range(500, 2000)
 
+        # May need to adjust 
+        self.servo2.actuation_range = 200
+        self.servo2.set_pulse_width_range(500, 2000)
+
+        # May need to adjust 
+        self.servo3.actuation_range = 200
+        self.servo3.set_pulse_width_range(500, 2000)
 
         # Subscribe to the /joint_states topic
         self.joint_state_sub = self.create_subscription(
@@ -80,10 +87,14 @@ class RCETIRobotController(Node):
             x_index = msg.name.index('x_actuator_to_x_slider')
             z_index = msg.name.index('z_actuator_to_z_slider')
             pitch_index = msg.name.index('z_slider_to_pitch_servo')
+            continuum_index_1 = msg.name.index('continuum_1')
+            continuum_index_2 = msg.name.index('continuum_2')   
 
             new_x_position = msg.position[x_index]
             new_z_position = msg.position[z_index]
             pitch_angle_msg = msg.position[pitch_index]
+            continuum_angle_1 = msg.position[continuum_index_1]
+            continuum_angle_2 = msg.position[continuum_index_2]
 
 
             # Handle X-axis movement
@@ -105,9 +116,23 @@ class RCETIRobotController(Node):
             # Handle pitch angle (if implemented in hardware)
             new_pitch_angle = int( ( (pitch_angle_msg + 0.475) / (1.205) ) * 120 )
 
+            # Handle pitch angle (if implemented in hardware)
+            new_continuum_1_pitch_angle = int( ( (continuum_angle_1 + 0.475) / (1.205) ) * 120 )
+
+            # Handle pitch angle (if implemented in hardware)
+            new_continuum_2_pitch_angle = int( ( (continuum_angle_2 + 0.475) / (1.205) ) * 120 )
+
             if (self.servo1.angle != new_pitch_angle): 
                 self.get_logger().info(f"Adjusting pitch to {new_pitch_angle}")
                 self.servo1.angle = new_pitch_angle
+
+            if (self.servo2.angle != new_continuum_1_pitch_angle): 
+                self.get_logger().info(f"Adjusting continuum 1 to {new_continuum_1_pitch_angle}")
+                self.servo2.angle = new_continuum_1_pitch_angle
+
+            if (self.servo3.angle != new_continuum_2_pitch_angle): 
+                self.get_logger().info(f"Adjusting continuum 2 to {new_continuum_2_pitch_angle}")
+                self.servo3.angle = new_continuum_2_pitch_angle
                 
 
         except ValueError as e:
