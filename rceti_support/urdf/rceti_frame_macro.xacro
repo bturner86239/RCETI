@@ -188,7 +188,24 @@
                 </geometry>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
             </visual>
+        </link>
 
+        <link name="continuum_base_link_1">
+            <visual>
+                <geometry>
+                    <cylinder length="0.001" radius="0.001"/>
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </visual>
+        </link>
+        
+        <link name="continuum_base_link_2">
+            <visual>
+                <geometry>
+                    <cylinder length="0.001" radius="0.001"/>
+                </geometry>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </visual>
         </link>
 
         <!-- JOINT GROUP -->
@@ -239,6 +256,22 @@
             <parent link="pitch_servo_link"/>
             <child link="pitch_servo_bottom_link"/>
             <origin xyz="0 0.017 0"/>
+        </joint>
+
+        <joint name="continuum_1" type="revolute">
+            <parent link="pitch_servo_bottom_link"/>
+            <child link="continuum_base_link_1"/>
+            <origin xyz="0 0.017 0"/>
+            <axis xyz="0 0 1"/> <!-- Specify the axis of rotation -->
+            <limit effort="50.0" lower="-0.5" upper="0.5" velocity="1.0"/> <!-- Add limits -->
+        </joint>
+
+        <joint name="continuum_2" type="revolute">
+            <parent link="pitch_servo_bottom_link"/>
+            <child link="continuum_base_link_2"/>
+            <origin xyz="0 0.017 0"/>
+            <axis xyz="0 0 1"/> <!-- Specify the axis of rotation -->
+            <limit effort="50.0" lower="-0.5" upper="0.5" velocity="1.0"/> <!-- Add limits -->
         </joint>
 
     </xacro:macro>
