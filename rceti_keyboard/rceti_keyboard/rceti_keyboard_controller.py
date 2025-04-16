@@ -30,8 +30,8 @@ class RcetiKeyboardController(Node):
         self.MIN_X_POSITION = 0.0  # Minimum x position
         self.MAX_Z_POSITION = 0.309  # Maximum z position
         self.MIN_Z_POSITION = 0.0  # Minimum z position
-        self.MAX_PITCH_ANGLE = 0.730 # Maximum pitch angle (in radians)
-        self.MIN_PITCH_ANGLE = -0.475 # Minimum pitch angle (in radians)
+        self.MAX_PITCH_ANGLE = 1.57  # Maximum pitch angle (in radians)
+        self.MIN_PITCH_ANGLE = -1.57  # Minimum pitch angle (in radians)
         
         # Timer for keyboard input
         self.keyboard_timer = self.create_timer(0.01, self.keyboard_callback)
