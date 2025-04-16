@@ -1,3 +1,4 @@
+import math
 import sys
 import termios
 import tty
@@ -19,16 +20,18 @@ class RcetiKeyboardController(Node):
         super().__init__('rceti_keyboard')
         self.joint_state_publisher = self.create_publisher(JointState, '/joint_states', 10)
         
+        ten_degrees = (math.pi)/180
+
         self.x_position = 0.0  # Initialize x position
         self.z_position = 0.0  # Initialize z position
-        self.pitch_angle = 0.0  # Initialize pitch angle
+        self.pitch_angle = (math.pi)/4  # Initialize pitch angle at 45 degrees
 
         self.MAX_X_POSITION = 0.309  # Maximum x position
         self.MIN_X_POSITION = 0.0  # Minimum x position
         self.MAX_Z_POSITION = 0.309  # Maximum z position
         self.MIN_Z_POSITION = 0.0  # Minimum z position
-        self.MAX_PITCH_ANGLE = 1.57  # Maximum pitch angle (in radians)
-        self.MIN_PITCH_ANGLE = -1.57  # Minimum pitch angle (in radians)
+        self.MAX_PITCH_ANGLE = (math.pi)/2 + ten_degrees # Maximum pitch angle (in radians)
+        self.MIN_PITCH_ANGLE = 0 - ten_degrees  # Minimum pitch angle (in radians)
         
         # Timer for keyboard input
         self.keyboard_timer = self.create_timer(0.01, self.keyboard_callback)
